@@ -1,0 +1,6 @@
+---
+- hosts: wireguard
+
+  roles:
+    - role: bleetube.wireguard
+      tags: wireguard

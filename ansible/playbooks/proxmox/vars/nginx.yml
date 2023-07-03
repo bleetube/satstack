@@ -1,0 +1,101 @@
+---
+# https://github.com/nginxinc/ansible-role-nginx-config/blob/main/defaults/main/template.yml
+nginx_config_main_template_enable: true
+nginx_config_main_template:
+  template_file: nginx.conf.j2
+  deployment_location: /etc/nginx/nginx.conf
+  backup: false
+  config: # https://nginx.org/en/docs/ngx_core_module.html
+    main:
+      user:
+        username: nginx
+      worker_processes: auto
+      error_log:
+        file: /var/log/nginx/error.log
+        level: notice
+      pid: /var/run/nginx.pid
+    events:
+      worker_connections: 1024
+    http: # https://nginx.org/en/docs/http/ngx_http_core_module.html
+      default_type: application/octet-stream
+      sendfile: true
+      server_tokens: false
+      tcp_nodelay: true
+      tcp_nopush: true
+      include:
+        - /etc/nginx/mime.types
+        - /etc/nginx/http.conf    # These are shared http level configs that nginx_conf refuses to directly configure.
+        - /etc/nginx/conf.d/*.conf
+
+# Each dictionary in the top level list/array represents a new configuration file.
+nginx_config_http_template_enable: true
+nginx_config_http_template:
+  - template_file: http/default.conf.j2
+    deployment_location: /etc/nginx/http.conf
+    backup: false
+    config:
+      core:
+        default_type: application/octet-stream
+        sendfile: true
+        server_tokens: false
+        tcp_nodelay: true
+        tcp_nopush: true
+      log:
+        format:
+          - name: main
+            format: |
+              '$remote_addr - $remote_user [$time_local] "$request" '
+              '$status $body_bytes_sent "$http_referer" '
+              '"$http_user_agent" "$http_x_forwarded_for"  "$realip_remote_addr"'
+      gzip: # https://nginx.org/en/docs/http/ngx_http_gzip_module.html
+        enable: true
+        comp_level: 3
+        disable: "msie6"
+        min_length: 1100
+        proxied: any
+        types:
+          - text/plain
+          - text/css 
+          - application/x-javascript 
+          - text/xml 
+          - application/xml
+        vary: true
+
+# Leaving these default self-signed cert paths here for future reference:
+# /etc/ssl/certs/ssl-cert-snakeoil.pem
+# /etc/ssl/private/ssl-cert-snakeoil.key
+
+  - template_file: http/default.conf.j2
+    deployment_location: "/etc/nginx/ssl_{{ acme_certificate_domains[0] }}.conf"
+    backup: false
+    config:
+      server_name: "{{ acme_certificate_domains[0] }}"
+      ssl:
+        # proxmox (ie. acme.sh)
+        certificate: "/etc/pve/nodes/{{ inventory_hostname_short }}/pveproxy-ssl.pem"
+        certificate_key: "/etc/pve/nodes/{{ inventory_hostname_short }}/pveproxy-ssl.key"
+#       trusted_certificate: 
+        # intermediate compatibility https://ssl-config.mozilla.org/
+#       ciphers: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        dhparam: /etc/ssl/dhparams.pem
+        ecdh_curve: X25519:secp521r1:secp384r1
+        prefer_server_ciphers: true
+        protocols:
+#         - TLSv1.2
+          - TLSv1.3
+        session_cache:
+          shared:
+            name: "{{ acme_certificate_domains[0] }}"
+            size: 1M
+        session_tickets: false
+        session_timeout: 1d
+        ocsp: true
+        ocsp_cache:
+          name: cache
+          size: 64k
+        stapling: true
+        stapling_verify: true
+#       ocsp_responder: http://r3.o.lencr.org
+#     header:
+        # HSTS, only enable this when you absolutely know you don't need http anymore.
+#       add_header: add_header Strict-Transport-Security "max-age=63072000" always

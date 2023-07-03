@@ -1,0 +1,34 @@
+---
+- hosts: all
+  become: true
+
+  roles:
+    - role: prometheus.prometheus.node_exporter
+      tags: node_exporter
+
+  tasks:
+    - name: Configure nginx
+      ansible.builtin.import_role:
+        name: nginxinc.nginx_core.nginx_config
+      tags: nginx
+      vars:
+        nginx_config_http_template_enable: true
+        nginx_config_http_template:
+          - template_file: http/default.conf.j2
+            deployment_location: "/etc/nginx/conf.d/node_exporter_{{ inventory_hostname }}.conf"
+            backup: false
+            config:
+              servers:
+                - core:
+                    listen:
+                      # Use IP address in Ansible facts. https://stackoverflow.com/q/39819378/9290
+                      - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4430 ssl"
+                        http2: true
+                    include:
+                      - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
+                  locations:
+                    - location: /
+                      proxy:
+                        pass: "http://127.0.0.1:4430"
+                        http_version: 1.1
+

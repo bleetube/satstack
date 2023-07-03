@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  synapse:
+    # See: https://github.com/matrix-org/synapse/blob/develop/docker/README.md
+    build:
+      context: /home/blee/src/synapse
+      dockerfile: docker/Dockerfile
+#   image: docker.io/matrixdotorg/synapse:latest
+    restart: unless-stopped
+    user: "1000:1000"
+    env_file:
+      - .env.synapse
+    volumes:
+      - /var/run/postgresql:/var/run/postgresql
+      - /var/compose/synapse/config:/config
+      - /var/compose/synapse/data:/data
+    # In order to expose Synapse, remove one of the following, you might for
+    # instance expose the TLS port directly:
+    ports:
+      - 127.0.0.1:8008:8008/tcp
+#     - 8448:8448/tcp
+
+  # https://docs.tandoor.dev/install/docker/#plain
+  tandoor:
+    container_name: tandoor
+    image: vabene1111/recipes:1.4.7
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4432:8080
+    env_file:
+      - .env.tandoor
+#   user: "1000:1000"
+    volumes:
+      - /var/run/postgresql:/var/run/postgresql
+      # mkdir -p /var/compose/tandoor/{staticfiles,nginx_config,mediafiles}
+      - /var/compose/tandoor/staticfiles:/opt/recipes/staticfiles
+      - /var/compose/tandoor/nginx_config:/opt/recipes/nginx/conf.d
+      - /var/compose/tandoor/mediafiles:/opt/recipes/mediafiles
+
+  # fyi containers fail to build on pancham, so we'll just use the image from docker hub
+  peertube:
+    container_name: peertube
+    # https://hub.docker.com/r/chocobozzz/peertube/tags
+    image: chocobozzz/peertube:{{ peertube_version }}-bullseye
+#   build:
+#     context: /home/blee/src/PeerTube
+#     dockerfile: /home/blee/src/PeerTube/support/docker/production/Dockerfile.bullseye
+    env_file:
+      - .env.peertube
+    user: "1000:1000"
+    volumes:
+      - /var/run/postgresql:/var/run/postgresql
+      - /var/run/redis:/var/run/redis
+      - {{ peertube_root_path }}:{{ peertube_root_path }}
+      - {{ peertube_root_path }}/storage:/data
+      - /var/compose/peertube/config:/config
+      - assets:/app/client/dist
+    ports:
+      - 127.0.0.1:1935:1935
+      - 127.0.0.1:9000:9000
+      - 127.0.0.1:9091:9091   # prometheus
+    restart: unless-stopped
+
+# Expose the assets (client/dist) volume to the host so that we can serve the contents with nginx.
+# https://stackoverflow.com/a/59382354/9290
+# docker inspect docker_assets | jq -r '.[].Mountpoint'
+# /var/lib/docker/volumes/docker_assets/_data
+volumes:
+  assets:

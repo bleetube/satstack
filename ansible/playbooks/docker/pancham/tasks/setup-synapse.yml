@@ -1,0 +1,32 @@
+---
+- name: Ensure writable data directories.
+  ansible.builtin.file:
+    path:  "{{ item }}"
+    state: directory
+    mode: '0777'
+  loop:
+    - /var/compose/synapse/config
+    - /var/compose/synapse/data
+
+- name: Clone repository
+  ansible.builtin.git:
+    repo: 'https://github.com/matrix-org/synapse.git'
+    dest: "{{ ansible_env.HOME }}/src/synapse"
+    version: "{{ synapse_version }}"
+  register: git_repository
+  tags: upgrade
+
+# This works manually, but not here for some reason.
+#- name: Build container
+#  community.docker.docker_compose:
+#    project_src: "{{ ansible_env.HOME }}/docker"
+#    build: true
+#    services: [ synapse ]
+#  tags: upgrade
+
+- name: Configure environment variables
+  ansible.builtin.template:
+    src: synapse.env.j2
+    dest: "{{ ansible_env.HOME }}/docker/.env.synapse"
+    mode: '0600'
+  tags: compose

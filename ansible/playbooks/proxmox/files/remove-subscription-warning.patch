@@ -1,0 +1,7 @@
+--- archive/proxmoxlib.js  2022-03-05 10:53:10.429856460 -0800
++++ proxmoxlib.js  2022-03-05 10:53:05.109888200 -0800
+@@ -513,3 +513,3 @@
+       .data.status.toLowerCase() !== 'active') {
+-      Ext.Msg.show({
++      void({
+           title: gettext('No valid subscription'),

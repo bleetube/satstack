@@ -1,0 +1,55 @@
+---
+# https://github.com/cloudalchemy/ansible-grafana
+# # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/
+grafana_url: "https://{{ ansible_play_hosts[0] }}" # required for oauth callbacks
+#grafana_database:
+#  type: postgres # This only really makes sense if postgres is already in use on this sytem. Otherwise, sqlite is fine.
+#  host: /var/run/postgresql
+#  name: grafana
+#  user: grafana
+#  password: "{{ lookup('ansible.builtin.env', 'GRAFANA_POSTGRES_PASSWORD') }}"
+#  max_idle_conn: 2
+#  max_open_conn: ""
+#  log_queries: ""
+grafana_analytics:
+  reporting_enabled: false
+grafana_snapshots:
+  external_enabled: false
+grafana_users:
+  allow_sign_up: false
+grafana_datasources:
+  - name: "{{ ansible_play_hosts[0] }}"
+    type: "prometheus"
+    # Note that this depends on the prometheus_web_external_url variable in ansible/sableye/install-prometheus.yml.
+    url: "http://localhost:9090/prometheus"
+    access: "proxy"     # "server" in the UI
+#   basicAuth: true
+#   basicAuthUser: "admin"
+#   basicAuthPassword: "password"
+    isDefault: true
+    jsonData:
+      tlsAuth: false
+      tlsAuthWithCACert: false
+      tlsSkipVerify: true
+
+grafana_dashboards:
+  - dashboard_id: 1860  # https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+    revision_id: "{{ grafana_node_dashboard_version|default(27) }}"
+    datasource: "{{ ansible_play_hosts[0] }}"
+
+# TODO: 
+#   grafana_smtp:
+#     host:
+#     user:
+#     password:
+#     from_address:
+# TODO: https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/github/
+# TODO: https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/google/
+# Might need to build a custom template. I don't see how the cloudalchemy.grafana role supports this.
+#   grafana_auth:
+#     disable_login_form: false
+#     oauth_auto_login: false
+#     disable_signout_menu: false
+#     signout_redirect_url: ""
+#     basic:
+#       enabled: true

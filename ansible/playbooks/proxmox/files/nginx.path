@@ -1,0 +1,9 @@
+[Unit]
+Description=Start nginx when pveproxy-ssl.pem exists
+
+[Path]
+PathExists=/etc/pve/nodes/shinx/pveproxy-ssl.pem
+Unit=nginx.service
+
+[Install]
+WantedBy=multi-user.target

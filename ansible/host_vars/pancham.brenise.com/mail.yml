@@ -1,0 +1,16 @@
+---
+postfix_domain: blee.tube
+dkim_selector: mail
+dkim_key_path: /etc/dkimkeys
+postfix_hostname: "{{ dkim_selector }}.{{ postfix_domain }}"
+imap_bind_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/fullchain.pem"
+postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/privkey.pem"
+postfix_smtpd_tls_dh1024_param_file: /etc/ssl/dhparams.pem
+postfix_maildir_user: maildir
+postfix_virtual_uid: "{{ ansible_facts.getent_passwd.maildir[1] }}"
+postfix_virtual_gid: "{{ ansible_facts.getent_group.maildir[1] }}"
+postfix_inet_interfaces: all
+postfix_virtual_mailbox_base: /var/vmail
+postfix_mynetworks:
+  - 127.0.0.0/8

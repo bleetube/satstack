@@ -1,0 +1,6 @@
+---
+- hosts: dotfiles
+
+  roles:
+    - role: bleetube.dotfiles
+      tags: dotfiles

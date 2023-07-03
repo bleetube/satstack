@@ -1,0 +1,48 @@
+---
+# Download client files from the official PeerTube repository.
+# https://github.com/Chocobozzz/PeerTube/releases
+# TODO: might need to forward locations from brenise.com to matrix.brenise.com because email verification links point to brenise.com
+- hosts: pancham.brenise.com
+
+  vars_files:
+    - vars/nginx.yml
+
+  vars:
+    peertube_domain: blee.tube
+    peertube_root_path: /var/www/peertube
+#   nodejs_version: "16.x"
+#   # This updates the global path to include the nodejs binaries. You may need to restart your shell.
+#   nodejs_npm_global_packages:
+#     - yarn  # recommended installation method by upstream (yarnpkg.com)
+#     - npm   # get latest npm, /usr/local/lib/npm/bin/npm
+#     - 'n'
+
+  pre_tasks:
+    - name: Configure nginx for PeerTube
+      ansible.builtin.template:
+        src: nginx_peertube_conf.j2
+        dest: "/etc/nginx/conf.d/peertube_{{ peertube_domain }}.conf"
+      tags: nginx
+
+  roles:
+    - role: nginxinc.nginx_core.nginx_config
+      tags: nginx
+#   - role: bleetube.nodejs
+#     tags: nodejs
+
+  tasks:
+    - import_tasks: tasks/install-redis.yml
+      tags: redis
+
+    - name: Creat PeerTube directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: blee
+        group: blee
+      loop:
+        - "{{ peertube_root_path }}"
+        - /var/compose/peertube
+
+# Variables do not carry over to imported playbooks.
+- import_playbook: blee.yml

@@ -1,0 +1,56 @@
+---
+- hosts: proxmox
+
+  vars:
+    acme_certificate_domains:
+      - "{{ inventory_hostname }}"
+
+  vars_files:
+    - vars/nginx.yml
+
+  pre_tasks:
+    - name: Use pre-generated dhparams to reduce deployment time by several minutes.
+      ansible.builtin.copy:
+        src: dhparams.pem
+        dest: /etc/ssl/
+        force: false
+
+  roles:
+    # configure nginx ssl using the existing acme.sh certificates
+    - role: nginxinc.nginx_core.nginx_config
+      tags: nginx
+
+  tasks:
+    - name: Install patch, which is required to remove the subscription warning
+      ansible.builtin.package:
+        name: patch
+        state: present
+
+    - name: 
+      ansible.builtin.copy:
+        src: remove-subscription-warning.sh
+        dest: /usr/local/bin/
+      tags: patch
+
+    - name: Configure scripts to run after updates
+      ansible.builtin.copy:
+        src: 99-remove-subscription-warning
+        dest: /etc/apt/apt.conf.d/
+      tags: patch
+
+    - name: Copy patch file
+      ansible.builtin.copy:
+        src: remove-subscription-warning.patch
+        dest: /usr/local/src/
+      tags: patch
+
+    - name: Copy systemd.path unit file
+      ansible.builtin.copy:
+        src: nginx.path
+        dest: /etc/systemd/system/
+
+    - name: Enable systemd.path unit file to ensure nginx starts after pve is ready.
+      ansible.builtin.service:
+        name: nginx.path
+        state: started
+        enabled: true

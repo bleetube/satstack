@@ -1,0 +1,16 @@
+---
+- name: Configure environment variables
+  ansible.builtin.template:
+    src: bitcoin-prometheus-exporter.env.j2
+    dest: "{{ ansible_env.HOME }}/docker/.env.bitcoin-prometheus-exporter"
+    mode: '0600'
+  tags: env
+
+- name: Clone repository
+  ansible.builtin.git:
+    repo: 'https://github.com/jvstein/bitcoin-prometheus-exporter.git'
+    dest: "{{ ansible_env.HOME }}/src/bitcoin-prometheus-exporter"
+#   version: HEAD
+  register: git_repository
+  tags: upgrade
+

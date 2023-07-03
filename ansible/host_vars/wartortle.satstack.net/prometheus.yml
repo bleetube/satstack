@@ -1,0 +1,205 @@
+---
+prometheus_alert_rules_files: []
+
+prometheus_external_labels:
+  region: us-california-1
+  monitor: satstack-homelab
+  replica: 1
+
+# prometheus_targets is just a map used to create multiple files located in "{{ prometheus_config_dir }}/file_sd" directory.
+# Where file names are composed from top-level keys in that map with .yml suffix. Those files store file_sd scrape targets 
+# data and they need to be read in prometheus_scrape_configs.
+prometheus_targets:
+  node:
+    - targets:
+#       - bulbasaur.charlgiwnbro.com:4430
+        - shinx.charlgiwnbro.com:4430
+      labels:
+        group: charlgiwnbro
+
+    - targets:
+        - charmander.brenise.com:4430
+        - incineroar.brenise.com:4430
+        - pancham.brenise.com:4430
+      labels:
+        group: brenise
+
+    - targets:
+        - wartortle.satstack.net:4430
+        - squirtle.satstack.net:4430
+        - omastar.satstack.net:4430
+      labels:
+        group: satstack
+
+# another important note about file_sd targets (above) is that they are periodically refreshed by prometheus, but the rest of the config (below) is not.
+prometheus_scrape_configs:
+  - job_name: prometheus
+    scheme: https
+    metrics_path: /prometheus/metrics
+    static_configs:
+      - targets:
+          - "{{ ansible_play_hosts[0] }}"
+          - "{{ lookup('ansible.builtin.env', 'testnet_prometheus') }}"
+#         - "{{ lookup('ansible.builtin.env', 'work_prometheus') }}" # TODO: fix routing
+
+  - job_name: node
+    scheme: https
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/node.yml"
+
+  - job_name: bitcoind
+    scheme: https
+    static_configs:
+      - targets:
+        - squirtle.satstack.net:9101
+
+# broken https://github.com/lightningd/plugins/pull/451
+  - job_name: lightningd
+    scheme: https
+    scrape_interval: 2m
+    static_configs:
+      - targets:
+        - squirtle.satstack.net:9105
+
+# - job_name: lnd
+#   scheme: https
+#   static_configs:
+#     - targets:
+#       - omastar.satstack.net:9101
+
+# - job_name: lndmon
+#   scheme: https
+#   static_configs:
+#     - targets:
+#       - squirtle.satstack.net:9092
+
+  - job_name: electrum
+    scheme: https
+    scrape_interval: 2m
+    static_configs:
+      - targets:
+        - squirtle.satstack.net:4224
+
+  # https://chesnaught.brenise.com:4434/docs/api/rest#get-mempool
+  - job_name: mempool
+    scheme: https
+    scrape_interval: 2m
+    params:
+      module: [http_2xx]
+    metrics_path: /probe
+    static_configs:
+      - targets:
+        - https://chesnaught.satstack.net:4434/api/mempool
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ ansible_play_hosts[0] }}:4431"
+
+  - job_name: samourai
+    scheme: https
+    scrape_interval: 2m
+    static_configs:
+      - targets:
+        - squirtle.satstack.net:9104
+
+  - job_name: testnet
+    scheme: https
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - squirtle.satstack.net:9102
+
+  - job_name: miniflux
+    scheme: https
+    static_configs:
+      - targets:
+        - squirtle.brenise.com:4431
+
+prometheus_alert_rules:
+  - alert: Prometheus
+    expr: up{job="prometheus"} == 0
+    for: 2h
+    annotations:
+      summary: Prometheus has not responded for at least a couple hours.
+      description: Check metrics exported directly from the main prometheus daemon.
+
+  - alert: High compute utilization alert
+    expr: avg by (instance) (irate(node_cpu_seconds_total{job="nodes",mode="idle"}[5m])) < 0.6
+    for: 5m
+    annotations:
+      summary: Elevated compute utilization.
+
+  - alert: High disk storage utilization alert
+    expr: 100 - ((node_filesystem_avail_bytes{job="nodes",mountpoint="/",fstype!="rootfs"} * 100) / node_filesystem_size_bytes{job="nodes",mountpoint="/",fstype!="rootfs"}) > 80
+    for: 1h
+    annotations:
+      summary: Server is running low on available disk space.
+
+  - alert: electrs outage
+    expr: up{job="electrum"} == 0
+    for: 15m
+    annotations:
+      summary: electrs is not responding
+
+  - alert: mempool.space offline
+    expr: probe_success{job="mempool"} == 0
+    for: 15m
+    annotations:
+      summary: mempool.space is not running.
+
+# - alert: LND Monitor
+#   expr: lnd_channels_inactive_total{job="lndmon"} / lnd_channels_active_total{job="lndmon"} > 0.5
+#   for: 15m 
+#   annotations:
+#     summary: Most lightning channels are inactive. Check LND and Tor.
+
+# - alert: Stale Samourai Dojo block height
+#   expr: min(dojo_block_height) < max(bitcoin_latest_block_height)
+#   for: 1h
+#   annotations:
+#     summary: Node has fewer blocks than peers, possibly indicating an outage.
+#     description: Check node logs and restart if necessary.
+
+# - alert: Stale Electrum Server index tip height
+#   expr: dojo_indexer_max_height < max(bitcoin_latest_block_height)
+#   for: 1h
+#   annotations:
+#     summary: Electrum server appears to have stalled or crashed.
+#     description: Check electrs logs. Restart if necessary.
+
+# - alert: Stale lightningd block height
+#   expr: lightning_node_blockheight < max(bitcoin_latest_block_height)
+#   for: 1h
+#   annotations:
+#     summary: Dojo indicates that the electrum server appears to have stalled or crashed.
+#     description: Check electrs and dojo logs. Restart if necessary.
+
+# - alert: lightningd offline
+#   expr: up{job="lightningd"} == 0
+#   for: 15m
+#   annotations:
+#     summary: lightningd is not running.
+
+# - alert: Stale Dojo block height tip
+#   expr: dojo_block_height < max(bitcoin_latest_block_height)
+#   for: 1h
+#   annotations:
+#     summary: The latest block height tip reported by a node is stale or doesn't match the others.
+#     description: The latest block height tip reported by a node is stale.
+
+# - alert: Stail LND block height tip
+#   expr: lnd_chain_block_height{job="lndmon"} < max(bitcoin_latest_block_height{job="bitcoind"})
+#   for: 1h
+#   annotations:
+#     summary: LND is not in sync with the chain.
+#     description: The latest block height tip reported by LND is stale.
+
+# - alert: LND uptime
+#   expr: up{job="lnd"} == 0
+#   for: 5m
+#   annotations:
+#     summary: LND is not running.

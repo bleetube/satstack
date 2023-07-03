@@ -1,0 +1,10 @@
+---
+# https://prometheus-community.github.io/ansible/branch/main/node_exporter_role.html
+node_exporter_web_listen_address: "127.0.0.1:4430"
+node_exporter_enabled_collectors: # https://github.com/prometheus/node_exporter#collectors
+  - cpu.info   # CPU Model
+  - interrupts
+  - netstat
+  - vmstat
+  - systemd
+  - processes

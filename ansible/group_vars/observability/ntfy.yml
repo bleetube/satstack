@@ -1,0 +1,5 @@
+---
+ntfy_base_url: "https://ansible_play_hosts[0]:4432"
+ntfy_listen_http: "127.0.0.1:8032"
+ntfy_alertmanager_base_url: "https://{{ ansible_play_hosts[0] }}:4433"
+ntfy_alertmanager_http_address: "127.0.0.1:8033"

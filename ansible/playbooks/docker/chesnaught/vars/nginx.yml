@@ -1,0 +1,92 @@
+---
+acme_domains:
+  - chesnaught.brenise.com
+nginx_config_http_template_enable: true
+nginx_config_http_template:
+  # websockets
+  - template_file: http/default.conf.j2
+    deployment_location: "/etc/nginx/conf.d/mappings.conf"
+    backup: false
+    config:
+      map:
+        mappings: # https://nginx.org/en/docs/http/websocket.html
+          - string: $http_upgrade
+            variable: $connection_upgrade
+            content:
+              - value: default
+                new_value: upgrade
+              - value: "''"
+                new_value: close
+  # mempool.space
+  - template_file: http/default.conf.j2
+    deployment_location: "/etc/nginx/conf.d/mempool_{{ acme_domains[0] }}.conf"
+    backup: false
+    config:
+      servers:
+        - core:
+            listen:
+              - address: "{{ lan_address }}:4434 ssl http2"
+            include:
+              - "/etc/nginx/acme_{{ acme_domains[0] }}.conf"
+          log:
+            access:
+              - off
+          locations:
+            - location: /
+              proxy:
+                pass: "http://127.0.0.1:4432"
+                buffering: false
+                http_version: '1.1'
+                set_header:
+                 - field: Host
+                   value: $http_host
+                 - field: Connection
+                   value: $connection_upgrade
+                 - field: Upgrade
+                   value: $http_upgrade
+                 - field: X-Real-IP
+                   value: $remote_addr
+  # jellyfin
+  - template_file: http/default.conf.j2
+    deployment_location: "/etc/nginx/conf.d/jellyfin_{{ acme_domains[0] }}.conf"
+    backup: false
+    config:
+      servers:
+        - core:
+            listen:
+              - address: "{{ lan_address }}:4433 ssl http2"
+            include:
+              - "/etc/nginx/acme_{{ acme_domains[0] }}.conf"
+          log:
+            access:
+              - off
+          locations:
+            - location: /
+              proxy:
+                pass: "http://127.0.0.1:8096"
+                buffering: false
+                http_version: '1.1'
+                set_header:
+                 - field: Host
+                   value: $http_host
+                 - field: X-Real-IP
+                   value: $remote_addr
+  # bitcoin-prometheus-exporter
+  - template_file: http/default.conf.j2
+    deployment_location: "/etc/nginx/conf.d/bitcoin-prometheus-exporter_{{ acme_domains[0] }}.conf"
+    backup: false
+    config:
+      servers:
+        - core:
+            listen:
+              - address: "{{ lan_address }}:4435 ssl http2"
+            include:
+              - "/etc/nginx/acme_{{ acme_domains[0] }}.conf"
+          log:
+            access:
+              - off
+          locations:
+            - location: /
+              proxy:
+                pass: "http://127.0.0.1:8035"
+                http_version: '1.1'

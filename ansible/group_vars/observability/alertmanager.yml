@@ -1,0 +1,14 @@
+---
+alertmanager_web_listen_address: "127.0.0.1:9093"
+alertmanager_web_external_url: "https://{{ ansible_play_hosts[0] }}/alertmanager/"
+
+# The overlapping yaml templating requires us to use {% raw %} and {% endraw %}.
+alertmanager_receivers:
+  - name: ntfy
+    webhook_configs:
+      - url: "{{ ntfy_alertmanager_base_url }}/{{ ntfy_alertmanager_topic_name }}"
+
+# https://prometheus.io/docs/alerting/latest/configuration/#route
+alertmanager_route:
+  group_by: [ 'instance']
+  receiver: ntfy

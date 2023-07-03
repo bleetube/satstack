@@ -1,0 +1,10 @@
+---
+- name: Ensure doas is installed. 
+  ansible.builtin.package:
+    name: doas
+    state: present
+
+- name: Configure doas.
+  ansible.builtin.copy: 
+    src: doas.conf
+    dest: /etc/

@@ -1,0 +1,86 @@
+---
+- hosts: chesnaught.brenise.com
+  become_method: doas
+  become_user: blee
+  become: true
+
+  vars:
+    mempool_version: v2.4.1
+    mempool_core_rpc_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_MEMPOOL_CORE_RPC\") }}"
+    mempool_db_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_MEMPOOL_MARIADB\") }}"
+    samourai_dojo_version: v1.18.1
+    samourai_onion_address: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ONION\") }}"
+    samourai_node_api_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_API\") }}"
+    samourai_node_admin_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ADMIN\") }}"
+    samourai_node_jwt_secret: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_JWT\") }}"
+    samourai_mariadb_db: 172.17.0.1
+    samourai_mariadb_user: samourai
+    samourai_mariadb_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_MARIADB\") }}"
+    bitcoind_rpc_user: samourai
+    bitcoind_rpc_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_BITCOIND_RPC\") }}"
+
+
+  pre_tasks:
+    - name: Assert all secrets have been defined.
+      ansible.builtin.assert:
+        that:
+          - item is defined
+          - item != ''
+        fail_msg: "FAILED: Secrets are not configured."
+        quiet: true
+      no_log: true
+      loop:
+        - "{{ mempool_core_rpc_password }}"
+        - "{{ mempool_db_password }}"
+        - "{{ samourai_node_api_key }}"
+        - "{{ samourai_node_admin_key }}"
+        - "{{ samourai_node_jwt_secret }}"
+        - "{{ samourai_mariadb_password }}"
+        - "{{ bitcoind_rpc_password }}"
+        - "{{ samourai_onion_address }}"
+      tags: env
+
+  tasks:
+    - import_tasks: tasks/setup-docker.yml
+      tags: docker
+
+    - import_tasks: tasks/setup-mempool.yml
+      tags: mempool
+
+    - import_tasks: tasks/setup-samourai.yml
+      tags: samourai
+
+    - import_tasks: tasks/setup-bitcoin-prometheus-exporter.yml
+      tags: bitcoin-prometheus-exporter
+
+    - name: Configure docker-compose.
+      ansible.builtin.template:
+        src: docker-compose.yml.j2
+        dest: "{{ ansible_env.HOME }}/docker/docker-compose.yml"
+      tags: compose
+
+    # mempool builds currently do not work.
+    - name: Build containers.
+      community.docker.docker_compose:
+        project_src: "{{ ansible_env.HOME }}/docker"
+        build: true
+        services:
+#         - mempool-frontend
+#         - mempool-backend
+          - samourai-node
+          - bitcoin-prometheus-exporter
+      tags: upgrade
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: "{{ ansible_env.HOME }}/docker"
+#       build: true
+      register: output
+      when: git_repository.changed
+      tags: upgrade
+
+    - ansible.builtin.debug:
+        var: output
+      tags: upgrade
+
+

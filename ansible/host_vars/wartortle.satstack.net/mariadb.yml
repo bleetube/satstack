@@ -1,0 +1,49 @@
+---
+# https://github.com/fauust/ansible-role-mariadb/blob/main/defaults/main.yml
+mariadb_use_official_repo: true
+mariadb_use_official_repo_version: "10.10"
+# You can only bind to one address. https://serverfault.com/q/139323/70156
+mariadb_bind_address: 172.17.0.1
+mariadb_databases:
+  - name: mempool
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: false
+  - name: samourai
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: false
+
+# Both localhost and * (all hosts) are mutually exclusive: https://stackoverflow.com/q/10823854/9290
+mariadb_users:
+  - name: mempool
+    host: localhost
+    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MEMPOOL_MARIADB') }}"
+    priv: "mempool.*:ALL"
+    state: present
+  - name: mempool
+    host: '%'
+    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MEMPOOL_MARIADB') }}"
+    priv: "mempool.*:ALL"
+    state: present
+
+  - name: samourai
+    host: localhost
+    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MARIADB') }}"
+    priv: "samourai.*:ALL"
+    state: present
+  - name: samourai
+    host: '%'
+    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MARIADB') }}"
+    priv: "samourai.*:ALL"
+    state: present
+
+# https://mariadb.com/kb/en/mariadb-memory-allocation/
+mariadb_innodb_raw: |
+  # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
+  # Read the manual for more InnoDB related options. There are many!
+    innodb_buffer_pool_size = 512M
+    key_buffer_size = 10M
+  # For Samourai Dojo
+    transaction_isolation=READ-COMMITTED
+#   sql_mode="NO_ENGINE_SUBSTITUTION"

@@ -1,0 +1,35 @@
+---
+- name: Configure environment variables
+  ansible.builtin.template:
+    src: samourai.env.j2
+    dest: "{{ ansible_env.HOME }}/docker/.env.samourai"
+    mode: '0600'
+  tags: env
+
+- name: Clone repository
+  ansible.builtin.git:
+    repo: 'https://code.samourai.io/dojo/samourai-dojo.git'
+    dest: "{{ ansible_env.HOME }}/src/samourai-dojo"
+    version: "{{ samourai_dojo_version }}"
+  register: git_repository
+  tags: upgrade
+
+- name: Check whether the samourai database has been initialized
+  community.mysql.mysql_info:
+    filter:
+      - databases
+    return_empty_dbs: true
+    login_host: "{{ samourai_mariadb_db }}"
+    login_user: "{{ samourai_mariadb_user }}"
+    login_password: "{{ samourai_mariadb_password }}"
+  register: databases
+
+- name: Initialize database
+  community.mysql.mysql_db:
+    name: samourai
+    state: import
+    target: "{{ ansible_env.HOME }}/src/samourai-dojo/db-scripts/1_db.sql.tpl"
+    login_host: "{{ samourai_mariadb_db }}"
+    login_user: "{{ samourai_mariadb_user }}"
+    login_password: "{{ samourai_mariadb_password }}"
+  when: databases.databases.samourai.size == 0

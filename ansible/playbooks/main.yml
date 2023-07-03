@@ -1,0 +1,22 @@
+---
+- hosts: all
+
+  roles:
+    - role: bleetube.linux
+      tags: linux
+    - role: prometheus.prometheus.node_exporter
+      tags: node_exporter
+    - role: nginxinc.nginx_core.nginx
+    - role: nginxinc.nginx_core.nginx_config
+      tags: nginx
+    - role: bleetube.lego
+      tags: lego
+
+# lego.yml may only be run by squirtle
+# import_playbook: lego.yml
+
+- import_playbook: certbot/main.yml
+- import_playbook: proxmox/main.yml
+- import_playbook: dotfiles.yml
+- import_playbook: wireguard.yml
+- import_playbook: observability/main.yml

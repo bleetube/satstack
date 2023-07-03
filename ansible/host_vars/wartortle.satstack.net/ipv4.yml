@@ -1,0 +1,7 @@
+---
+# Replacing ansible_default_ipv4.address
+# Any host with an active default route vpn will return the tunnel address instead of the physical lan address.
+# See: https://stackoverflow.com/a/29496135
+# Manually configure the lan address for the host.
+#default_ipv4_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+default_interface_ipv4_address: 192.168.0.43

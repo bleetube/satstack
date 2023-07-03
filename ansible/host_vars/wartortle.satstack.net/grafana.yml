@@ -1,0 +1,5 @@
+---
+grafana_security:
+  admin_user: admin
+  admin_password: "{{ lookup('ansible.builtin.env', 'wartortle_GRAFANA_ADMIN_PASSWORD') }}"
+  disable_gravatar: true

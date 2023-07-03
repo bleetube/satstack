@@ -1,0 +1,22 @@
+---
+- hosts: reliability
+
+  roles:
+    - role: prometheus.prometheus.alertmanager
+      tags: alertmanager
+    - role: prometheus.prometheus.blackbox_exporter
+      tags: blackbox_exporter
+    - role: prometheus.prometheus.prometheus
+      tags: prometheus
+    - role: cloudalchemy.grafana
+      tags: grafana
+    - role: bleetube.ntfy
+      tags: ntfy
+      become: true
+    - role: bleetube.ntfy-alertmanager
+      tags: ntfy-alertmanager
+
+  tasks:
+    - name: Import nginx_conf as a task to isolate variable scope from other playbooks.
+      import_tasks: tasks/nginx_conf.yml
+      tags: nginx

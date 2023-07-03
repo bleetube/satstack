@@ -1,0 +1,24 @@
+---
+- hosts: mail
+  become_method: doas
+
+  roles:
+    - bleetube.mail
+
+  tasks:
+    # https://doc.dovecot.org/configuration_manual/authentication/passwd_file/
+    - name: Configure Dovecot accounts
+      ansible.builtin.copy:
+        src: "{{ inventory_hostname_short }}/imap.passwd"
+        dest: /etc/dovecot/
+        owner: root
+        group: dovecot
+        mode: '0640'
+      notify: reload dovecot
+
+    - name: Configure certbot to reload mail services
+      ansible.builtin.copy:
+        src: reload-services.sh
+        dest: /etc/letsencrypt/renewal-hooks/deploy/reload-services.sh
+        mode: '0755'
+      tags: test

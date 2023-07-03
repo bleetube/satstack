@@ -1,0 +1,97 @@
+version: "3"
+
+services:
+
+##########################################################################################
+## bitcoin-prometheus-exporter ###########################################################
+##########################################################################################
+
+
+  bitcoin-prometheus-exporter:
+#   image: jvstein/bitcoin-prometheus-exporter:latest
+    build:
+      context: /home/blee/src/bitcoin-prometheus-exporter
+      dockerfile: /home/blee/src/bitcoin-prometheus-exporter/Dockerfile
+    ports:
+      - 127.0.0.1:8035:9332
+    env_file:
+      - .env.bitcoin-prometheus-exporter
+
+##########################################################################################
+## mempool.space #########################################################################
+##########################################################################################
+
+  mempool-frontend:
+    container_name: mempool-frontend
+    build: # still doesnt fucking work
+      context: /home/blee/src/mempool/frontend
+      dockerfile: /home/blee/src/mempool/docker/frontend/Dockerfile
+    image: mempool/frontend:latest
+    environment:
+      FRONTEND_HTTP_PORT: "8080"
+      BACKEND_MAINNET_HTTP_HOST: "mempool-backend"
+    user: "1000:1000"
+    restart: on-failure
+    stop_grace_period: 1m
+    command: "./wait-for 172.17.0.1:3306 --timeout=720 -- nginx -g 'daemon off;'"
+    ports:
+      - 127.0.0.1:4432:8080
+  mempool-backend:
+    container_name: mempool-backend
+    build:
+      context: /home/blee/src/mempool/backend
+      dockerfile: /home/blee/src/mempool/docker/backend/Dockerfile
+    image: mempool/backend:latest
+    env_file:
+      - .env.mempool
+    user: "1000:1000"
+    restart: on-failure
+    stop_grace_period: 1m
+    command: "./wait-for-it.sh 172.17.0.1:3306 --timeout=720 --strict -- ./start.sh"
+#   ports:
+#     - 127.0.0.1:8999:8999
+    volumes:
+#     - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+      - /var/composer/mempool/cache:/backend/cache
+
+##########################################################################################
+## samourai dojo #########################################################################
+##########################################################################################
+
+  samourai-node:
+    container_name: samourai-node
+    build:
+      context: /home/blee/src/samourai-dojo
+      dockerfile: /home/blee/src/samourai-dojo/docker/my-dojo/node/Dockerfile
+      args:
+        TOR_LINUX_GID: 1107
+    env_file:
+      - /home/blee/src/samourai-dojo/docker/my-dojo/.env
+      - .env.samourai
+#   restart: always
+    command: "/home/node/app/wait-for-it.sh 172.17.0.1:3306 --timeout=720 --strict -- /home/node/app/restart.sh"
+    expose:
+      - 8080
+      - 8081
+      - 8082
+    volumes:
+      - data-tor:/var/lib/tor
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+    networks:
+      dojonet:
+        ipv4_address: 172.28.1.2
+
+networks:
+  dojonet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/23
+
+volumes:
+  data-tor:
