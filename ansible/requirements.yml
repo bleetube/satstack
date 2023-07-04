@@ -17,8 +17,8 @@ roles:
 # - name: bleetube.lego
 #   src:  https://github.com/bleetube/ansible-role-lego
 
-# - name: bleetube.linux
-#   src:  https://github.com/bleetube/ansible-role-linux
+  - name: bleetube.linux
+    src:  https://github.com/bleetube/ansible-role-linux
 
 # - name: bleetube.lego
 #   src:  https://github.com/bleetube/ansible-role-lego

@@ -1,0 +1,26 @@
+---
+- hosts: doas
+
+  tasks:
+    - name: "Ensure normal user exists called: {{ sysadmin_username }}."
+      ansible.builtin.user:
+        name: "{{ sysadmin_username }}"
+        shell: /bin/bash
+
+    - name: Ensure doas is installed. 
+      ansible.builtin.package:
+        name: doas
+        state: present
+
+    - name: Configure doas.
+      ansible.builtin.template: 
+        src: doas.conf.j2
+        dest: /etc/doas.conf
+
+#   - name: Try to remove sudo.
+#     ansible.builtin.package:
+#       name: sudo
+#       state: absent
+#     tags: test
+#     environment:
+#       SUDO_FORCE_REMOVE: yes

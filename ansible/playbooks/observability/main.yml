@@ -1,5 +1,5 @@
 ---
-- hosts: reliability
+- hosts: observability
 
   roles:
     - role: prometheus.prometheus.alertmanager

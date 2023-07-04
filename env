@@ -3,8 +3,19 @@
 #export EASYDNS_TOKEN=$(pass blee/EASYDNS_TOKEN)
 #export EASYDNS_KEY=$(pass blee/EASYDNS_KEY)
 
+# satstack_homelab
+export wartortle_GRAFANA_ADMIN_PASSWORD=$(pass satstack.net/wartortle/GRAFANA_ADMIN)
+#export wartortle_MEMPOOL_CORE_RPC=$(pass satstack.net/wartortle/MEMPOOL_CORE_RPC)
+#export wartortle_MEMPOOL_MARIADB=$(pass satstack.net/wartortle/MEMPOOL_MARIADB)
+#export wartortle_SAMOURAI_ONION=$(pass satstack.net/wartortle/SAMOURAI_ONION)
+#export wartortle_SAMOURAI_API=$(pass satstack.net/wartortle/SAMOURAI_API)
+#export wartortle_SAMOURAI_ADMIN=$(pass satstack.net/wartortle/SAMOURAI_ADMIN)
+#export wartortle_SAMOURAI_JWT=$(pass satstack.net/wartortle/SAMOURAI_JWT)
+#export wartortle_SAMOURAI_MARIADB=$(pass satstack.net/wartortle/SAMOURAI_MARIADB)
+#export wartortle_BITCOIND_RPC=$(pass satstack.net/wartortle/BITCOIND_RPC)
+source ~/.secrets/homelab/env
+
 # brenise.com
-export chesnaught_GRAFANA_ADMIN_PASSWORD=$(pass brenise.com/chesnaught/GRAFANA_ADMIN)
 export pancham_TANDOOR_SECRET_KEY=$(pass brenise.com/pancham/TANDOOR_SECRET_KEY)
 export pancham_TANDOOR_POSTGRES_PASSWORD=$(pass brenise.com/pancham/TANDOOR_POSTGRES)
 export pancham_PEERTUBE_SECRET=$(pass brenise.com/pancham/PEERTUBE_SECRET)
@@ -12,14 +23,3 @@ export pancham_PEERTUBE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_PO
 export pancham_PEERTUBE_SMTP_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_SMTP)
 export pancham_SYNAPSE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/SYNAPSE_POSTGRES)
 export pancham_WIREGUARD_PRIVATE_KEY=$(pass brenise.com/pancham/WIREGUARD_PRIVATE_KEY)
-
-# satstack.net
-export chesnaught_MEMPOOL_CORE_RPC=$(pass satstack.net/chesnaught/MEMPOOL_CORE_RPC)
-export chesnaught_MEMPOOL_MARIADB=$(pass satstack.net/chesnaught/MEMPOOL_MARIADB)
-export chesnaught_SAMOURAI_ONION=$(pass satstack.net/chesnaught/SAMOURAI_ONION)
-export chesnaught_SAMOURAI_API=$(pass satstack.net/chesnaught/SAMOURAI_API)
-export chesnaught_SAMOURAI_ADMIN=$(pass satstack.net/chesnaught/SAMOURAI_ADMIN)
-export chesnaught_SAMOURAI_JWT=$(pass satstack.net/chesnaught/SAMOURAI_JWT)
-export chesnaught_SAMOURAI_MARIADB=$(pass satstack.net/chesnaught/SAMOURAI_MARIADB)
-export chesnaught_BITCOIND_RPC=$(pass satstack.net/chesnaught/BITCOIND_RPC)
-source ~/.secrets/satstack.net/env
