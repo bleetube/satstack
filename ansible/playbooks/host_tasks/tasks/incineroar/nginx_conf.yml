@@ -22,7 +22,7 @@
                   - value: "''"
                     new_value: close
       - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/textgen_{{ ansible_play_hosts[0] }}.conf"
+        deployment_location: "/etc/nginx/conf.d/textgen_{{ inventory_hostname }}.conf"
         backup: false
         config:
           servers:
@@ -31,7 +31,7 @@
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl http2"
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4440 ssl http2"
                 include:
-                  - "/etc/nginx/acme_{{ ansible_play_hosts[0] }}.conf"
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:
                 - location: /
                   proxy:
@@ -45,7 +45,7 @@
                       - field: Upgrade
                         value: $http_upgrade
       - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/stablediffusion_{{ ansible_play_hosts[0] }}.conf"
+        deployment_location: "/etc/nginx/conf.d/stablediffusion_{{ inventory_hostname }}.conf"
         backup: false
         config:
           servers:
@@ -53,7 +53,7 @@
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4441 ssl http2"
                 include:
-                  - "/etc/nginx/acme_{{ ansible_play_hosts[0] }}.conf"
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:
                 - location: /
                   proxy:

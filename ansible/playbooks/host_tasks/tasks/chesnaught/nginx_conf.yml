@@ -22,7 +22,7 @@
                   - value: "''"
                     new_value: close
       - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/chatgpt_{{ ansible_play_hosts[0] }}.conf"
+        deployment_location: "/etc/nginx/conf.d/chatgpt_{{ inventory_hostname }}.conf"
         backup: false
         config:
           servers:
@@ -30,7 +30,7 @@
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4436 ssl http2"
                 include:
-                  - "/etc/nginx/acme_{{ ansible_play_hosts[0] }}.conf"
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:
                 - location: /
                   proxy:

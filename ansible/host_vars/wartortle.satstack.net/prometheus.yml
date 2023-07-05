@@ -81,7 +81,7 @@ prometheus_scrape_configs:
       - targets:
         - squirtle.satstack.net:4224
 
-  # https://chesnaught.brenise.com:4434/docs/api/rest#get-mempool
+  # https://wartortle.brenise.com:4434/docs/api/rest#get-mempool
   - job_name: mempool
     scheme: https
     scrape_interval: 2m
@@ -90,7 +90,7 @@ prometheus_scrape_configs:
     metrics_path: /probe
     static_configs:
       - targets:
-        - https://chesnaught.satstack.net:4434/api/mempool
+        - https://wartortle.satstack.net:4434/api/mempool
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
