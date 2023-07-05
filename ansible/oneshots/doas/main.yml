@@ -1,5 +1,5 @@
 ---
-- hosts: doas
+- hosts: all
 
   tasks:
     - name: "Ensure normal user exists called: {{ sysadmin_username }}."

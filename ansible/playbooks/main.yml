@@ -3,14 +3,13 @@
 
   roles:
     - role: nginxinc.nginx_core.nginx
-#   - role: nginxinc.nginx_core.nginx_config
-#     tags: nginx
+    - role: bleetube.dotfiles
+      tags: dotfiles
 
 - import_playbook: linux.yml
 - import_playbook: certbot/main.yml
-- import_playbook: lego/main.yml
+- import_playbook: lego.yml
 - import_playbook: node_exporter.yml
-- import_playbook: proxmox/main.yml
-- import_playbook: dotfiles.yml
 - import_playbook: wireguard.yml
 - import_playbook: observability/main.yml
+- import_playbook: proxmox/main.yml

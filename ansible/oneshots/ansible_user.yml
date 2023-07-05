@@ -1,0 +1,13 @@
+---
+- hosts: charmander.brenise.com
+
+  tasks:
+    - name: Create an ansible user
+      ansible.builtin.user:
+        name: ansible
+        home: /var/lib/ansible
+        shell: /bin/bash
+        createhome: yes
+        groups: wheel
+        append: yes
+        state: present

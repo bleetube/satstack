@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+
+  handlers:
+    - name: restart ssh 
+      service: name=sshd state=restarted
+
+  tasks:
+    - name: Configure sshd to read from authorized_keys.d
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^AuthorizedKeysFile.*$'
+        line: AuthorizedKeysFile %h/.ssh/authorized_keys /etc/ssh/authorized_keys.d/%u
+      notify: restart ssh
+
+    - name: Ensure authorized_keys.d
+      ansible.builtin.file:
+        path: /etc/ssh/authorized_keys.d
+        state: directory
+      
+    - name: Configure authorized keys
+      ansible.builtin.copy:
+        src: ~/.ssh/authorized_keys
+        dest: "/etc/ssh/authorized_keys.d/{{ sysadmin_username }}"
