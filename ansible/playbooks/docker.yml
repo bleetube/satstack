@@ -1,0 +1,8 @@
+---
+- hosts: docker
+
+  vars:
+    docker_compose: true
+
+  roles:
+    - haxorof.docker_ce

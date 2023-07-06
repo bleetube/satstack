@@ -5,8 +5,8 @@
 
 # satstack_homelab
 export wartortle_GRAFANA_ADMIN_PASSWORD=$(pass satstack.net/wartortle/GRAFANA_ADMIN)
-#export wartortle_MEMPOOL_CORE_RPC=$(pass satstack.net/wartortle/MEMPOOL_CORE_RPC)
-#export wartortle_MEMPOOL_MARIADB=$(pass satstack.net/wartortle/MEMPOOL_MARIADB)
+export wartortle_MEMPOOL_CORE_RPC=$(pass satstack.net/wartortle/MEMPOOL_CORE_RPC)
+export wartortle_MEMPOOL_MARIADB=$(pass satstack.net/wartortle/MEMPOOL_MARIADB)
 #export wartortle_SAMOURAI_ONION=$(pass satstack.net/wartortle/SAMOURAI_ONION)
 #export wartortle_SAMOURAI_API=$(pass satstack.net/wartortle/SAMOURAI_API)
 #export wartortle_SAMOURAI_ADMIN=$(pass satstack.net/wartortle/SAMOURAI_ADMIN)

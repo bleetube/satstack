@@ -1,0 +1,9 @@
+---
+samourai_dojo_version: v1.18.1
+samourai_onion_address: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ONION\") }}"
+samourai_node_api_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_API\") }}"
+samourai_node_admin_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ADMIN\") }}"
+samourai_node_jwt_secret: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_JWT\") }}"
+samourai_mariadb_db: 172.17.0.1
+samourai_mariadb_user: samourai
+samourai_mariadb_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_MARIADB\") }}"

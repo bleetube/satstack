@@ -13,3 +13,4 @@
 - import_playbook: wireguard.yml
 - import_playbook: observability/main.yml
 - import_playbook: proxmox/main.yml
+- import_playbook: docker.yml

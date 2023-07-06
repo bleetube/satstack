@@ -139,7 +139,13 @@ prometheus_alert_rules:
     annotations:
       summary: Server is running low on available disk space.
 
-  - alert: electrs outage
+  - alert: bitcoind online (test alert)
+    expr: up{job="bitcoind"} == 1
+    for: 5m
+    annotations:
+      summary: bitcoind is responding
+
+  - alert: electrs offline
     expr: up{job="electrum"} == 0
     for: 15m
     annotations:

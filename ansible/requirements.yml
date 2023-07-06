@@ -3,28 +3,28 @@ collections:
 
   - name: nginxinc.nginx_core
     src: https://github.com/nginxinc/ansible-collection-nginx
-#   version: '>=0.6.0,<1.0.0'
+#   version: '>=0.6.0'
 
   - name: prometheus.prometheus
     src: https://github.com/prometheus-community/ansible
-#   version: '>=0.5.0,<1.0.0'
+#   version: '>=0.5.0'
 
 roles:
 
-# - name: bleetube.dotfiles
-#   src:  https://github.com/bleetube/ansible-role-dotfiles
+  - name: bleetube.dotfiles
+    src:  https://github.com/bleetube/ansible-role-dotfiles
 
-# - name: bleetube.lego
-#   src:  https://github.com/bleetube/ansible-role-lego
+  - name: bleetube.lego
+    src:  https://github.com/bleetube/ansible-role-lego
 
   - name: bleetube.linux
     src:  https://github.com/bleetube/ansible-role-linux
 
-# - name: bleetube.lego
-#   src:  https://github.com/bleetube/ansible-role-lego
+  - name: bleetube.lego
+    src:  https://github.com/bleetube/ansible-role-lego
 
-# - name: bleetube.wireguard
-#   src:  https://github.com/bleetube/ansible-role-wireguard
+  - name: bleetube.wireguard
+    src:  https://github.com/bleetube/ansible-role-wireguard
 
 # - name: bleetube.mail
 #   src:  https://github.com/bleetube/ansible-role-mail
@@ -44,3 +44,7 @@ roles:
   # requires commenting out warn in tasks/dashboards.yml
   - src:  https://github.com/cloudalchemy/ansible-grafana
     name: cloudalchemy.grafana
+
+  - src:  https://github.com/haxorof/ansible-role-docker-ce
+    name: haxorof.docker_ce
+#   version: '>=5.0.0'
