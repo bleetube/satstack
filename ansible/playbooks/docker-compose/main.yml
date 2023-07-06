@@ -1,25 +1,18 @@
 ---
 - hosts: docker
-  become_user: "{{ sysadmin_username }}"
-  become: true
-
-  pre_tasks:
-    - name: Ensure a directory in the user home dir for docker-compose.
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/docker"
-        state: directory
-
-- import_playbook: wartortle/main.yml
 
   tasks:
-    - name: Create and start services
-      community.docker.docker_compose:
-        project_src: "{{ ansible_env.HOME }}/docker"
-#       build: true
-      register: output
-      when: git_repository.changed
-      tags: upgrade
+    - name: Use docker-compose version 3
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/docker/docker-compose.yml"
+        create: yes
+        block: |
+          version: "3"
+          services:
 
-    - ansible.builtin.debug:
-        var: output
-      tags: upgrade
+    - name: Ensure an environment variable file exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/docker/.env"
+        state: touch
+        mode: '0600'
+      changed_when: false

@@ -48,3 +48,6 @@ roles:
   - src:  https://github.com/haxorof/ansible-role-docker-ce
     name: haxorof.docker_ce
 #   version: '>=5.0.0'
+
+  - src: https://github.com/fauust/ansible-role-mariadb
+    name: fauust.mariadb

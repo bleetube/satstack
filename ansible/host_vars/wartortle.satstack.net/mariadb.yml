@@ -1,9 +1,9 @@
 ---
 # https://github.com/fauust/ansible-role-mariadb/blob/main/defaults/main.yml
 mariadb_use_official_repo: true
-mariadb_use_official_repo_version: "10.10"
+#mariadb_use_official_repo_version: "10.10"
 # You can only bind to one address. https://serverfault.com/q/139323/70156
-mariadb_bind_address: 172.17.0.1
+#mariadb_bind_address: 172.17.0.1
 mariadb_databases:
   - name: mempool
     collation: utf8_general_ci
@@ -18,23 +18,23 @@ mariadb_databases:
 mariadb_users:
   - name: mempool
     host: localhost
-    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MEMPOOL_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB') }}"
     priv: "mempool.*:ALL"
     state: present
   - name: mempool
     host: '%'
-    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MEMPOOL_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB') }}"
     priv: "mempool.*:ALL"
     state: present
 
   - name: samourai
     host: localhost
-    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB') }}"
     priv: "samourai.*:ALL"
     state: present
   - name: samourai
     host: '%'
-    password: "{{ lookup('ansible.builtin.env', 'chesnaught_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB') }}"
     priv: "samourai.*:ALL"
     state: present
 

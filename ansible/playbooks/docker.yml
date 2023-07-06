@@ -1,8 +1,31 @@
 ---
 - hosts: docker
+  become: true
 
   vars:
     docker_compose: true
 
   roles:
     - haxorof.docker_ce
+
+  tasks:
+    - name: Add sysadmin user to docker group
+      ansible.builtin.user:
+        name: "{{ sysadmin_username }}"
+        groups: docker
+        append: yes
+
+    - name: Ensure the data directories for docker-compose exist and are owned by the user.
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ sysadmin_username }}"
+        group: "{{ sysadmin_username }}"
+      loop:
+        - "/home/{{ sysadmin_username }}/docker"
+        - /var/compose
+
+- import_playbook: docker-compose/main.yml
+
+- import_playbook: docker-compose/mempool.yml
+- import_playbook: nginx/mempool.yml

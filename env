@@ -7,12 +7,12 @@
 export wartortle_GRAFANA_ADMIN_PASSWORD=$(pass satstack.net/wartortle/GRAFANA_ADMIN)
 export wartortle_MEMPOOL_CORE_RPC=$(pass satstack.net/wartortle/MEMPOOL_CORE_RPC)
 export wartortle_MEMPOOL_MARIADB=$(pass satstack.net/wartortle/MEMPOOL_MARIADB)
-#export wartortle_SAMOURAI_ONION=$(pass satstack.net/wartortle/SAMOURAI_ONION)
-#export wartortle_SAMOURAI_API=$(pass satstack.net/wartortle/SAMOURAI_API)
-#export wartortle_SAMOURAI_ADMIN=$(pass satstack.net/wartortle/SAMOURAI_ADMIN)
-#export wartortle_SAMOURAI_JWT=$(pass satstack.net/wartortle/SAMOURAI_JWT)
-#export wartortle_SAMOURAI_MARIADB=$(pass satstack.net/wartortle/SAMOURAI_MARIADB)
-#export wartortle_BITCOIND_RPC=$(pass satstack.net/wartortle/BITCOIND_RPC)
+export wartortle_SAMOURAI_ONION=$(pass satstack.net/wartortle/SAMOURAI_ONION)
+export wartortle_SAMOURAI_API=$(pass satstack.net/wartortle/SAMOURAI_API)
+export wartortle_SAMOURAI_ADMIN=$(pass satstack.net/wartortle/SAMOURAI_ADMIN)
+export wartortle_SAMOURAI_JWT=$(pass satstack.net/wartortle/SAMOURAI_JWT)
+export wartortle_SAMOURAI_MARIADB=$(pass satstack.net/wartortle/SAMOURAI_MARIADB)
+export wartortle_BITCOIND_RPC=$(pass satstack.net/wartortle/BITCOIND_RPC)
 source ~/.secrets/homelab/env
 
 # brenise.com

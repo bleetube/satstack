@@ -1,6 +1,6 @@
 ---
 - hosts: mariadb
-# TODO: mysql_secure_installation
+  become: true
 
   pre_tasks:
     - name: Assert all database passwords have been configured.
@@ -12,11 +12,6 @@
         quiet: true
       loop: "{{ mariadb_users }}"
       no_log: true
-
-#     ansible.builtin.fail:
-#       msg: "FAILED: Database password for {{ item.name }} is not configured."
-#     when: "item.password == ''"
-#     loop: "{{ mariadb_users }}"
 
   roles:
     - role: fauust.mariadb

@@ -22,3 +22,6 @@ golang_version: '1.20.4' # gantsign.golang
 
 # https://grafana.com/grafana/dashboards/1860-node-exporter-full/?tab=revisions
 grafana_node_dashboard_version: 31
+
+# https://mariadb.org/mariadb/all-releases/
+mariadb_use_official_repo_version: "10.11"
