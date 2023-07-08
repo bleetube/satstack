@@ -24,7 +24,7 @@ ansible-playbook oneshots/ssh.yml -e "ansible_user=root" -e "sysadmin_username=a
 Ansible requires `NOPASS`. On physically accessible systems where sudo or doas should require a passphrase, Ansible can use a dedicated account.
 
 ```bash
-ansible-playbook oneshots/ansible_user.yml  -e "ansible_user=root" --limit <host>
+ansible-playbook oneshots/ansible_user.yml  -e "ansible_user=root"
 ansible-playbook oneshots/doas/main.yml -e "ansible_user=root" -e "sysadmin_username=ansible" --limit <host>
 ansible-playbook oneshots/ssh.yml -e "ansible_user=root" -e "sysadmin_username=ansible" --limit <host>
 ```

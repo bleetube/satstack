@@ -38,7 +38,7 @@ prometheus_scrape_configs:
     metrics_path: /prometheus/metrics
     static_configs:
       - targets:
-          - "{{ ansible_play_hosts[0] }}"
+          - "{{ inventory_hostname }}"
           - "{{ lookup('ansible.builtin.env', 'testnet_prometheus') }}"
 #         - "{{ lookup('ansible.builtin.env', 'work_prometheus') }}" # TODO: fix routing
 
@@ -97,7 +97,7 @@ prometheus_scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: "{{ ansible_play_hosts[0] }}:4431"
+        replacement: "{{ inventory_hostname }}:4431"
 
   - job_name: samourai
     scheme: https
@@ -140,8 +140,8 @@ prometheus_alert_rules:
       summary: Server is running low on available disk space.
 
   - alert: bitcoind online (test alert)
-    expr: up{job="bitcoind"} == 1
-    for: 5m
+    expr: up{job="bitcoind"} == 0
+    for: 1h
     annotations:
       summary: bitcoind is responding
 

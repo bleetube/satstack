@@ -1,6 +1,6 @@
 ---
 alertmanager_web_listen_address: "127.0.0.1:9093"
-alertmanager_web_external_url: "https://{{ ansible_play_hosts[0] }}/alertmanager/"
+alertmanager_web_external_url: "https://{{ inventory_hostname }}/alertmanager/"
 
 # The overlapping yaml templating requires us to use {% raw %} and {% endraw %}.
 alertmanager_receivers:

@@ -2,7 +2,7 @@
 prometheus_web_listen_address: "127.0.0.1:9090"
 # https://www.robustperception.io/using-external-urls-and-proxies-with-prometheus/
 # Note that the grafana_datasources variable also needs to reflect this path.
-prometheus_web_external_url: "https://{{ ansible_play_hosts[0] }}/prometheus/"
+prometheus_web_external_url: "https://{{ inventory_hostname }}/prometheus/"
 # https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects
 prometheus_storage_retention: 365d
 prometheus_storage_retention_size: 10GB

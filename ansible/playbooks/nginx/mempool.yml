@@ -31,7 +31,8 @@
               servers:
                 - core:
                     listen:
-                      - address: "{{ default_interface_ipv4_address }}:4434 ssl http2"
+                      - address: "{{ default_interface_ipv4_address }}:4434 ssl"
+                        http2: true
                     include:
                       - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                   log:

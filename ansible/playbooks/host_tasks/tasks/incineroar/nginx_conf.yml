@@ -28,8 +28,10 @@
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl http2"
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4440 ssl http2"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl"
+                    http2: true
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4440 ssl"
+                    http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:
@@ -51,7 +53,8 @@
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4441 ssl http2"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4441 ssl"
+                    http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:

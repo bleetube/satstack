@@ -1,5 +1,5 @@
 ---
-- hosts: charmander.brenise.com
+- hosts: sudo
 
   tasks:
     - name: Create an ansible user
@@ -8,6 +8,11 @@
         home: /var/lib/ansible
         shell: /bin/bash
         createhome: yes
-        groups: wheel
-        append: yes
         state: present
+
+    - name: Add ansible user to sudoers
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/ansible
+        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+        create: true
