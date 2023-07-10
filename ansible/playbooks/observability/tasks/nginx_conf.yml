@@ -8,19 +8,6 @@
     # Each dictionary in the top level list/array represents a new configuration file.
     nginx_config_http_template_enable: true
     nginx_config_http_template:
-      - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/mappings.conf"
-        backup: false
-        config:
-          map:
-            mappings: # https://nginx.org/en/docs/http/websocket.html
-              - string: $http_upgrade
-                variable: $connection_upgrade
-                content:
-                  - value: default
-                    new_value: upgrade
-                  - value: "''"
-                    new_value: close
 
       # https://grafana.com/tutorials/run-grafana-behind-a-proxy/#configure-nginx
       - template_file: http/default.conf.j2

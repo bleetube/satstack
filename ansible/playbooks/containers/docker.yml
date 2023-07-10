@@ -3,7 +3,8 @@
   become: true
 
   vars:
-    docker_compose: true
+    docker_sdk: false
+    docker_compose: false
 
   roles:
     - haxorof.docker_ce
@@ -26,6 +27,3 @@
         - /var/compose
 
 - import_playbook: docker-compose/main.yml
-
-- import_playbook: docker-compose/mempool.yml
-- import_playbook: nginx/mempool.yml

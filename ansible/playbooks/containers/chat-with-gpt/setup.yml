@@ -1,0 +1,13 @@
+---
+- name: Clone chat-with-gpt repository (not used, yet)
+  ansible.builtin.git:
+    repo: 'https://github.com/cogentapps/chat-with-gpt.git'
+    dest: "{{ ansible_env.HOME }}/src/chat-with-gpt"
+    version: "{{ chat_with_gpt_version }}"
+
+- name: Ensure data directory.
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /var/compose/chat-with-gpt/data

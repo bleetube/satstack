@@ -9,6 +9,12 @@ collections:
     src: https://github.com/prometheus-community/ansible
 #   version: '>=0.5.0'
 
+  - name: containers.podman
+#   version: '>=1.10.2'
+
+# - name: community.docker
+#   version: '>=3.4.8'
+
 roles:
 
   - name: bleetube.dotfiles
@@ -45,9 +51,13 @@ roles:
   - src:  https://github.com/cloudalchemy/ansible-grafana
     name: cloudalchemy.grafana
 
-  - src:  https://github.com/haxorof/ansible-role-docker-ce
-    name: haxorof.docker_ce
+# - src:  https://github.com/haxorof/ansible-role-docker-ce
+#   name: haxorof.docker_ce
 #   version: '>=5.0.0'
+
+  - src: https://github.com/alvistack/ansible-role-podman
+    name: alvistack.podman
+#   version: '>=5.4.0'
 
   - src: https://github.com/fauust/ansible-role-mariadb
     name: fauust.mariadb

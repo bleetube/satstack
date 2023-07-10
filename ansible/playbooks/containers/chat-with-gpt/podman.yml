@@ -1,0 +1,28 @@
+---
+- name: Start chat-with-gpt container using inline definition
+  register: output
+  containers.podman.podman_container:
+    name: chat-with-gpt
+    image: "ghcr.io/cogentapps/chat-with-gpt:{{ chat_with_gpt_version }}"
+    # let systemd start the container or it won't see it running
+    state: stopped
+    ports:
+      - "127.0.0.1:{{ chat_with_gpt_http_port }}:3000"
+    volumes:
+      - /var/compose/chat-with-gpt/data:/app/data
+
+- ansible.builtin.debug:
+    var: output
+
+- name: Generate systemd unit file for chat-with-gpt container
+  containers.podman.podman_generate_systemd:
+    name: chat-with-gpt
+    dest: ~/.config/systemd/user/
+
+- name: Ensure chat-with-gpt container is started and enabled
+  ansible.builtin.systemd:
+    name: container-chat-with-gpt
+    scope: user
+    daemon_reload: true
+    state: started
+    enabled: true

@@ -1,0 +1,62 @@
+---
+- name: Assert mempool secrets have been defined.
+  ansible.builtin.assert:
+    that:
+      - item is defined
+      - item != ''
+    fail_msg: "FAILED: Secrets for mempool are not configured."
+    quiet: true
+  no_log: true
+  loop:
+    - "{{ mempool_core_rpc_password }}"
+    - "{{ mempool_db_password }}"
+  tags: env
+
+- name: Clone repository
+  ansible.builtin.git:
+    repo: 'https://github.com/mempool/mempool.git'
+    dest: "{{ ansible_env.HOME }}/src/mempool"
+    version: "{{ mempool_version }}"
+  register: git_repository
+  tags: upgrade
+
+- name: Ensure data directory.
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /var/compose/mempool
+    - "{{ ansible_env.HOME }}/.config/mempool/"
+
+- name: Ensure writable cache directory.
+  ansible.builtin.file:
+    path: /var/compose/mempool/cache
+    state: directory
+    mode: '0777'
+
+- name: Ensure an environment variable file exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/mempool/env"
+    state: touch
+    mode: '0600'
+  changed_when: false
+
+- name: Configure mempool variables
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.config/mempool/env"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR MEMPOOL"
+    block: |
+      CORE_RPC_HOST=192.168.0.42
+      CORE_RPC_PORT=8332
+      CORE_RPC_USERNAME=mempool
+      CORE_RPC_PASSWORD='{{ mempool_core_rpc_password }}'
+      DATABASE_ENABLED=true
+      DATABASE_HOST=192.168.0.42
+      DATABASE_DATABASE=mempool
+      DATABASE_USERNAME=mempool
+      DATABASE_PASSWORD='{{ mempool_db_password }}'
+      STATISTICS_ENABLED="true"
+      MEMPOOL_BACKEND=electrum
+      ELECTRUM_HOST=192.168.0.42
+      ELECTRUM_PORT=50001
+      ELECTRUM_TLS_ENABLED=false

@@ -8,3 +8,7 @@ Core tools
 * __TLS__: [nginx](https://nginx.org/en/), [acme-lego](https://go-acme.github.io/lego/), [certbot](https://certbot.eff.org/)
 * __Data__: [postgresql](https://www.postgresql.org/), [mariadb](https://mariadb.org/)
 * __Mail__: [postfix](http://www.postfix.org/), [dovecot](https://www.dovecot.org/)
+
+(rootless, daemon-less, dockerless) Podman Containers
+
+* [chat-with-gpt](https://github.com/cogentapps/chat-with-gpt)

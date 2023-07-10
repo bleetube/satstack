@@ -1,8 +1,8 @@
 ---
-- hosts: squirtle.brenise.com
+- hosts: all
 
-# roles:
-#   - role: nginxinc.nginx_core.nginx
+  roles:
+    - role: nginxinc.nginx_core.nginx
 
   tasks:
     - name: Configure nginx for Archlinux (rm PID, chg user, incr types_hash_max_size)
@@ -86,6 +86,19 @@
                   - text/xml 
                   - application/xml
                 vary: true
+          - template_file: http/default.conf.j2
+            deployment_location: "/etc/nginx/conf.d/mappings.conf"
+            backup: false
+            config:
+              map:
+                mappings: # https://nginx.org/en/docs/http/websocket.html
+                  - string: $http_upgrade
+                    variable: $connection_upgrade
+                    content:
+                      - value: default
+                        new_value: upgrade
+                      - value: "''"
+                        new_value: close
 
 # TODO
 #server {

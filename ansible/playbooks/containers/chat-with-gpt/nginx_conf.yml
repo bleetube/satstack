@@ -1,0 +1,31 @@
+---
+- name: Configure nginx for chat-with-gpt
+  ansible.builtin.import_role:
+    name: nginxinc.nginx_core.nginx_config
+  tags: nginx
+  vars:
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/chat-with-gpt_{{ inventory_hostname }}.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ chat_with_gpt_https_port }} ssl"
+                    http2: true
+                include:
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
+              locations:
+                - location: /
+                  proxy:
+                    pass: "http://127.0.0.1:{{ chat_with_gpt_http_port }}"
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+                      - field: Connection
+                        value: $connection_upgrade
+                      - field: Upgrade
+                        value: $http_upgrade

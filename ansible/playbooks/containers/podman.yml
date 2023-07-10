@@ -1,0 +1,18 @@
+---
+- hosts: podman
+  become: true
+
+  roles:
+    - alvistack.podman
+
+  tasks:
+    - name: Ensure the data directories for docker-compose exist and are owned by the user.
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ sysadmin_username }}"
+        group: "{{ sysadmin_username }}"
+      loop:
+        - /var/compose
+
+#- import_playbook: docker-compose/main.yml

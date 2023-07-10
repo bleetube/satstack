@@ -1,5 +1,5 @@
 ---
-mempool_version: v2.4.1
+mempool_listen_port: 4434
 mempool_core_rpc_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_MEMPOOL_CORE_RPC\") }}"
 mempool_db_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_MEMPOOL_MARIADB\") }}"
 bitcoind_rpc_user: samourai

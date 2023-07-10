@@ -1,0 +1,55 @@
+---
+# Based on: https://github.com/mempool/mempool/blob/master/docker/docker-compose.yml
+# Warning: this will fail with an ambiguous error if there are any existing containers with the same name.
+- name: Start mempool with inline definition
+  register: output
+  tags: compose
+  community.podman.podman_container:
+    project_name: mempool
+    definition:
+      version: '3'
+      services:
+        mempool-backend:
+          container_name: mempool-backend
+          image: "mempool/backend:{{ mempool_version|default(latest) }}"
+          env_file:
+            - "{{ ansible_env.HOME }}/.config/mempool/env"
+
+#       mempool-frontend:
+#         container_name: mempool-frontend
+#         image: "mempool/frontend:{{ mempool_version|default(latest) }}"
+#         environment:
+#           FRONTEND_HTTP_PORT: "8080"
+#           BACKEND_MAINNET_HTTP_HOST: "mempool-backend"
+#         ports:
+#           - "127.0.0.1:{{ mempool_listen_port|default(4434)}}:8080"
+
+#         build:
+#           context: "{{ ansible_env.HOME }}/src/mempool/frontend"
+#           dockerfile: "{{ ansible_env.HOME }}/src/mempool/docker/frontend/Dockerfile"
+#         user: "1000:1000"
+#         restart: always
+#         stop_grace_period: 1m
+#         command: "./wait-for 10.0.2.2:3306 --timeout=720 -- nginx -g 'daemon off;'"
+
+#       mempool-backend:
+#         container_name: mempool-backend
+#         image: "mempool/backend:{{ mempool_version|default(latest) }}"
+#         env_file:
+#           - "{{ ansible_env.HOME }}/.config/mempool/env"
+
+#         build:
+#           context: "{{ ansible_env.HOME }}/src/mempool/backend"
+#           dockerfile: "{{ ansible_env.HOME }}/src/mempool/docker/backend/Dockerfile"
+
+#         user: "1000:1000"
+#         restart: always
+#         stop_grace_period: 1m
+#         command: "./wait-for-it.sh 10.0.2.2:3306 --timeout=720 --strict -- ./start.sh"
+#         volumes:
+#           - /var/composer/mempool/cache:/backend/cache
+#           - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+
+- ansible.builtin.debug:
+    var: output
+  tags: upgrade
