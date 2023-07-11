@@ -8,8 +8,8 @@
     quiet: true
   no_log: true
   loop:
-    - "{{ mempool_core_rpc_pass }}"
-    - "{{ mempool_db_pass }}"
+    - "{{ mempool_config.CORE_RPC_PASSWORD }}"
+    - "{{ mempool_config.DATABASE_PASSWORD }}"
 
 - name: Clone the mempool repository
   ansible.builtin.git:
@@ -23,7 +23,7 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /var/compose/mempool
+    - /var/compose/mempool/config
     - "{{ ansible_env.HOME }}/.config/mempool/"
 
 - name: Ensure writable cache directory.
@@ -39,10 +39,9 @@
     mode: '0600'
   changed_when: false
 
-# containers.podman.podman_container can't read env
-#- name: Configure mempool variables
-#  ansible.builtin.lineinfile:
-#    path: "{{ ansible_env.HOME }}/.config/mempool/env"
-#    regexp: "^{{ item.name }}"
-#    line: "{{ item.name }}={{ item.value }}"
-#  loop: "{{ mempool_environment }}"
+- name: Configure mempool-backend via mempool-config.json
+  ansible.builtin.template:
+    src: templates/mempool-config.json
+    dest: /var/compose/mempool/config/mempool-config.json
+    mode: '0600'
+  tags: test

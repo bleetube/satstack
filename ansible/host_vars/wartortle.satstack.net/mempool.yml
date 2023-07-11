@@ -1,39 +1,16 @@
 ---
 mempool_https_port: 4434
 mempool_http_port: 8034
-mempool_core_rpc_pass: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_CORE_RPC') }}"
-mempool_db_pass: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB') }}"
-mempool_db_host: host.containers.internal
 
-# See: https://github.com/mempool/mempool/tree/master/docker
-#mempool_environment:
-#  - { name: CORE_RPC_HOST, value: 192.168.0.42 }
-#  - { name: CORE_RPC_PORT, value: 8332 }
-#  - { name: CORE_RPC_USERNAME, value: mempool }
-#  - { name: CORE_RPC_PASSWORD, value: "{{ mempool_core_rpc_pass }}" }
-#  - { name: DATABASE_ENABLED, value: "true" }
-#  - { name: DATABASE_HOST, value: "{{ mempool_db_host }}" }
-#  - { name: DATABASE_DATABASE, value: mempool }
-#  - { name: DATABASE_USERNAME, value: mempool }
-#  - { name: DATABASE_PASSWORD, value: "{{ mempool_db_pass }}" }
-#  - { name: STATISTICS_ENABLED, value: "true" } # iirc this is prometheus?
-#  - { name: MEMPOOL_BACKEND, value: electrum }
-#  - { name: ELECTRUM_HOST, value: 192.168.0.42 }
-#  - { name: ELECTRUM_PORT, value: 50001 }
-#  - { name: ELECTRUM_TLS_ENABLED, value: "false" }
-
-mempool_environment:
+# https://github.com/mempool/mempool/blob/master/docker/backend/start.sh
+mempool_config:
   CORE_RPC_HOST: 192.168.0.42
-  CORE_RPC_PORT: 8332
-  CORE_RPC_USERNAME: mempool
-  CORE_RPC_PASSWORD: "{{ mempool_core_rpc_pass }}"
-  DATABASE_ENABLED: "true"
-  DATABASE_HOST: "{{ mempool_db_host }}"
-  DATABASE_DATABASE: mempool
-  DATABASE_USERNAME: mempool
-  DATABASE_PASSWORD: "{{ mempool_db_pass }}"
-  STATISTICS_ENABLED: "true"
-  MEMPOOL_BACKEND: electrum 
-  ELECTRUM_HOST: 192.168.0.42
-  ELECTRUM_PORT: 50001
-  ELECTRUM_TLS_ENABLED: "false"
+  CORE_RPC_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_CORE_RPC') }}"
+  DATABASE_HOST: host.containers.internal   # used by container shell command
+  DATABASE_SOCKET: /var/run/mysqld/mysqld.sock
+  DATABASE_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB') }}"
+  ELECTRUM_HOST: squirtle.satstack.net
+  ELECTRUM_PORT: 4451
+  ELECTRUM_TLS_ENABLED: "true"
+  SOCKS5PROXY_ENABLED: "true"
+  SOCKS5PROXY_HOST: 192.168.0.42
