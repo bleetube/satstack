@@ -13,8 +13,8 @@
         volumes:
           - /var/compose/mempool/cache:/backend/cache
           - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
-        ports:
-          - "0.0.0.0:8999:8999"
+        expose:
+          - 8999
       - name: mempool-frontend
         image: "mempool/frontend:{{ mempool_version|default(latest) }}"
         state: present

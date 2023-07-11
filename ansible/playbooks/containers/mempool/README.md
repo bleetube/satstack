@@ -20,14 +20,17 @@ systemctl --user status container-mempool-frontend.service
 
 `podman-compose` will run this stack natively, it's also easy to work with.
 
-The Ansible module `podman_container` works, but there were some trade-offs getting it to work:
+The [Ansible module](https://github.com/containers/ansible-podman-collections) [podman_container](https://docs.ansible.com/ansible/latest/collections/containers/podman/podman_container_module.html) works, but there were some trade-offs getting it to work:
 
-* `restart: on-failure` isn't supported
-* `stop_grace_period: 1m` isn't supported
-* `command:` was upset when referring to the database as `host.containers.internal`, so it's also disabled
+* `restart: on-failure` has no apparent equivalent yet
+* `stop_grace_period: 1m` has no apparent equivalent yet
+
+There is a [feature request](https://github.com/containers/ansible-podman-collections/issues/199) asking for a new module that orchestrates with podman-compose directly.  Not a bad idea.
 
 Using environment variables avoids needing to merge changes to `mempool-config.json` in the future.
 
 ## future improvements
 
-The containers still fail to build from source using `docker-compose build`, so I need to figure out what else they need.
+* Switch to using container names instead of exposing a port for inter-container communication. I [opened an issue](https://github.com/containers/ansible-podman-collections/issues/604) in an effort to figure this out.
+
+* The containers still fail to build from source using `docker-compose build`, so I need to figure out what else they need.
