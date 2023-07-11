@@ -38,10 +38,3 @@
     state: touch
     mode: '0600'
   changed_when: false
-
-- name: Configure mempool-backend via mempool-config.json
-  ansible.builtin.template:
-    src: templates/mempool-config.json
-    dest: /var/compose/mempool/config/mempool-config.json
-    mode: '0600'
-  tags: test

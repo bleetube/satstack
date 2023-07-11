@@ -13,8 +13,10 @@
         volumes:
           - /var/compose/mempool/cache:/backend/cache
           - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
-        expose:
-          - 8999
+#       expose:
+#         - 8999
+        ports:
+          - "0.0.0.0:8999:8999" # expose should've worked for this, but didn't for some reason. takes too long to restart to test. TODO
       - name: mempool-frontend
         image: "mempool/frontend:{{ mempool_version|default(latest) }}"
         state: present
@@ -37,6 +39,8 @@
     name: "{{ item }}"
     dest: ~/.config/systemd/user/
     wants: mariadb.service
+    restart_policy: on-failure
+    stop_timeout: 60
   loop:
     - mempool-frontend
     - mempool-backend
@@ -51,6 +55,5 @@
   loop:
     - mempool-frontend
     - mempool-backend
-  # systemd won't see containers that are already running and we must use "state: present|started" in order to use recreate
-  # and recreate is required for changes to mempool_config to take effect.
   failed_when: false
+  tags: test

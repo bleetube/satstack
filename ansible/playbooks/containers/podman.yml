@@ -6,6 +6,12 @@
     - alvistack.podman
 
   tasks:
+    - name: "Ensure loginctl enable-linger is set for {{ sysadmin_username }}"
+      command:
+        cmd: "loginctl enable-linger {{ sysadmin_username }}"
+        creates: "/var/lib/systemd/linger/{{ sysadmin_username }}"
+      tags: test
+
     - name: Ensure the data directories for docker-compose exist and are owned by the user.
       ansible.builtin.file:
         path: "{{ item }}"
