@@ -8,19 +8,17 @@
     quiet: true
   no_log: true
   loop:
-    - "{{ mempool_core_rpc_password }}"
-    - "{{ mempool_db_password }}"
-  tags: env
+    - "{{ mempool_core_rpc_pass }}"
+    - "{{ mempool_db_pass }}"
 
-- name: Clone repository
+- name: Clone the mempool repository
   ansible.builtin.git:
     repo: 'https://github.com/mempool/mempool.git'
     dest: "{{ ansible_env.HOME }}/src/mempool"
     version: "{{ mempool_version }}"
   register: git_repository
-  tags: upgrade
 
-- name: Ensure data directory.
+- name: Ensure mempool data directory.
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -34,29 +32,17 @@
     state: directory
     mode: '0777'
 
-- name: Ensure an environment variable file exists
+- name: Ensure a mempool environment variable file exists
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.config/mempool/env"
     state: touch
     mode: '0600'
   changed_when: false
 
-- name: Configure mempool variables
-  ansible.builtin.blockinfile:
-    path: "{{ ansible_env.HOME }}/.config/mempool/env"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR MEMPOOL"
-    block: |
-      CORE_RPC_HOST=192.168.0.42
-      CORE_RPC_PORT=8332
-      CORE_RPC_USERNAME=mempool
-      CORE_RPC_PASSWORD='{{ mempool_core_rpc_password }}'
-      DATABASE_ENABLED=true
-      DATABASE_HOST=192.168.0.42
-      DATABASE_DATABASE=mempool
-      DATABASE_USERNAME=mempool
-      DATABASE_PASSWORD='{{ mempool_db_password }}'
-      STATISTICS_ENABLED="true"
-      MEMPOOL_BACKEND=electrum
-      ELECTRUM_HOST=192.168.0.42
-      ELECTRUM_PORT=50001
-      ELECTRUM_TLS_ENABLED=false
+# containers.podman.podman_container can't read env
+#- name: Configure mempool variables
+#  ansible.builtin.lineinfile:
+#    path: "{{ ansible_env.HOME }}/.config/mempool/env"
+#    regexp: "^{{ item.name }}"
+#    line: "{{ item.name }}={{ item.value }}"
+#  loop: "{{ mempool_environment }}"

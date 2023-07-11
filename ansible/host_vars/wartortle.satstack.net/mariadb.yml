@@ -3,7 +3,6 @@
 mariadb_use_official_repo: true
 #mariadb_use_official_repo_version: "10.10"
 # You can only bind to one address. https://serverfault.com/q/139323/70156
-#mariadb_bind_address: 172.17.0.1
 mariadb_bind_address: 0.0.0.0
 mariadb_databases:
   - name: mempool

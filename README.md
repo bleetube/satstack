@@ -11,4 +11,5 @@ Core tools
 
 (rootless, daemon-less, dockerless) Podman Containers
 
-* [chat-with-gpt](https://github.com/cogentapps/chat-with-gpt)
+* Bitcoin: [mempool.space](https://github.com/mempool/mempool)
+* AI: [chat-with-gpt](https://github.com/cogentapps/chat-with-gpt)

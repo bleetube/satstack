@@ -1,55 +1,57 @@
 ---
 # Based on: https://github.com/mempool/mempool/blob/master/docker/docker-compose.yml
-# Warning: this will fail with an ambiguous error if there are any existing containers with the same name.
-- name: Start mempool with inline definition
+- name: Start mempool-backend with inline definition
   register: output
-  tags: compose
-  community.podman.podman_container:
-    project_name: mempool
-    definition:
-      version: '3'
-      services:
-        mempool-backend:
-          container_name: mempool-backend
-          image: "mempool/backend:{{ mempool_version|default(latest) }}"
-          env_file:
-            - "{{ ansible_env.HOME }}/.config/mempool/env"
+  containers.podman.podman_container:
+    name: mempool-backend
+    image: "mempool/backend:{{ mempool_version|default(latest) }}"
+    state: stopped
+#   restart: on-failure
+#   stop_grace_period: 1m
+    command: "./wait-for-it.sh {{ mempool_db_host }}:3306 --timeout=720 --strict -- ./start.sh"
+    user: "1000:1000"
+    env: "{{ mempool_environment }}"
+#   env_file:
+#     - "{{ ansible_env.HOME }}/.config/mempool/env"
+    volumes:
+      - /var/compose/mempool/cache:/backend/cache
+#     - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock (unsupported by mempool)
 
-#       mempool-frontend:
-#         container_name: mempool-frontend
-#         image: "mempool/frontend:{{ mempool_version|default(latest) }}"
-#         environment:
-#           FRONTEND_HTTP_PORT: "8080"
-#           BACKEND_MAINNET_HTTP_HOST: "mempool-backend"
-#         ports:
-#           - "127.0.0.1:{{ mempool_listen_port|default(4434)}}:8080"
-
-#         build:
-#           context: "{{ ansible_env.HOME }}/src/mempool/frontend"
-#           dockerfile: "{{ ansible_env.HOME }}/src/mempool/docker/frontend/Dockerfile"
-#         user: "1000:1000"
-#         restart: always
-#         stop_grace_period: 1m
-#         command: "./wait-for 10.0.2.2:3306 --timeout=720 -- nginx -g 'daemon off;'"
-
-#       mempool-backend:
-#         container_name: mempool-backend
-#         image: "mempool/backend:{{ mempool_version|default(latest) }}"
-#         env_file:
-#           - "{{ ansible_env.HOME }}/.config/mempool/env"
-
-#         build:
-#           context: "{{ ansible_env.HOME }}/src/mempool/backend"
-#           dockerfile: "{{ ansible_env.HOME }}/src/mempool/docker/backend/Dockerfile"
-
-#         user: "1000:1000"
-#         restart: always
-#         stop_grace_period: 1m
-#         command: "./wait-for-it.sh 10.0.2.2:3306 --timeout=720 --strict -- ./start.sh"
-#         volumes:
-#           - /var/composer/mempool/cache:/backend/cache
-#           - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+- name: Start mempool-frontend with inline definition
+  register: output
+  containers.podman.podman_container:
+    name: mempool-frontend
+    image: "mempool/frontend:{{ mempool_version|default(latest) }}"
+    state: stopped
+    ports:
+      - "127.0.0.1:{{ mempool_listen_port|default(4434)}}:8080"
+#   restart: on-failure
+#   stop_grace_period: 1m
+#   command: "./wait-for {{ mempool_db_host }}:3306 --timeout=720 -- nginx -g 'daemon off;'"
+    env:
+      FRONTEND_HTTP_PORT: "8080"
+      BACKEND_MAINNET_HTTP_HOST: "mempool-backend"
 
 - ansible.builtin.debug:
     var: output
   tags: upgrade
+
+- name: Generate systemd unit file for mempool containers
+  containers.podman.podman_generate_systemd:
+    name: "{{ item }}"
+    dest: ~/.config/systemd/user/
+    wants: mariadb.service
+  loop:
+    - mempool-frontend
+    - mempool-backend
+
+- name: Ensure mempool containers are started and enabled
+  ansible.builtin.systemd:
+    name: "container-{{ item }}"
+    scope: user
+    daemon_reload: true
+    state: started
+    enabled: true
+  loop:
+    - mempool-frontend
+    - mempool-backend

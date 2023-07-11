@@ -14,7 +14,7 @@
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ mempool_listen_port|default(4434)}} ssl"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ mempool_https_port|default(4434)}} ssl"
                     http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
@@ -24,7 +24,7 @@
               locations:
                 - location: /
                   proxy:
-                    pass: "http://127.0.0.1:{{ mempool_listen_port|default(4434)}}"
+                    pass: "http://127.0.0.1:{{ mempool_http_port|default(8034)}}"
                     buffering: false
                     http_version: '1.1'
                     set_header:
