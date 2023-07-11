@@ -1,5 +1,7 @@
 # mempool.space
 
+This is dope. It uses tls for an external electrs service running on NixOS. Tor for any external calls. The configuration is a dictionary of environment variables, so it's simple to change or add them.
+
 ## requirements
 
 * mariadb
@@ -28,9 +30,4 @@ Using environment variables avoids needing to merge changes to `mempool-config.j
 
 ## future improvements
 
-The mempool-config.json does not expose a socketPath variable to connect to the unix socket:
-
-```
-volumes:
-  - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
-```
+The containers still fail to build from source using `docker-compose build`, so I need to figure out what else they need.
