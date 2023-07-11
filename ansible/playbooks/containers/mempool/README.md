@@ -2,6 +2,13 @@
 
 This is dope. It uses tls for an external electrs service running on NixOS. Tor for any external calls. The configuration is a dictionary of environment variables, so it's simple to change or add them.
 
+## generating secrets
+
+```
+pass generate -n satstack.net/wartortle/MEMPOOL_CORE_RPC
+pass generate -n satstack.net/wartortle/MEMPOOL_MARIADB
+```
+
 ## requirements
 
 * mariadb
@@ -14,6 +21,28 @@ See the related playbooks.
 ```
 systemctl --user status container-mempool-backend.service
 systemctl --user status container-mempool-frontend.service
+```
+
+## variables
+
+See `host_vars/wartortle../mempool.yml`
+
+## deployment
+
+Configure variables and then run all the tasks from a playbook for the target host. Example:
+
+```
+ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml
+```
+
+## upgrades
+
+Check release notes and merge any meaningful changes to [RTL-Config.json](https://github.com/Ride-The-Lightning/RTL/blob/master/Sample-RTL-Config.json)
+
+Then update [versions.yml](../../../group_vars/all/versions.yml) and run the podman_container module:
+
+```
+ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml --tags podman
 ```
 
 ## podman-compose vs ansible module

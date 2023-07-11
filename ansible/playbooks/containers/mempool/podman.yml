@@ -14,7 +14,7 @@
           - /var/compose/mempool/cache:/backend/cache
           - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
 #       expose:
-#         - 8999
+#         - "8999"
         ports:
           - "0.0.0.0:8999:8999" # expose should've worked for this, but didn't for some reason. takes too long to restart to test. TODO
       - name: mempool-frontend
@@ -40,6 +40,7 @@
     dest: ~/.config/systemd/user/
     wants: mariadb.service
     restart_policy: on-failure
+    restart_sec: 60
     stop_timeout: 60
   loop:
     - mempool-frontend

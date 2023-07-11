@@ -1,0 +1,40 @@
+---
+# Based on: https://github.com/Ride-The-Lightning/RTL/blob/master/docker/docker-compose.yml
+- name: Create rtl containers
+  register: output
+  containers.podman.podman_container:
+    name: RTL 
+    image: "shahanafarooqui/rtl:{{ rtl_version|default(latest) }}"
+    env: "{{ rtl_config }}"
+    recreate: true
+    state: present
+    volumes:
+      - /var/compose/rtl:/RTL
+      - /var/compose/rtl/db:/RTL/database
+    ports:
+      - "127.0.0.1:{{ rtl_http_port|default(8037)}}:3000"
+
+- ansible.builtin.debug:
+    var: output
+  tags: upgrade
+
+- name: Generate systemd unit file for rtl containers
+  containers.podman.podman_generate_systemd:
+    name: RTL
+    dest: ~/.config/systemd/user/
+    restart_policy: on-failure
+    restart_sec: 60
+    stop_timeout: 60
+
+- name: Ensure rtl containers are started and enabled
+  ansible.builtin.systemd:
+    name: "container-{{ item }}"
+    scope: user
+    daemon_reload: true
+    state: started
+    enabled: true
+  loop:
+    - rtl-frontend
+    - rtl-backend
+  failed_when: false
+  tags: test

@@ -18,6 +18,8 @@
   containers.podman.podman_generate_systemd:
     name: chat-with-gpt
     dest: ~/.config/systemd/user/
+    restart_policy: on-failure
+    restart_sec: 60
 
 - name: Ensure chat-with-gpt container is started and enabled
   ansible.builtin.systemd:

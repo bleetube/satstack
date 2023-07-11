@@ -18,7 +18,7 @@ grafana_version: latest
 ntfy_alertmanager_version: v0.2.0
 
 # https://go.dev/dl/
-golang_version: '1.20.4' # gantsign.golang
+golang_version: "1.20.4" # gantsign.golang
 
 # https://grafana.com/grafana/dashboards/1860-node-exporter-full/?tab=revisions
 grafana_node_dashboard_version: 31
@@ -27,4 +27,8 @@ grafana_node_dashboard_version: 31
 mariadb_use_official_repo_version: "10.11"
 
 # https://github.com/mempool/mempool/releases
+# ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml --tags podman
 mempool_version: v2.5.0
+
+# https://github.com/Ride-The-Lightning/RTL/releases
+rtl_version: "0.14.0"
