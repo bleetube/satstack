@@ -46,15 +46,24 @@
     - mempool-frontend
     - mempool-backend
 
-- name: Ensure mempool containers are started and enabled
+- name: mempool | Ensure container(s) are enabled in systemd, but stopped so we can use "recreate" in podman_container.
   ansible.builtin.systemd:
     name: "container-{{ item }}"
     scope: user
     daemon_reload: true
-    state: started
+    state: stopped
     enabled: true
   loop:
     - mempool-frontend
     - mempool-backend
   failed_when: false
-  tags: test
+
+- name: mempool | Started the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+  ansible.builtin.systemd:
+    name: "container-{{ item }}"
+    scope: user
+    state: started
+  loop:
+    - mempool-frontend
+    - mempool-backend
+  failed_when: false

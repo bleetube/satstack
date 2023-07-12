@@ -19,7 +19,7 @@ systemctl --user status container-chat-with-gpt.service
 Versioning is non-existent, so just redeploy the container:
 
 ```
-ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml --tags podman
+ansible-playbook playbooks/host_tasks/wartortle.satstack/chat-with-gpt.net.yml --tags podman
 ```
 
 ## Troubleshooting

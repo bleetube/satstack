@@ -1,0 +1,16 @@
+---
+- hosts: wartortle.satstack.net
+
+  vars:
+    container_playbooks: ../../containers
+
+  tasks:
+    - import_tasks: "{{ container_playbooks }}/rtl/setup.yml"
+      tags: setup
+    - import_tasks: "{{ container_playbooks }}/rtl/podman.yml"
+      tags: podman
+    - include_tasks:
+        file: "{{ container_playbooks }}/rtl/nginx_conf.yml"
+        apply:
+          become: true
+      tags: nginx

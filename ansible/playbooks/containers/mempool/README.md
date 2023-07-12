@@ -32,7 +32,7 @@ See `host_vars/wartortle../mempool.yml`
 Configure variables and then run all the tasks from a playbook for the target host. Example:
 
 ```
-ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml
+ansible-playbook playbooks/host_tasks/wartortle.satstack.net/mempool.yml
 ```
 
 ## upgrades
@@ -42,7 +42,7 @@ Check release notes and merge any meaningful changes to [RTL-Config.json](https:
 Then update [versions.yml](../../../group_vars/all/versions.yml) and run the podman_container module:
 
 ```
-ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml --tags podman
+ansible-playbook playbooks/host_tasks/wartortle.satstack.net/mempool.yml --tags podman
 ```
 
 ## podman-compose vs ansible module
@@ -56,3 +56,5 @@ Using environment variables avoids needing to merge changes to `mempool-config.j
 * The containers still fail to build from source using `docker-compose build`, so I need to figure out what else they need.
 
 * systemd won't see containers that are already running and we must use "state: present|started" in order to use recreate. Recreate was required for changes to mempool_config to take effect.
+
+* see what methods can be used to restrict read access to the config file

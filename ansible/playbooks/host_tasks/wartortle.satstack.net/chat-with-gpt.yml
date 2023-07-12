@@ -1,0 +1,13 @@
+---
+- hosts: wartortle.satstack.net
+
+  tasks:
+    - import_tasks: ../../containers/chat-with-gpt/setup.yml
+      tags: setup
+    - import_tasks: ../../containers/chat-with-gpt/podman.yml
+      tags: chat-with-gpt
+    - include_tasks:
+        file: ../../containers/chat-with-gpt/nginx_conf.yml
+        apply:
+          become: true
+      tags: nginx

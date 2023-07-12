@@ -24,3 +24,7 @@ I had also tried EasyDNS, but while their DNS could be managed via OctoDNS, I fo
 ## ACME
 
 * Certbot role doesn't support configuring cerbot for dns-01 challenges, yet.
+
+## Container deployments
+
+Few of the container deployments are zero-touch, requiring configuration of variables or manual handling of sensitive secrets. The upshot is that after deployment, long-term maintenance becomes effortless with (typically) single-command upgrades.

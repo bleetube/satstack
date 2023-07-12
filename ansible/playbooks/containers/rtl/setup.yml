@@ -1,0 +1,14 @@
+---
+- name: RTL - Clone repository
+  ansible.builtin.git:
+    repo: https://github.com/Ride-The-Lightning/RTL.git
+    dest: "{{ ansible_env.HOME }}/src/RTL"
+    version: "v{{ rtl_version }}"
+
+- name: RTL - Ensure data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /var/compose/rtl
+    - /var/compose/.secrets/lightningd

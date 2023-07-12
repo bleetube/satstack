@@ -1,6 +1,17 @@
 ---
+- name: RTL | Assert all secrets have been configured.
+  ansible.builtin.assert:
+    that:
+      - item is defined
+      - item != ''
+    fail_msg: "FAILED: Secret {{ item }} is not configured."
+    quiet: true
+  loop:
+    - rtl_config.APP_PASSWORD
+  no_log: true
+
 # Based on: https://github.com/Ride-The-Lightning/RTL/blob/master/docker/docker-compose.yml
-- name: Create rtl containers
+- name: RTL | Create containers
   register: output
   containers.podman.podman_container:
     name: RTL 
@@ -9,8 +20,8 @@
     recreate: true
     state: present
     volumes:
-      - /var/compose/rtl:/RTL
-      - /var/compose/rtl/db:/RTL/database
+      - /var/compose/rtl:/data
+      - /var/compose/.secrets/lightningd:/certs
     ports:
       - "127.0.0.1:{{ rtl_http_port|default(8037)}}:3000"
 
@@ -18,7 +29,7 @@
     var: output
   tags: upgrade
 
-- name: Generate systemd unit file for rtl containers
+- name: RTL | Generate systemd unit file for containers
   containers.podman.podman_generate_systemd:
     name: RTL
     dest: ~/.config/systemd/user/
@@ -26,15 +37,16 @@
     restart_sec: 60
     stop_timeout: 60
 
-- name: Ensure rtl containers are started and enabled
+- name: RTL | Ensure container(s) are enabled in systemd, but stopped so we can use "recreate" in podman_container.
   ansible.builtin.systemd:
-    name: "container-{{ item }}"
+    name: container-RTL
     scope: user
     daemon_reload: true
-    state: started
+    state: stopped
     enabled: true
-  loop:
-    - rtl-frontend
-    - rtl-backend
-  failed_when: false
-  tags: test
+
+- name: RTL | Started the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+  ansible.builtin.systemd:
+    name: container-RTL
+    scope: user
+    state: started
