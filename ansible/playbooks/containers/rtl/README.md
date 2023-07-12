@@ -4,8 +4,6 @@
 
 This deployment has extra steps due to handling sensitive macaroon material. Upgrades are a single command though.
 
-In practice RTL is particularly useful just to check on my node when Zeus is acting up. It will probably become more useful when anchor outputs get implemented widely and we can use Lightning Ads!
-
 ## variables
 
 See [host_vars](../../../host_vars/wartortle.satstack.net/rtl.yml)
@@ -39,12 +37,6 @@ systemctl --user status container-RTL.service
 
 ## upgrades
 
-Update [versions.yml](../../../group_vars/all/versions.yml) and run the podman_container module:
-
 ```
 ansible-playbook playbooks/host_tasks/wartortle.satstack.net/rtl.yml --tags podman
 ```
-
-## future improvements
-
-* see what methods can be used to restrict read access to the macaroon and config file

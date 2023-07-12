@@ -1,3 +1,6 @@
 #!/bin/bash
 TARGET=wartortle.satstack.net
-rsync -tav root@${TARGET}:/var/compose/changedetection $HOME/archive/${TARGET}/
+
+rsync -ta root@${TARGET}:/var/compose/changedetection $HOME/archive/${TARGET}/
+
+du -sh $HOME/archive/${TARGET}/

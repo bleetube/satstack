@@ -8,6 +8,12 @@ Better than using the official web-app.
 
 * [nginx](nginx_conf.yml)
 
+## deployment example
+
+```shell
+ansible-playbook playbooks/host_tasks/wartortle.satstack/chat-with-gpt.yml
+```
+
 ## systemd
 
 ```
