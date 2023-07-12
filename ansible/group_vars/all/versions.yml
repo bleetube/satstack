@@ -32,3 +32,6 @@ mempool_version: v2.5.0
 
 # https://github.com/Ride-The-Lightning/RTL/releases
 rtl_version: "0.14.0"
+
+# https://github.com/dgtlmoon/changedetection.io/releases
+changedetection_version: "0.43.2"

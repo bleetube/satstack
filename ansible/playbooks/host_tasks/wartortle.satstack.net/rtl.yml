@@ -7,8 +7,10 @@
   tasks:
     - import_tasks: "{{ container_playbooks }}/rtl/setup.yml"
       tags: setup
+
     - import_tasks: "{{ container_playbooks }}/rtl/podman.yml"
       tags: podman
+
     - include_tasks:
         file: "{{ container_playbooks }}/rtl/nginx_conf.yml"
         apply:

@@ -1,0 +1,38 @@
+---
+- name: Start changedetection container using inline definition
+  register: output
+  containers.podman.podman_container:
+    name: changedetection
+    image: "ghcr.io/dgtlmoon/changedetection.io:{{ changedetection_version|default('latest') }}"
+    volumes:
+      - /var/compose/changedetection:/datastore
+    ports:
+      - "127.0.0.1:{{ changedetection_http_port }}:5000"
+
+- ansible.builtin.debug:
+    var: output
+
+- name: Generate systemd unit file for changedetection container
+  containers.podman.podman_generate_systemd:
+    name: changedetection
+    dest: ~/.config/systemd/user/
+    restart_policy: on-failure
+    restart_sec: 60
+
+- name: changedetection | Ensure container(s) are enabled in systemd, but stopped so we can use "recreate" in podman_container.
+  ansible.builtin.systemd:
+    name: container-changedetection
+    scope: user
+    daemon_reload: true
+    state: stopped
+    enabled: true
+
+- name: changedetection | Start the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+  ansible.builtin.systemd:
+    name: container-changedetection
+    scope: user
+    state: started
+  register: systemd_result
+  # changedetection exits after the first time it starts up
+  until: systemd_result is succeeded
+  retries: 1

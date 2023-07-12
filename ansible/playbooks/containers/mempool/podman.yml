@@ -58,7 +58,7 @@
     - mempool-backend
   failed_when: false
 
-- name: mempool | Started the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+- name: mempool | Start the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
   ansible.builtin.systemd:
     name: "container-{{ item }}"
     scope: user

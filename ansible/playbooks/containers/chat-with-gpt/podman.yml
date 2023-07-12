@@ -3,7 +3,7 @@
   register: output
   containers.podman.podman_container:
     name: chat-with-gpt
-    image: "ghcr.io/cogentapps/chat-with-gpt:{{ chat_with_gpt_version }}"
+    image: "ghcr.io/cogentapps/chat-with-gpt:{{ chat_with_gpt_version|default('latest') }}"
     # let systemd start the container or it won't see it running
     state: stopped
     ports:
@@ -29,7 +29,7 @@
     state: stopped
     enabled: true
 
-- name: chat-with-gpt | Started the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+- name: chat-with-gpt | Start the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
   ansible.builtin.systemd:
     name: container-chat-with-gpt
     scope: user

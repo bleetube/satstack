@@ -28,3 +28,7 @@ I had also tried EasyDNS, but while their DNS could be managed via OctoDNS, I fo
 ## Container deployments
 
 Few of the container deployments are zero-touch, requiring configuration of variables or manual handling of sensitive secrets. The upshot is that after deployment, long-term maintenance becomes effortless with (typically) single-command upgrades.
+
+## podman-compose vs ansible module
+
+Using environment variables avoids needing to merge changes to `mempool-config.json` in the future.

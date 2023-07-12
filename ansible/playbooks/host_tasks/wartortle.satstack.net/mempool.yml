@@ -4,8 +4,10 @@
   tasks:
     - import_tasks: ../../containers/mempool/setup.yml
       tags: setup
+
     - import_tasks: ../../containers/mempool/podman.yml
       tags: podman
+
     - include_tasks:
         file: ../../containers/mempool/nginx_conf.yml
         apply:

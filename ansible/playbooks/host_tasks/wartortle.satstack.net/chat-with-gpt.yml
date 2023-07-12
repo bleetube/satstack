@@ -4,8 +4,10 @@
   tasks:
     - import_tasks: ../../containers/chat-with-gpt/setup.yml
       tags: setup
+
     - import_tasks: ../../containers/chat-with-gpt/podman.yml
-      tags: chat-with-gpt
+      tags: podman
+
     - include_tasks:
         file: ../../containers/chat-with-gpt/nginx_conf.yml
         apply:

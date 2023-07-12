@@ -9,7 +9,7 @@ Core tools
 * __Data__: [postgresql](https://www.postgresql.org/), [mariadb](https://mariadb.org/)
 * __Mail__: [postfix](http://www.postfix.org/), [dovecot](https://www.dovecot.org/)
 
-(rootless, daemon-less, dockerless) Podman Containers
+Podman Containers (rootless, daemon-less, dockerless)
 
-* Bitcoin: [mempool.space](https://github.com/mempool/mempool), [Ride-The-Lightning](https://github.com/Ride-The-Lightning/RTL)
-* AI: [chat-with-gpt](https://github.com/cogentapps/chat-with-gpt)
+* Bitcoin: [mempool.space](ansible/playbooks/containers/mempool/README.md), [Ride-The-Lightning](ansible/playbooks/containers/rtl/README.md)
+* Tools: [chat-with-gpt](ansible/playbooks/containers/chat-with-gpt/README.md), [changedetection](ansible/playbooks/containers/changedetection/README.md)

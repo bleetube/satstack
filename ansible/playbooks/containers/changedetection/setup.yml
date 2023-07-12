@@ -1,0 +1,13 @@
+---
+- name: changedetection | Clone repository (not used, yet)
+  ansible.builtin.git:
+    repo: 'https://github.com/dgtlmoon/changedetection.io.git'
+    dest: "{{ ansible_env.HOME }}/src/changedetection.io"
+    version: "{{ changedetection_version|default('latest') }}"
+
+- name: changedetection | Ensure data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /var/compose/changedetection

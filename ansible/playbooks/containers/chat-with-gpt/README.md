@@ -2,27 +2,25 @@
 
 * [cogentapps/chat-with-gpt](https://github.com/cogentapps/chat-with-gpt)
 
+Better than using the official web-app.
+
 ## requirements
 
-* nginx
+* [nginx](nginx_conf.yml)
 
-See the related playbook(s).
-
-## systemd usage
+## systemd
 
 ```
 systemctl --user status container-chat-with-gpt.service
 ```
 
-## Updates
-
-Versioning is non-existent, so just redeploy the container:
+## updates
 
 ```
-ansible-playbook playbooks/host_tasks/wartortle.satstack/chat-with-gpt.net.yml --tags podman
+ansible-playbook playbooks/host_tasks/wartortle.satstack/chat-with-gpt.yml --tags podman
 ```
 
-## Troubleshooting
+## troubleshooting
 
 ```
 podman logs --follow chat-with-gpt

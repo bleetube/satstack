@@ -45,7 +45,7 @@
     state: stopped
     enabled: true
 
-- name: RTL | Started the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
+- name: RTL | Start the container(s) with systemd, so systemd will know the state of the container(s) moving forward.
   ansible.builtin.systemd:
     name: container-RTL
     scope: user
