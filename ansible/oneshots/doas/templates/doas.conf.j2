@@ -1,3 +1,8 @@
 permit :wheel
 permit nopass root
-permit nopass {{ sysadmin_username|default(blee) }} as root
+{% if sysadmin_username is defined %}
+permit nopass {{ sysadmin_username }} as root
+{% endif %}
+{% for item in doas_permit_list | default([]) %}
+permit nopass {{ item.username }} as {{ item.role }}
+{% endfor %}

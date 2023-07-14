@@ -11,5 +11,6 @@ Core tools
 
 Podman Containers for JS/PHP (better opsec, lower maintenance)
 
+* AI: [chat-with-gpt](ansible/playbooks/containers/chat-with-gpt/README.md)
 * Bitcoin: [mempool.space](ansible/playbooks/containers/mempool/README.md), [Ride-The-Lightning](ansible/playbooks/containers/rtl/README.md)
-* Tools: [chat-with-gpt](ansible/playbooks/containers/chat-with-gpt/README.md), [changedetection](ansible/playbooks/containers/changedetection/README.md)
+* Tools: [nextcloud](ansible/playbooks/containers/nextcloud/README.md), [changedetection](ansible/playbooks/containers/changedetection/README.md)

@@ -64,3 +64,8 @@ roles:
 
   - src: https://github.com/fauust/ansible-role-mariadb
     name: fauust.mariadb
+
+# - src: https://github.com/ANXS/postgresql
+  - src: https://github.com/VladDm93/postgresql
+    version: postgres-14-15-support
+    name: anxs.postgresql

@@ -1,0 +1,20 @@
+---
+- hosts: postgresql
+
+  vars:
+    # Workaround: https://github.com/ANXS/postgresql/issues/523#issuecomment-1011806983
+    ansible_python_interpreter: /usr/bin/python3
+
+  pre_tasks:
+    - name: Assert all database passwords have been configured.
+      ansible.builtin.assert:
+        that:
+          - item.pass is defined
+          - item.pass != ''
+        fail_msg: "FAILED: Database password for {{ item.name }} is not configured."
+      loop: "{{ postgresql_users }}"
+      no_log: true
+
+  roles:
+    - role: anxs.postgresql
+      become: true
