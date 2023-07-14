@@ -2,8 +2,8 @@
 - name: RTL | Assert all secrets have been configured.
   ansible.builtin.assert:
     that:
-      - item is defined
-      - item != ''
+      - "{{ item  }} is defined"
+      - "{{ item }} != ''"
     fail_msg: "FAILED: Secret {{ item }} is not configured."
     quiet: true
   loop:

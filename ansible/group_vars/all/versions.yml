@@ -27,7 +27,6 @@ grafana_node_dashboard_version: 31
 mariadb_use_official_repo_version: "10.11"
 
 # https://github.com/mempool/mempool/releases
-# ansible-playbook playbooks/host_tasks/wartortle.satstack.net.yml --tags podman
 mempool_version: v2.5.0
 
 # https://github.com/Ride-The-Lightning/RTL/releases
@@ -35,3 +34,6 @@ rtl_version: "0.14.0"
 
 # https://github.com/dgtlmoon/changedetection.io/releases
 changedetection_version: "0.43.2"
+
+# https://hub.docker.com/_/nextcloud
+nextcloud_version: 27-fpm-alpine

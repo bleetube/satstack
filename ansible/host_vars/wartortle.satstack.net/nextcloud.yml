@@ -1,0 +1,49 @@
+nextcloud_https_port: 4440
+nextcloud_http_port: 8040
+nextcloud_fpm_upstream: "127.0.0.1:9000"
+
+nextcloud_create_volumes: []
+# - nc_html
+# - nc_apps
+# - nc_config
+# - nc_data
+
+nextcloud_volumes:
+  - /var/compose/nextcloud:/var/www/html
+# - nc_html:/var/www/html:Z # Main folder, needed for updating
+# - nc_apps:/var/www/html/custom_apps:Z # Volume for installed/modified apps
+# - nc_config:/var/www/html/config:Z # Volume for local configuration
+# - nc_data:/var/www/html/data:Z # Volume for the actual data of Nextcloud
+# - /var/run/postgresql:/var/run/postgresql
+
+# https://github.com/nextcloud/docker/blob/master/README.md#auto-configuration-via-environment-variables
+nextcloud_config:
+  NEXTCLOUD_ADMIN_USER: admin
+  NEXTCLOUD_ADMIN_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_ADMIN_PASSWORD') }}"
+  NEXTCLOUD_TRUSTED_DOMAINS: "localhost:{{ nextcloud_https_port }} wartortle.satstack.net:{{ nextcloud_https_port }} 192.168.0.43:{{ nextcloud_https_port }}"
+
+# NEXTCLOUD_DATA_DIR: /var/www/html/data
+# NEXTCLOUD_TRUSTED_DOMAINS: ""
+
+  SQLITE_DATABASE: nextcloud
+
+# MYSQL_DATABASE: nextcloud
+# MYSQL_USER: nextcloud
+# MYSQL_PASSWORD: ""
+# MYSQL_HOST: host.containers.internal
+
+# POSTGRES_HOST: /var/run/postgresql
+# POSTGRES_DB: nextcloud
+# POSTGRES_USER: nextcloud
+# POSTGRES_PASSWORD: ""
+
+# REDIS_HOST: host.containers.internal
+
+# SMTP_HOST: ""
+# SMTP_SECURE: ""  # ssl to use SSL, or tls zu use STARTTLS
+# SMTP_PORT: "" # (25, 465 for SSL, 587 for STARTTLS)
+# SMTP_AUTHTYPE: ""
+# SMTP_NAME: ""
+# SMTP_PASSWORD: ""
+# MAIL_FROM_ADDRESS: ""
+# MAIL_DOMAIN: ""

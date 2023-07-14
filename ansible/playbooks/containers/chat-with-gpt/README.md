@@ -8,6 +8,10 @@ Better than using the official web-app.
 
 * [nginx](nginx_conf.yml)
 
+## variables
+
+See [host_vars](../../../host_vars/wartortle.satstack.net/chat-with-gpt.yml)
+
 ## deployment example
 
 ```shell

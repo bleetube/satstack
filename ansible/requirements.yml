@@ -41,6 +41,9 @@ roles:
   - name: bleetube.ntfy-alertmanager
     src:  https://github.com/bleetube/ansible-role-ntfy-alertmanager
 
+  - name: bleetube.nextcloud
+    src:  https://github.com/bleetube/ansible-role-nextcloud
+
   - name: oefenweb.postfix
     src:  https://github.com/bleetube/ansible-role-postfix
 

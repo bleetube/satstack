@@ -8,6 +8,10 @@ Useful for watching pages that I can't find an RSS feed for.
 
 * [nginx](nginx_conf.yml)
 
+## variables
+
+See [host_vars](../../../host_vars/wartortle.satstack.net/changedetection.yml)
+
 ## deployment example
 
 ```shell

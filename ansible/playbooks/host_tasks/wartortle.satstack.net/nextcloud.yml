@@ -1,0 +1,27 @@
+- hosts: wartortle.satstack.net
+
+  pre_tasks:
+    - name: Nextcloud | Ensure data directory
+      ansible.builtin.file:
+        path: /var/compose/nextcloud
+        state: directory
+      tags: nextcloud
+
+  roles:
+    - role: bleetube.nextcloud
+      tags: nextcloud
+
+  tasks:
+    - include_tasks:
+        file: ../../containers/nextcloud/nginx_template.yml
+        apply:
+          become: true
+          tags: nginx
+      tags: nginx
+
+    - include_tasks:
+        file: ../../containers/nextcloud/nginx_conf.yml
+        apply:
+          become: true
+          tags: nginx
+      tags: nginx

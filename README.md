@@ -9,7 +9,7 @@ Core tools
 * __Data__: [postgresql](https://www.postgresql.org/), [mariadb](https://mariadb.org/)
 * __Mail__: [postfix](http://www.postfix.org/), [dovecot](https://www.dovecot.org/)
 
-Podman Containers (rootless, daemon-less, dockerless)
+Podman Containers for JS/PHP (better opsec, lower maintenance)
 
 * Bitcoin: [mempool.space](ansible/playbooks/containers/mempool/README.md), [Ride-The-Lightning](ansible/playbooks/containers/rtl/README.md)
 * Tools: [chat-with-gpt](ansible/playbooks/containers/chat-with-gpt/README.md), [changedetection](ansible/playbooks/containers/changedetection/README.md)
