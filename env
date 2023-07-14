@@ -14,7 +14,7 @@ export wartortle_NEXTCLOUD_MARIADB_PASSWORD=$(pass satstack.net/wartortle/NEXTCL
 #export wartortle_SAMOURAI_API=$(pass satstack.net/wartortle/SAMOURAI_API)
 #export wartortle_SAMOURAI_ADMIN=$(pass satstack.net/wartortle/SAMOURAI_ADMIN)
 #export wartortle_SAMOURAI_JWT=$(pass satstack.net/wartortle/SAMOURAI_JWT)
-#export wartortle_SAMOURAI_MARIADB=$(pass satstack.net/wartortle/SAMOURAI_MARIADB)
+export wartortle_SAMOURAI_MARIADB_PASSWORD=$(pass satstack.net/wartortle/SAMOURAI_MARIADB)
 #export wartortle_BITCOIND_RPC=$(pass satstack.net/wartortle/BITCOIND_RPC)
 source ~/.secrets/homelab/env
 

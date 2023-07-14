@@ -13,9 +13,24 @@ mariadb_databases:
     collation: utf8_general_ci
     encoding: utf8
     replicate: false
+  - name: nextcloud
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: false
 
 # Both localhost and * (all hosts) are mutually exclusive: https://stackoverflow.com/q/10823854/9290
 mariadb_users:
+  - name: nextcloud
+    host: localhost
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_MARIADB_PASSWORD') }}"
+    priv: "nextcloud.*:ALL"
+    state: present
+  - name: nextcloud
+    host: '%'
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_MARIADB_PASSWORD') }}"
+    priv: "nextcloud.*:ALL"
+    state: present
+
   - name: mempool
     host: localhost
     password: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB') }}"
@@ -29,21 +44,23 @@ mariadb_users:
 
   - name: samourai
     host: localhost
-    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB_PASSWORD') }}"
     priv: "samourai.*:ALL"
     state: present
   - name: samourai
     host: '%'
-    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB') }}"
+    password: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB_PASSWORD') }}"
     priv: "samourai.*:ALL"
     state: present
 
 # https://mariadb.com/kb/en/mariadb-memory-allocation/
+# Nextcloud: https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/mariadb/fpm/docker-compose.yml#L6C14-L6C89
 mariadb_innodb_raw: |
   # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
   # Read the manual for more InnoDB related options. There are many!
     innodb_buffer_pool_size = 512M
     key_buffer_size = 10M
-  # For Samourai Dojo
-    transaction_isolation=READ-COMMITTED
-#   sql_mode="NO_ENGINE_SUBSTITUTION"
+    transaction_isolation=READ-COMMITTED # samourai and nextcloud
+    #sql_mode="NO_ENGINE_SUBSTITUTION" # samourai
+    #log_bin=binlog # nextcloud
+    #binlog-format=ROW # nextcloud
