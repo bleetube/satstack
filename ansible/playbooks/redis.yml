@@ -1,0 +1,6 @@
+---
+- hosts: redis
+
+  roles:
+    - role: bleetube.redis
+      become: yes

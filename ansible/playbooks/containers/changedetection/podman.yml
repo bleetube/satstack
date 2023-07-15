@@ -33,6 +33,5 @@
     scope: user
     state: started
   register: systemd_result
-  # changedetection exits after the first time it starts up
   until: systemd_result is succeeded
   retries: 1

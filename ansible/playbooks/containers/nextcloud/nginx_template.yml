@@ -1,6 +1,0 @@
----
-# https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf
-- name: Nextcloud | Configure nginx with the template
-  ansible.builtin.template:
-    src: templates/nginx.conf
-    dest: /etc/nginx/nextcloud_template.conf

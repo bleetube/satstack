@@ -1,5 +1,11 @@
 ---
 # https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf
+- name: Nextcloud | Configure nginx with the template
+  ansible.builtin.template:
+    src: templates/nginx.conf
+    dest: /etc/nginx/nextcloud_template.conf
+
+# https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf
 - name: Nextcloud | Configure nginx to include the template
   ansible.builtin.import_role:
     name: nginxinc.nginx_core.nginx_config
@@ -22,3 +28,7 @@
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                   - /etc/nginx/nextcloud_template.conf
+          headers:
+            add_headers:
+              - name: X-Real-IP
+                value: $remote_addr

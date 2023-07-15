@@ -3,8 +3,7 @@
 # https://github.com/ANXS/postgresql/pull/534
 postgresql_version: 15
 
-postgresql_listen_addresses: 
- - host.containers.internal
+postgresql_listen_addresses: []
 postgresql_autovacuum: on
 postgresql_synchronous_commit: off
 postgresql_password_encryption: scram-sha-256
@@ -52,16 +51,16 @@ postgresql_pg_hba_default:
 # https://github.com/ANXS/postgresql/blob/63a22322fdb769a4649aea3ff936ce6aea0d963a/templates/pg_hba.conf.j2#L28
 
 # Troubleshoot authentication: tail -f /var/log/postgresql/postgresql-13-main.log
-#postgresql_users:
-#  - name: tandoor
-#    pass: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_TANDOOR_POSTGRES_PASSWORD\") }}"
-#    encrypted: yes
-#    state: present
+postgresql_users:
+  - name: nextcloud
+    pass: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_POSTGRES_PASSWORD') }}"
+    encrypted: yes
+    state: present
 
-#postgresql_databases:
-#  - name: nextcloud
-#    owner: nextcloud
-#    state: present
+postgresql_databases:
+  - name: nextcloud
+    owner: nextcloud
+    state: present
 #   hstore: yes         # flag to install the hstore extension on this database (yes/no)
 #   uuid_ossp: yes      # flag to install the uuid-ossp extension on this database (yes/no)
 #   citext: yes         # flag to install the citext extension on this database (yes/no)
