@@ -12,7 +12,7 @@
     build:
 #     format: oci
       file: ~/src/samourai-dojo/docker/my-dojo/node/Dockerfile
-      extra_args: "--build-arg TOR_LINUX_GID=1107"
+#     extra_args: "--build-arg TOR_LINUX_GID=1107"
 
 - ansible.builtin.debug:
     var: podman_image_output
@@ -28,6 +28,8 @@
     name: samourai
     env: "{{ samourai_config }}"
     ports: "{{ samourai_ports }}"
+    command: /home/node/app/restart.sh
+#   command: "/home/node/app/wait-for-it.sh host.containers.internal:3306 --timeout=720 --strict -- /home/node/app/restart.sh"
 
 - ansible.builtin.debug:
     var: podman_container_output

@@ -7,6 +7,9 @@
     - import_tasks: ../../containers/samourai/podman.yml
       tags: samourai
 
+    - import_tasks: ../../containers/samourai/systemd.yml
+      tags: systemd
+
     - include_tasks:
         file: ../../containers/samourai/nginx_conf.yml
         apply:

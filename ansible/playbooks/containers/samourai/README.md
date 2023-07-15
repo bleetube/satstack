@@ -30,3 +30,9 @@ systemctl --user status container-samourai.service
 ```
 ansible-playbook playbooks/host_tasks/wartortle.satstack/samourai.yml --tags samourai
 ```
+
+## troubleshooting
+
+```
+podman inspect samourai
+```
