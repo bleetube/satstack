@@ -37,7 +37,7 @@
 
         # Path to the root of your installation
 #       root /var/www/html;
-        root /var/compose/nextcloud;
+        root {{ nextcloud_nginx_root }};
 
         # Specify how to handle directories -- specifying `/index.php$request_uri`
         # here as the fallback means that Nginx always exhibits the desired behaviour

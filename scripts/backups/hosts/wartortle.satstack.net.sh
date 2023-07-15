@@ -5,7 +5,7 @@ TIMESTAMP=$(date +%m-%d-%Y)
 rsync --delete-after -ta root@${TARGET}:/var/compose/changedetection $HOME/archive/${TARGET}/
 
 # nextcloud
-rsync --delete-after -ta ${TARGET}:/var/compose/nextcloud $HOME/archive/${TARGET}/
+rsync --delete-after -ta root@${TARGET}:/var/compose/nextcloud $HOME/archive/${TARGET}/
 
 # postgresql: nextcloud
 BACKUP_DIR=$HOME/archive/${TARGET}/postgresql

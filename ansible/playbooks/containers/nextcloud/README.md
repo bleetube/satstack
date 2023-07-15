@@ -4,27 +4,20 @@ See [bleetube/ansible-role-nextcloud](https://github.com/bleetube/ansible-role-n
 
 ## upgrades
 
-Check for any meaningful changes to [nginx.conf](https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf)
+In addition to what's described by the role, check for any meaningful changes to [nginx.conf](https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf)
 
-## requirements
-
-* [nginx](nginx_conf.yml)
-* podman
-
-## dependencies
-
-* mariadb (optional)
-* postgresql (optional)
-
-## variables
-
-See [host_vars](../../../host_vars/wartortle.satstack.net/nextcloud.yml)
-
-## deployment example
+## deployment
 
 ```shell
 ansible-playbook playbooks/postgresql.yml
 ansible-playbook playbooks/host_tasks/wartortle.satstack.net/nextcloud.yml
+```
+
+Apps:
+
+```
+podman exec -it -u www-data nextcloud /var/www/html/occ app:install calendar
+podman exec -it -u www-data nextcloud /var/www/html/occ app:install contacts
 ```
 
 ## systemd
@@ -37,13 +30,9 @@ systemctl --user status container-nextcloud.service
 
 ```
 ansible-playbook playbooks/host_tasks/wartortle.satstack/nextcloud.yml --tags nextcloud
-podman exec -it nextcloud /var/www/html/occ app:update --all
-podman exec -it nextcloud /var/www/html/occ upgrade
+podman exec -it -u www-data nextcloud /var/www/html/occ app:update --all
+podman exec -it -u www-data nextcloud /var/www/html/occ upgrade
 ```
-
-You may need to add a `-u` flag with the accountname that the pod is running as on Linux.
-
-I also need to chown everything to the same 100081 uid/gid after a migration from docker.
 
 ## backups
 
@@ -71,8 +60,6 @@ bzcat nextcloud_*.dump.bz2 | pg_restore -d nextcloud
 ## troubleshooting
 
 ```
-podman exec -it nextcloud cat config/config.php
-podman logs --follow nextcloud
 tail -f /var/compose/nextcloud/data/nextcloud.log
 ```
 

@@ -4,8 +4,10 @@ nextcloud_fpm_upstream: "127.0.0.1:9000"
 
 nextcloud_create_volumes: []
 
+nextcloud_nginx_root: /var/compose/nextcloud
+
 nextcloud_volumes:
-  - /var/compose/nextcloud:/var/www/html
+  - "{{ nextcloud_nginx_root }}:/var/www/html"
   - /var/run/postgresql:/var/run/postgresql
 
 # https://github.com/nextcloud/docker/blob/master/README.md#auto-configuration-via-environment-variables
