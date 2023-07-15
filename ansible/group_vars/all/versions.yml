@@ -37,3 +37,6 @@ changedetection_version: "0.43.2"
 
 # https://hub.docker.com/_/nextcloud
 nextcloud_version: 27-fpm-alpine
+
+# https://code.samourai.io/dojo/samourai-dojo/-/releases
+samourai_dojo_version: v1.20.0

@@ -1,0 +1,15 @@
+- hosts: wartortle.satstack.net
+
+  tasks:
+    - import_tasks: ../../containers/samourai/setup.yml
+      tags: setup
+
+    - import_tasks: ../../containers/samourai/podman.yml
+      tags: samourai
+
+    - include_tasks:
+        file: ../../containers/samourai/nginx_conf.yml
+        apply:
+          become: true
+          tags: nginx
+      tags: nginx

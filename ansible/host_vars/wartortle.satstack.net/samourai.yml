@@ -1,9 +1,69 @@
 ---
-samourai_dojo_version: v1.18.1
-samourai_onion_address: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ONION\") }}"
-samourai_node_api_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_API\") }}"
-samourai_node_admin_key: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_ADMIN\") }}"
-samourai_node_jwt_secret: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_JWT\") }}"
-samourai_mariadb_db: 172.17.0.1
-samourai_mariadb_user: samourai
-samourai_mariadb_password: "{{ lookup('ansible.builtin.env', \"{{ inventory_hostname_short }}_SAMOURAI_MARIADB\") }}"
+samourai_https_port: 4480
+samourai_ws_http_port: 8080
+samourai_pushtx_http_port: 8081
+samourai_tracker_http_port: 8082
+
+#samourai_dojo_version: v1.18.1
+samourai_onion_address: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ONION') }}"
+samourai_ports:
+  - "127.0.0.1:{{ samourai_ws_http_port }}:8080"
+  - "127.0.0.1:{{ samourai_pushtx_http_port }}:8081"
+  - "127.0.0.1:{{ samourai_tracker_http_port }}:8082"
+
+# All the environment variables that node.js uses:
+# grep -r process.env. ~/src/samourai-dojo/docker/my-dojo/node/ | awk '{print $3}' | sort | uniq
+
+# These are organized by the file they are declared in Dojo
+samourai_config:
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+  MYSQL_USER: samourai
+  MYSQL_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB_PASSWORD') }}"
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-tor.conf.tpl
+  TOR_SOCKS_PORT: 9050
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-common.conf.tpl
+  COMMON_BTC_NETWORK: mainnet
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-node.conf.tpl
+  NODE_API_KEY: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_API') }}"
+  NODE_ADMIN_KEY: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ADMIN') }}"
+  NODE_JWT_SECRET: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_JWT') }}"
+  NODE_ACTIVE_INDEXER: local_indexer
+  NODE_FEE_TYPE: ECONOMICAL
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
+  INDEXER_IP: 192.168.0.42
+  INDEXER_RPC_PORT: 5001
+  INDEXER_BATCH_SUPPORT: active
+  INDEXER_PROTOCOL: tcp
+  # ~/src/samourai-dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+  BITCOIND_RPC_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_BITCOIND_RPC_PASSWORD') }}"
+  BITCOIND_RPC_USER: dojo
+  BITCOIND_IP: 192.168.0.42
+  BITCOIND_RPC_PORT: 8332
+  BITCOIND_ZMQ_RAWTXS: 28333
+  BITCOIND_ZMQ_BLK_HASH: 28334
+  # ~/src/samourai-dojo/docker/my-dojo/.env
+  DOJO_VERSION_TAG: "{{ samourai_dojo_version }}"
+  NET_DOJO_TOR_IPV4: 192.168.0.42
+  NET_DOJO_MYSQL_IPV4: host.containers.internal
+  MYSQL_DATABASE: samourai
+  NODE_PREFIX_STATUS: status
+  NODE_PREFIX_STATUS_PUSHTX: status  
+  NODE_PREFIX_SUPPORT: support
+  NODE_URL_ESPLORA_API: https://blockstream.info/testnet
+  NODE_URL_OXT_API: https://api.oxt.me
+  # these all have defaults of 10, but could be changed to match .env and then removed here
+  NODE_ADDR_DERIVATION_MAX_CHILD: 2
+  NODE_ADDR_DERIVATION_MIN_CHILD: 2
+  #NODE_ADDR_DERIVATION_THRESHOLD: 10
+  NODE_ADDR_FILTER_THRESHOLD: 1000
+  NODE_GAP_EXTERNAL: 100
+  NODE_GAP_INTERNAL: 100
+  NODE_JWT_ACCESS_EXPIRES: 900
+  NODE_JWT_REFRESH_EXPIRES: 7200
+  NODE_TRACKER_MEMPOOL_PERIOD: 10000
+  NODE_TRACKER_UNCONF_TXS_PERIOD: 300000
+  NODE_TXS_SCHED_MAX_DELTA_HEIGHT: 18
+  #NODE_TXS_SCHED_MAX_ENTRIES: 10
+  # These get defined in the Dockerfile
+  #NODE_ENV: production
+  #APP_DIR: /home/node/app

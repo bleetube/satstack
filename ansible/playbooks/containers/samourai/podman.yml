@@ -1,0 +1,33 @@
+---
+# https://code.samourai.io/dojo/samourai-dojo/-/blob/develop/docker/my-dojo/docker-compose.yaml
+- name: Samourai | Build image
+  register: podman_image_output
+  containers.podman.podman_image:
+    name: samourai
+    path: ~/src/samourai-dojo
+    tag: "{{ samourai_dojo_version }}"
+    validate_certs: true
+    pull: false
+    state: build
+    build:
+#     format: oci
+      file: ~/src/samourai-dojo/docker/my-dojo/node/Dockerfile
+      extra_args: "--build-arg TOR_LINUX_GID=1107"
+
+- ansible.builtin.debug:
+    var: podman_image_output
+
+- name: Samourai | Create container
+  register: podman_container_output
+  containers.podman.podman_container:
+    debug: no 
+    image: "samourai:{{ samourai_dojo_version }}"
+    image_strict: yes
+    recreate: yes
+    state: present
+    name: samourai
+    env: "{{ samourai_config }}"
+    ports: "{{ samourai_ports }}"
+
+- ansible.builtin.debug:
+    var: podman_container_output
