@@ -1,21 +1,21 @@
 ---
-samourai_https_port: 4480
-samourai_ws_http_port: 8080
-samourai_pushtx_http_port: 8081
-samourai_tracker_http_port: 8082
+samourai_dojo_https_port: 4480
+samourai_dojo_ws_http_port: 8080
+samourai_dojo_pushtx_http_port: 8081
+samourai_dojo_tracker_http_port: 8082
 
 #samourai_dojo_version: v1.18.1
-samourai_onion_address: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ONION') }}"
-samourai_ports:
-  - "127.0.0.1:{{ samourai_ws_http_port }}:8080"
-  - "127.0.0.1:{{ samourai_pushtx_http_port }}:8081"
-  - "127.0.0.1:{{ samourai_tracker_http_port }}:8082"
+samourai_dojo_onion_address: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ONION') }}"
+samourai_dojo_ports:
+  - "127.0.0.1:{{ samourai_dojo_ws_http_port }}:8080"
+  - "127.0.0.1:{{ samourai_dojo_pushtx_http_port }}:8081"
+  - "127.0.0.1:{{ samourai_dojo_tracker_http_port }}:8082"
 
 # All the environment variables that node.js uses:
 # grep -r process.env. ~/src/samourai-dojo/docker/my-dojo/node/ | awk '{print $3}' | sort | uniq
 
 # These are organized by the file they are declared in Dojo
-samourai_config:
+samourai_dojo_config:
   # ~/src/samourai-dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
   MYSQL_USER: samourai
   MYSQL_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_MARIADB_PASSWORD') }}"
@@ -31,7 +31,7 @@ samourai_config:
   NODE_FEE_TYPE: ECONOMICAL
   # ~/src/samourai-dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
   INDEXER_IP: 192.168.0.42
-  INDEXER_RPC_PORT: 5001
+  INDEXER_RPC_PORT: 50001
   INDEXER_BATCH_SUPPORT: active
   INDEXER_PROTOCOL: tcp
   # ~/src/samourai-dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl

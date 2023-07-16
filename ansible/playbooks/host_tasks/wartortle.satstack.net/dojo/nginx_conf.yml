@@ -1,19 +1,19 @@
 ---
 # https://code.samourai.io/dojo/samourai-dojo/-/tree/develop/docker/my-dojo/nginx/mainnet.conf
-- name: samourai | Configure nginx to include the template
+- name: Dojo | Configure nginx to include the template
   ansible.builtin.import_role:
     name: nginxinc.nginx_core.nginx_config
   vars:
     nginx_config_http_template_enable: true
     nginx_config_http_template:
       - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/samourai_{{ inventory_hostname }}.conf"
+        deployment_location: "/etc/nginx/conf.d/samourai-dojo_{{ inventory_hostname }}.conf"
         backup: false
         config:
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ samourai_https_port|default(4440) }} ssl"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ samourai_dojo_https_port|default(4440) }} ssl"
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               log:
@@ -27,20 +27,20 @@
                       code: 301
                 - location: /admin/
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_ws_http_port|default(8080)}}/static/admin/"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/static/admin/"
             - core:
-                server_name: "{{ samourai_onion_address }}"
+                server_name: "{{ samourai_dojo_onion_address|default('_') }}"
                 listen:
-                  - address: "127.0.0.1:{{ samourai_onion_port|default(80) }}"
+                  - address: "127.0.0.1:{{ samourai_dojo_onion_port|default(80) }}"
                 send_timeout: 600s
               log:
                 access:
                   - off
               locations:
-                  # Proxy WebSocket connections first
+                # Proxy WebSocket connections first
                 - location: /v2/inv
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_ws_http_port|default(8080)}}"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}"
                     connect_timeout: 600s
                     read_timeout: 600s
                     send_timeout: 600s
@@ -55,28 +55,28 @@
                 # PushTX server is separate, so proxy first
                 - location: /v2/pushtx/
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_pushtx_http_port|default(8081)}}/"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_pushtx_http_port|default(8081)}}/"
                     connect_timeout: 600s
                     read_timeout: 600s
                     send_timeout: 600s
                 # Tracker server is separate, so proxy first
                 - location: /v2/tracker/
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_tracker_http_port|default(8082)}}/"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_tracker_http_port|default(8082)}}/"
                     connect_timeout: 600s
                     read_timeout: 600s
                     send_timeout: 600s
                 # Proxy requests to maintenance tool
                 - location: /admin/
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_ws_http_port|default(8080)}}/static/admin/"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/static/admin/"
                     connect_timeout: 600s
                     read_timeout: 600s
                     send_timeout: 600s
                 # Proxy all other v2 requests to the accounts server
                 - location: /v2/
                   proxy:
-                    pass: "http://127.0.0.1:{{ samourai_ws_http_port|default(8080)}}/"
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/"
                     connect_timeout: 600s
                     read_timeout: 600s
                     send_timeout: 600s

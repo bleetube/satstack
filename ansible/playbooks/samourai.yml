@@ -1,0 +1,13 @@
+- hosts: dojo
+  roles:
+    - role: nginxinc.nginx_core.nginx
+      become: true
+    - role: fauust.mariadb
+      become: true
+    - role: alvistack.podman
+      become: true
+    - role: bleetube.dojo
+      tags: dojo
+  tasks:
+    - import_tasks: host_tasks/wartortle.satstack.net/dojo/nginx_conf.yml
+      become: true
