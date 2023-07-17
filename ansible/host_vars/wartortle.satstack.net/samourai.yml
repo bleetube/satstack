@@ -4,7 +4,8 @@ samourai_dojo_ws_http_port: 8080
 samourai_dojo_pushtx_http_port: 8081
 samourai_dojo_tracker_http_port: 8082
 
-#samourai_dojo_version: v1.18.1
+samourai_dojo_nginx_bind_http: "0.0.0.0" # TODO: move tor
+samourai_dojo_onion_port: 9080
 samourai_dojo_onion_address: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ONION') }}"
 samourai_dojo_ports:
   - "127.0.0.1:{{ samourai_dojo_ws_http_port }}:8080"

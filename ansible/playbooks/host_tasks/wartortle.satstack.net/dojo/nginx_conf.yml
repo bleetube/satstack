@@ -20,14 +20,51 @@
                 access:
                   - off
               locations:
+                # Proxy WebSocket connections first
+                - location: /v2/inv
+                  proxy:
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}"
+                    http_version: '1.1'
+                    set_header:
+                    - field: Host
+                      value: $http_host
+                    - field: Connection
+                      value: $connection_upgrade
+                    - field: Upgrade
+                      value: $http_upgrade
+                # PushTX server is separate, so proxy first
+                - location: /v2/pushtx/
+                  proxy:
+                    pass: "http://127.0.0.1:{{ samourai_dojo_pushtx_http_port|default(8081)}}/"
+                # Tracker server is separate, so proxy first
+                - location: /v2/tracker/
+                  proxy:
+                    pass: "http://127.0.0.1:{{ samourai_dojo_tracker_http_port|default(8082)}}/"
+                # Proxy requests to maintenance tool
+                - location: /admin/
+                  proxy:
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/static/admin/"
+                # Proxy all other v2 requests to the accounts server
+                - location: /v2/
+                  proxy:
+                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/"
+                # Redirect onion address to maintenance tool
                 - location: = /
                   rewrite:
                     return:
                       url: /admin
                       code: 301
-                - location: /admin/
-                  proxy:
-                    pass: "http://127.0.0.1:{{ samourai_dojo_ws_http_port|default(8080)}}/static/admin/"
+                # Serve remaining requests
+                - location: /
+                  rewrite:
+                    return:
+                      code: 200
+                      text: >
+                        '{"status":"ok"}'
+                  headers:
+                    add_headers:
+                      - name: Content-Type
+                        value: application/json
             - core:
                 server_name: "{{ samourai_dojo_onion_address|default('_') }}"
                 listen:

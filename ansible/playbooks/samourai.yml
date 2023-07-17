@@ -10,4 +10,5 @@
       tags: dojo
   tasks:
     - import_tasks: host_tasks/wartortle.satstack.net/dojo/nginx_conf.yml
+      tags: nginx
       become: true
