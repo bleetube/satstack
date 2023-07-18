@@ -87,6 +87,7 @@
       "netstat"
       "vmstat"
       "systemd"
+      "tcpstat"
       "processes"
     ];
   };

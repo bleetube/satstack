@@ -3,6 +3,7 @@ samourai_dojo_https_port: 4480
 samourai_dojo_ws_http_port: 8080
 samourai_dojo_pushtx_http_port: 8081
 samourai_dojo_tracker_http_port: 8082
+#onion_services_path: /var/lib/tor
 
 samourai_dojo_nginx_bind_http: "0.0.0.0" # TODO: move tor
 samourai_dojo_onion_port: 9080
@@ -44,7 +45,7 @@ samourai_dojo_config:
   BITCOIND_ZMQ_BLK_HASH: 28334
   # ~/src/samourai-dojo/docker/my-dojo/.env
   DOJO_VERSION_TAG: "{{ samourai_dojo_version }}"
-  NET_DOJO_TOR_IPV4: 192.168.0.42
+  NET_DOJO_TOR_IPV4: host.containers.internal
   NET_DOJO_MYSQL_IPV4: host.containers.internal
   MYSQL_DATABASE: samourai
   NODE_PREFIX_STATUS: status

@@ -6,7 +6,7 @@ onion_active: True
 onion_ipaddr: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}"
 onion_tor_apt_state: present
 onion_services:
-  dojo:
+  hsv3dojo:
     onion_ports:
       - [80, 9080]
 # lightningd:
