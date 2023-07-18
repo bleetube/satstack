@@ -74,3 +74,9 @@ roles:
   - src: https://github.com/JensTimmerman/ansible-role-vaultwarden
     name: jenstimmerman.vaultwarden
 #   version: '>=1.1.0'
+
+  # includes a minor change that skips the outdated apt role dependency
+  - src: https://github.com/bleetube/ansible-role-onion
+    name: systemli.onion
+    version: skip_apt_key
+#   version: '>=2.3.0'

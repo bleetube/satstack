@@ -1,0 +1,24 @@
+---
+bridges:
+  - "{{ lookup('ansible.builtin.env', 'tor_guard_01') }}"
+  - "{{ lookup('ansible.builtin.env', 'tor_guard_02') }}"
+onion_active: True
+onion_ipaddr: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}"
+onion_tor_apt_state: present
+onion_services:
+  dojo:
+    onion_ports:
+      - [80, 9080]
+# lightningd:
+#   onion_hostname: 
+#   onion_ports:
+#     - [9735, 9735]
+#   onion_authorized_clients: []
+#   onion_public_key_b64encoded: 
+#   onion_secret_key_b64encoded:
+#   onion_state: present
+
+onions_configuration:
+  SocksPort: 9050
+  SocksPolicy: accept 127.0.0.0/8, reject *
+  NoExec: 1
