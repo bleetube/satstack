@@ -1,15 +1,17 @@
 ---
 - hosts: tor
+  become: yes
 
   pre_tasks:
     - name: Install the torproject.org apt repository.
-      include_tasks:
-        file: Debian.yml
-        apply:
-          become: yes
+      import_tasks: Debian.yml
       when: ansible_os_family == 'Debian'
+
+    - name: Install tor from default repository.
+      ansible.builtin.package:
+        name: tor
+      when: ansible_os_family != 'Debian'
 
   roles:
     - role: systemli.onion
-      become: yes
       tags: onion

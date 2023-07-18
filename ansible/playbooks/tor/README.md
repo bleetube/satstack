@@ -1,14 +1,9 @@
 # tor
 
-Sets up private [bridges](https://support.torproject.org/glossary/#bridge) to act as tor [guards](https://support.torproject.org/glossary/#guard), and configure homelab machines to use them.
-
-Configures [onion services](https://support.torproject.org/glossary/#onion-services) for Samourai Dojo and lightningd.
-
-See [ansible-relayor](https://github.com/nusenu/ansible-relayor) docs
+Runs a forked version of systemli.onion that sets up private [bridges](https://support.torproject.org/glossary/#bridge) to act as tor [guards](https://support.torproject.org/glossary/#guard), and configure homelab machines to use them.
 
 * [ ] obs4
 * [ ] [auto-updates](https://github.com/NewNewYorkBridges/ansible-tor-bridge/blob/main/templates/50unattended-upgrades.j2)
-
 
 ## troubleshooting
 
