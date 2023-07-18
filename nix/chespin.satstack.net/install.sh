@@ -2,7 +2,7 @@
 set -e
 set -x
 # Requires root ssh access to target machine
-TARGET=chesnaught
+TARGET=chespin
 
 EFI_DISK ()
 {
@@ -37,4 +37,5 @@ read
 ssh root@${TARGET} "$(typeset -f EFI_DISK); EFI_DISK"
 rsync -tv configuration.nix root@${TARGET}:/mnt/etc/nixos/
 rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/
+rsync -v /var/acme/dhparams.pem root@${TARGET}:/var/acme/
 ssh root@${TARGET} nixos-install

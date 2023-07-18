@@ -25,6 +25,7 @@ prometheus_targets:
         group: brenise
 
     - targets:
+        - chespin.satstack.net:4430
         - wartortle.satstack.net:4430
         - squirtle.satstack.net:4430
         - omastar.satstack.net:4430
