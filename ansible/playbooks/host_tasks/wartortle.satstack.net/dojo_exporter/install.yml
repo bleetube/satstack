@@ -10,10 +10,13 @@
   ansible.builtin.pip:
     name: dojo-exporter
     state: latest
+  notify: restart dojo_exporter
 
 - name: Write environment variables to a file
   ansible.builtin.lineinfile:
     path: /opt/dojo_exporter/.env
     line: "{{ item.key }}={{ item.value }}"
     create: yes
+  no_log: true
   loop: "{{ dojo_exporter_config | dict2items }}"
+  notify: restart dojo_exporter

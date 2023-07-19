@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus openmetrics for Samourai Dojo
+
+[Service]
+User={{ dojo_exporter_user|default('dojo-exp') }}
+EnvironmentFile={{ dojo_exporter_home|default('/opt/dojo_exporter') }}/.env
+WorkingDirectory={{ dojo_exporter_home|default('/opt/dojo_exporter') }}/
+ExecStart={{ dojo_exporter_home|default('/opt/dojo_exporter') }}/.local/bin/dojo_exporter
+Restart=on-failure
+RestartSec=2m
+
+[Install]
+WantedBy=multi-user.target

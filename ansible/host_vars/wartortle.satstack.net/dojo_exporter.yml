@@ -1,5 +1,5 @@
 ---
 dojo_exporter_config:
-  DOJO_APIKEY:
-  DOJO_BASE_URL:
-  METRICS_PORT: 9104
+  DOJO_APIKEY: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_ADMIN') }}"
+  DOJO_BASE_URL: "https://{{ inventory_hostname }}:4480"
+  METRICS_PORT: 8042

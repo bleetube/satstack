@@ -100,13 +100,6 @@ prometheus_scrape_configs:
       - target_label: __address__
         replacement: "{{ inventory_hostname }}:4431"
 
-  - job_name: samourai
-    scheme: https
-    scrape_interval: 2m
-    static_configs:
-      - targets:
-        - squirtle.satstack.net:9104
-
   - job_name: testnet
     scheme: https
     scrape_interval: 30s
@@ -118,7 +111,13 @@ prometheus_scrape_configs:
     scheme: https
     static_configs:
       - targets:
-        - squirtle.brenise.com:4431
+        - chespin.satstack.net:4431
+
+  - job_name: samourai-dojo
+    scheme: https
+    static_configs:
+      - targets:
+        - wartortle.satstack.net:4442
 
 prometheus_alert_rules:
   - alert: Prometheus
@@ -190,20 +189,6 @@ prometheus_alert_rules:
 #   for: 15m
 #   annotations:
 #     summary: lightningd is not running.
-
-# - alert: Stale Dojo block height tip
-#   expr: dojo_block_height < max(bitcoin_latest_block_height)
-#   for: 1h
-#   annotations:
-#     summary: The latest block height tip reported by a node is stale or doesn't match the others.
-#     description: The latest block height tip reported by a node is stale.
-
-# - alert: Stail LND block height tip
-#   expr: lnd_chain_block_height{job="lndmon"} < max(bitcoin_latest_block_height{job="bitcoind"})
-#   for: 1h
-#   annotations:
-#     summary: LND is not in sync with the chain.
-#     description: The latest block height tip reported by LND is stale.
 
 # - alert: LND uptime
 #   expr: up{job="lnd"} == 0

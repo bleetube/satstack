@@ -12,3 +12,5 @@
     - import_tasks: nginx_conf.yml
       tags: nginx
       become: true
+
+- import_playbook: ../dojo_exporter/main.yml
