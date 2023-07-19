@@ -5,7 +5,7 @@ This is my stack of orchestrated open source software for self-hosting personal,
 Core tools
 
 * __Observability__: <img src="docs/logos/grafana.svg" width="16" height="16"> [grafana](https://grafana.com/), <img src="docs/logos/prometheus.svg" width="16" height="16"> [prometheus](https://prometheus.io/), <img src="docs/logos/ntfy.svg" width="16" height="16"> [ntfy](https://ntfy.sh/)
-* __TLS/tor__: [nginx](https://nginx.org/en/), [acme-lego](https://go-acme.github.io/lego/), [certbot](https://certbot.eff.org/), [onion services](ansible/playbooks/tor/README.md)
+* __TLS/tor__: [nginx](https://nginx.org/en/), [acme-lego](https://go-acme.github.io/lego/), [certbot](https://certbot.eff.org/), [onion services](ansible/playbooks/tor/)
 * __Data__: [postgresql](https://www.postgresql.org/), [mariadb](https://mariadb.org/)
 
 Podman Containers for JS/PHP (better opsec, lower maintenance)
@@ -15,7 +15,7 @@ Podman Containers for JS/PHP (better opsec, lower maintenance)
 
 NixOS (WIP):
 
-* __nixBitcoin__: bitcoind, electrs, core-ln
-* __Personal__: vaultwarden
+* __nixBitcoin__: bitcoind, electrs, core-ln, [ln-ws-proxy](https://github.com/jb55/ln-ws-proxy)
+* __Tools__: vaultwarden, miniflux
 
-Monitoring and backups are built-in. The aim is to build an opinionated home network effectively from scratch and minimize long-term maintenance.
+Monitoring and backups are built-in where appropriate. The aim is to build an opinionated home network effectively from scratch and minimize long-term maintenance.

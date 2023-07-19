@@ -67,9 +67,6 @@
     enableSSHSupport = true;
   };
 
-  security.doas.enable = true;
-  security.sudo.enable = false;
-  services.openssh.enable = true;
   networking.firewall.enable = true;
 # networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 22 80 443 8333 50001 ];
@@ -77,38 +74,73 @@
 # networking.firewall.allowedUDPPorts = [ ];
 # networking.firewall.allowedUDPPortRanges = [ ];
 
-  # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/monitoring/prometheus/exporters.nix
-  services.prometheus.exporters.node = {
-    enable = true;
-    port = 8030;
-    enabledCollectors = [
-      "cpu.info"
-      "interrupts"
-      "netstat"
-      "vmstat"
-      "systemd"
-      "tcpstat"
-      "processes"
-    ];
-  };
+  security.doas.enable = true;
+  security.sudo.enable = false;
+  services = {
+    openssh.enable = true;
 
-  # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/web-servers/nginx/default.nix
-  services.nginx = {
+    # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/monitoring/prometheus/exporters.nix
+    prometheus.exporters.node = {
       enable = true;
-      recommendedProxySettings = true;
-      recommendedTlsSettings = true;
-      recommendedOptimisation = true;
-#     recommendedBrotliSettings = true;
-      sslProtocols = "TLSv1.3";
-      sslDhparam = "/var/acme/dhparams.pem";
-      virtualHosts."chespin.satstack.net" =  {
-        listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
-        onlySSL = true;
-        serverName = "chespin.satstack.net";
-        sslCertificate = "/var/acme/certificates/chespin.satstack.net.crt";
-        sslCertificateKey = "/var/acme/certificates/chespin.satstack.net.key";
-        locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
+      port = 8030;
+      enabledCollectors = [
+        "cpu.info"
+        "interrupts"
+        "netstat"
+        "vmstat"
+        "systemd"
+        "tcpstat"
+        "processes"
+      ];
+    };
+
+    # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/web-servers/nginx/default.nix
+    nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+  #     recommendedBrotliSettings = true;
+        sslProtocols = "TLSv1.3";
+        sslDhparam = "/var/acme/dhparams.pem";
+        virtualHosts."chespin.satstack.net" =  {
+          listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
+          onlySSL = true;
+          serverName = "chespin.satstack.net";
+          sslCertificate = "/var/acme/certificates/chespin.satstack.net.crt";
+          sslCertificateKey = "/var/acme/certificates/chespin.satstack.net.key";
+          locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
+        };
+    };
+
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql_15;
+      ensureDatabases = [ "miniflux" ];
+      ensureUsers = [
+        {
+          name = "miniflux";
+          ensurePermissions = {
+            "DATABASE \"miniflux\"" = "ALL PRIVILEGES";
+            "ALL TABLES IN SCHEMA public" = "ALL PRIVILEGES";
+          };
+        }
+      ];
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database  DBuser  auth-method
+        local all       all     trust
+      '';
+    };
+
+    miniflux = {
+      enable = true;
+      adminCredentialsFile = "/etc/miniflux.env";
+      config = {
+        LISTEN_ADDR = "127.0.0.1:8031";
+        BASE_URL = "https://chespin.satstack.net:4431/";
+        METRICS_COLLECTOR = "1";
       };
+    };
   };
 
   system.stateVersion = "23.05";

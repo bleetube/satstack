@@ -39,3 +39,5 @@ rsync -tv configuration.nix root@${TARGET}:/mnt/etc/nixos/
 rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/
 rsync -v /var/acme/dhparams.pem root@${TARGET}:/var/acme/
 ssh root@${TARGET} nixos-install
+
+# TODO: create miniflux.adminCredentialsFile
