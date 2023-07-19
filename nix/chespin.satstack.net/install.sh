@@ -45,3 +45,8 @@ rsync -v ~/.secrets/miniflux/env root@${TARGET}:/etc/miniflux.env
 ssh root@${TARGET} chmod 600 /etc/miniflux.env
 
 ssh root@${TARGET} nixos-install
+
+# nixbitcoin
+#echo export NIX_PATH=$(nix-shell --run "echo $NIX_PATH") > nix-env.sh
+#source nix-env.sh
+#nix-shell --command deploy
