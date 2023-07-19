@@ -1,0 +1,20 @@
+---
+wikijs_https_port: 4441
+wikijs_http_port: 8041
+wikijs_ports:
+  - "127.0.0.1:8041:3000"
+
+wikijs_data_dir: /var/compose/wikijs
+
+wikijs_volumes:
+ - "{{ wikijs_data_dir }}:/wiki/data/content"
+ - /var/run/postgresql:/var/run/postgresql
+
+# https://docs.requarks.io/install/docker
+wikijs_config:
+  DB_TYPE: postgres
+  DB_HOST: /var/run/postgresql
+  DB_PORT: 5432
+  DB_NAME: wikijs
+  DB_USER: wikijs
+  DB_PASS: "{{ lookup('ansible.builtin.env', 'wartortle_WIKIJS_POSTGRES_PASSWORD') }}"

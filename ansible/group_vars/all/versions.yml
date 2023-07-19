@@ -41,5 +41,5 @@ nextcloud_version: 27-fpm-alpine
 # https://code.samourai.io/dojo/samourai-dojo/-/releases
 samourai_dojo_version: "1.20.0"
 
-# https://github.com/dani-garcia/vaultwarden/releases
-vaultwarden_version: latest
+# https://github.com/Requarks/wiki/pkgs/container/wiki
+wikijs_version: 2

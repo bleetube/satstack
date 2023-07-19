@@ -52,12 +52,19 @@ postgresql_pg_hba_default:
 
 # Troubleshoot authentication: tail -f /var/log/postgresql/postgresql-13-main.log
 postgresql_users:
+  - name: wikijs
+    pass: "{{ lookup('ansible.builtin.env', 'wartortle_WIKIJS_POSTGRES_PASSWORD') }}"
+    encrypted: yes
+    state: present
   - name: nextcloud
     pass: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_POSTGRES_PASSWORD') }}"
     encrypted: yes
     state: present
 
 postgresql_databases:
+  - name: wikijs
+    owner: wikijs
+    state: present
   - name: nextcloud
     owner: nextcloud
     state: present

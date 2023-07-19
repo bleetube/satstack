@@ -45,6 +45,9 @@ roles:
   - name: bleetube.nextcloud
     src:  https://github.com/bleetube/ansible-role-nextcloud
 
+  - name: bleetube.wikijs
+    src:  https://github.com/bleetube/ansible-role-wikijs
+
   - name: oefenweb.postfix
     src:  https://github.com/bleetube/ansible-role-postfix
 
@@ -66,6 +69,7 @@ roles:
   - src: https://github.com/fauust/ansible-role-mariadb
     name: fauust.mariadb
 
+  # two problems remaining with this role are the necessary workaround var and the deprecated apt_key usage.
 # - src: https://github.com/ANXS/postgresql
   - src: https://github.com/VladDm93/postgresql
     version: postgres-14-15-support

@@ -1,0 +1,13 @@
+- hosts: wartortle.satstack.net
+  roles:
+    - role: nginxinc.nginx_core.nginx
+      become: true
+    - role: anxs.postgresql
+      become: true
+    - role: alvistack.podman
+      become: true
+    - role: bleetube.wikijs
+      tags: wikijs
+  tasks:
+    - import_tasks: nginx_conf.yml
+      become: true
