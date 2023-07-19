@@ -1,0 +1,19 @@
+---
+
+
+- name: Upgrade pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+
+- name: Install dojo_exporter
+  ansible.builtin.pip:
+    name: dojo-exporter
+    state: latest
+
+- name: Write environment variables to a file
+  ansible.builtin.lineinfile:
+    path: /opt/dojo_exporter/.env
+    line: "{{ item.key }}={{ item.value }}"
+    create: yes
+  loop: "{{ dojo_exporter_config | dict2items }}"

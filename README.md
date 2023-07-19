@@ -15,7 +15,7 @@ Podman Containers for JS/PHP (better opsec, lower maintenance)
 
 NixOS (WIP):
 
-* __nixBitcoin__: bitcoind, electrs, core-ln, [ln-ws-proxy](https://github.com/jb55/ln-ws-proxy)
+* __nixBitcoin__: bitcoind, lightningd, electrs, [ln-ws-proxy](https://github.com/jb55/ln-ws-proxy)
 * __Tools__: vaultwarden, miniflux
 
 Monitoring and backups are built-in where appropriate. The aim is to build an opinionated home network effectively from scratch and minimize long-term maintenance.

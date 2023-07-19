@@ -1,0 +1,25 @@
+- hosts: wartortle.satstack.net
+  become: true
+
+# You may need to add dojo-exp as a become target in host_vars/doas.yml
+# ansible-playbook oneshots/doas/main.yml -e "ansible_user=root" --limit wartortle.satstack.net
+
+  tasks:
+    - name: Create a user
+      ansible.builtin.user:
+        name: dojo-exp
+        state: present
+        shell: /bin/bash
+        createhome: yes
+        home: /opt/dojo_exporter
+        password: '!'
+        update_password: on_create
+#       groups: dojo-exp
+#       append: yes
+
+    - name: Install dojo_exporter as the dojo-exp user
+      include_tasks:
+        file: install.yml
+        apply:
+          become: true
+          become_user: dojo-exp

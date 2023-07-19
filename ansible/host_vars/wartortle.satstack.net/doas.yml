@@ -5,3 +5,5 @@ doas_permit_list:
     role: root
   - username: blee
     role: postgres
+  - username: blee
+    role: dojo-exp

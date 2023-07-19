@@ -35,9 +35,13 @@ echo "Install NixOS on ${TARGET}? Press enter to continue or ctrl+c to quit."
 read
 
 ssh root@${TARGET} "$(typeset -f EFI_DISK); EFI_DISK"
-rsync -tv configuration.nix root@${TARGET}:/mnt/etc/nixos/
-rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/
-rsync -v /var/acme/dhparams.pem root@${TARGET}:/var/acme/
-ssh root@${TARGET} nixos-install
 
-# TODO: create miniflux.adminCredentialsFile
+rsync -tv configuration.nix root@${TARGET}:/mnt/etc/nixos/
+
+# services
+rsync -v /var/acme/dhparams.pem root@${TARGET}:/var/acme/
+rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/
+rsync -v ~/.secrets/miniflux/env root@${TARGET}:/etc/miniflux.env
+ssh root@${TARGET} chmod 600 /etc/miniflux.env
+
+ssh root@${TARGET} nixos-install

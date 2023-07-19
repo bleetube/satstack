@@ -103,33 +103,25 @@
   #     recommendedBrotliSettings = true;
         sslProtocols = "TLSv1.3";
         sslDhparam = "/var/acme/dhparams.pem";
-        virtualHosts."chespin.satstack.net" =  {
-          listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
-          onlySSL = true;
-          serverName = "chespin.satstack.net";
-          sslCertificate = "/var/acme/certificates/chespin.satstack.net.crt";
-          sslCertificateKey = "/var/acme/certificates/chespin.satstack.net.key";
-          locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
-        };
-    };
-
-    postgresql = {
-      enable = true;
-      package = pkgs.postgresql_15;
-      ensureDatabases = [ "miniflux" ];
-      ensureUsers = [
+        virtualHosts =  
+        let
+          tlsConfig = {
+                onlySSL = true;
+                serverName = "chespin.satstack.net";
+                sslCertificate = "/var/acme/certificates/chespin.satstack.net.crt";
+                sslCertificateKey = "/var/acme/certificates/chespin.satstack.net.key";
+            };
+        in
         {
-          name = "miniflux";
-          ensurePermissions = {
-            "DATABASE \"miniflux\"" = "ALL PRIVILEGES";
-            "ALL TABLES IN SCHEMA public" = "ALL PRIVILEGES";
-          };
-        }
-      ];
-      authentication = pkgs.lib.mkOverride 10 ''
-        #type database  DBuser  auth-method
-        local all       all     trust
-      '';
+          "node_exporter" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
+            locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
+          });
+          "miniflux" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
+            locations."/" = { proxyPass = "http://127.0.0.1:8031"; };
+          });
+        };
     };
 
     miniflux = {
@@ -141,6 +133,7 @@
         METRICS_COLLECTOR = "1";
       };
     };
+
   };
 
   system.stateVersion = "23.05";

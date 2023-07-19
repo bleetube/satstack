@@ -1,0 +1,5 @@
+---
+dojo_exporter_config:
+  DOJO_APIKEY:
+  DOJO_BASE_URL:
+  METRICS_PORT: 9104
