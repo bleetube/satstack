@@ -5,113 +5,6 @@
     # <nix-bitcoin/modules/presets/hardened-extended.nix>
     ./hardware-configuration.nix
   ];
-  ### BITCOIND
-  # Bitcoind is enabled by default via secure-node.nix.
-  #
-  # Set this to accounce the onion service address to peers.
-  # The onion service allows accepting incoming connections via Tor.
-  nix-bitcoin.onionServices.bitcoind.public = true;
-  #
-  # You can add options that are not defined in modules/bitcoind.nix as follows
-  # https://github.com/fort-nix/nix-bitcoin/blob/master/modules/bitcoind.nix
-  services.bitcoind = {
-    disablewallet = true;
-    rpc = {
-      address = "0.0.0.0";
-      #port = 8332;
-      #threads = 6;
-      allowip = [ 
-        "192.168.0.0/16"
-        "172.16.0.0/12"
-        "10.0.0.0/8"
-      ];
-#     users = {
-#       alice = {
-#         passwordHMACFromFile = true;
-#       };
-#     };
-    };
-#   dbCache = 1024; # defined in presets/secure-node.nix, so cannot be changed here
-    txindex = true;
-    zmqpubrawblock = "tcp://0.0.0.0:28332";
-    zmqpubrawtx = "tcp://0.0.0.0:28333";
-    extraConfig = ''
-      maxmempool=1024
-      zmqpubhashblock=tcp://0.0.0.0:28334 # dojo
-      maxorphantx=110
-    '';
-  };
-
-  ### CLIGHTNING
-  #services.clightning.enable = true;
-  #nix-bitcoin.onionServices.clightning.public = true;
-  #services.clightning.plugins.prometheus.enable = true;
-
-  # == REST server
-  # Set this to create a clightning REST onion service.
-  # This also adds binary `lndconnect-clightning` to the system environment.
-  # This binary creates QR codes or URLs for connecting applications to clightning
-  # via the REST onion service.
-  # You can also connect via WireGuard instead of Tor.
-  # See ../docs/services.md for details.
-  #
-  #services.clightning-rest = {
-  #  enable = true;
-  #  lndconnect = {
-  #    enable = true;
-  #    onion = false;
-  #  };
-  #};
-
-  ### ELECTRS
-  # Set this to enable electrs, an Electrum server implemented in Rust.
-  services.electrs = {
-    enable = true;
-    address = "0.0.0.0";
-  };
-
-  ### JOINMARKET
-  # Set this to enable the JoinMarket service, including its command-line scripts.
-  # These scripts have prefix 'jm-', like 'jm-tumbler'.
-  # Note: JoinMarket has full access to bitcoind, including its wallet functionality.
-  # services.joinmarket.enable = true;
-  #
-  # Set this to enable the JoinMarket Yield Generator Bot. You will be able to
-  # earn sats by providing CoinJoin liquidity. This makes it impossible to use other
-  # scripts that access your wallet.
-  # services.joinmarket.yieldgenerator.enable = true;
-  #
-  # Set this to enable the JoinMarket order book watcher.
-  # services.joinmarket-ob-watcher.enable = true;
-
-  ### Backups
-  # Set this to enable nix-bitcoin's own backup service. By default, it
-  # uses duplicity to incrementally back up all important files in /var/lib to
-  # /var/lib/localBackups once a day.
-  services.backups.enable = true;
-  #
-  # You can pull the localBackups folder with
-  # `scp -r bitcoin-node:/var/lib/localBackups /my-backup-path/`
-  # Alternatively, you can also set a remote target url, for example
-  # services.backups.destination = "sftp://user@host[:port]/[relative|/absolute]_path";
-  # Supply the sftp password by appending the FTP_PASSWORD environment variable
-  # to secrets/backup-encryption-env like so
-  # `echo "FTP_PASSWORD=<password>" >> secrets/backup-encryption-env`
-  # You many also need to set a ssh host and publickey with
-  # programs.ssh.knownHosts."host" = {
-  #   hostNames = [ "host" ];
-  #   publicKey = "<ssh public from `ssh-keyscan`>";
-  # };
-  # If you also want to backup bulk data like the Bitcoin & Liquid blockchains
-  # and electrs data directory, enable
-  # services.backups.with-bulk-data = true;
-
-  ### netns-isolation (EXPERIMENTAL)
-  # Enable this module to use Network Namespace Isolation. This feature places
-  # every service in its own network namespace and only allows truly necessary
-  # connections between network namespaces, making sure services are isolated on
-  # a network-level as much as possible.
-  # nix-bitcoin.netns-isolation.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -179,7 +72,9 @@
 
   security.doas.enable = true;
   security.sudo.enable = false;
+
   services = {
+
     openssh.enable = true;
 
     # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/monitoring/prometheus/exporters.nix
@@ -278,12 +173,115 @@
       };
     };
 
+    bitcoind = {
+      disablewallet = true;
+      rpc = {
+        address = "0.0.0.0";
+        #port = 8332;
+        #threads = 6;
+        allowip = [ 
+          "192.168.0.0/16"
+          "172.16.0.0/12"
+          "10.0.0.0/8"
+        ];
+        users = { # HMAC files are configured in nix-bitcoin.secrets further down
+          dojo.passwordHMACFromFile = true;
+        };
+      };
+  #   dbCache = 1024; # defined in presets/secure-node.nix, so cannot be changed here
+      txindex = true;
+      zmqpubrawblock = "tcp://0.0.0.0:28332";
+      zmqpubrawtx = "tcp://0.0.0.0:28333";
+      extraConfig = ''
+        maxmempool=1024
+        zmqpubhashblock=tcp://0.0.0.0:28334 # dojo
+        maxorphantx=110
+      '';
+    };
+
+    electrs = {
+      enable = true;
+      address = "0.0.0.0";
+    };
+    ### CLIGHTNING
+    #services.clightning.enable = true;
+    #nix-bitcoin.onionServices.clightning.public = true;
+    #services.clightning.plugins.prometheus.enable = true;
+
+    # == REST server
+    # Set this to create a clightning REST onion service.
+    # This also adds binary `lndconnect-clightning` to the system environment.
+    # This binary creates QR codes or URLs for connecting applications to clightning
+    # via the REST onion service.
+    # You can also connect via WireGuard instead of Tor.
+    # See ../docs/services.md for details.
+    #
+    #clightning-rest = {
+    #  enable = true;
+    #  lndconnect = {
+    #    enable = true;
+    #    onion = false;
+    #  };
+    #};
+
+    ### JOINMARKET
+    # Set this to enable the JoinMarket service, including its command-line scripts.
+    # These scripts have prefix 'jm-', like 'jm-tumbler'.
+    # Note: JoinMarket has full access to bitcoind, including its wallet functionality.
+    # joinmarket.enable = true;
+    #
+    # Set this to enable the JoinMarket Yield Generator Bot. You will be able to
+    # earn sats by providing CoinJoin liquidity. This makes it impossible to use other
+    # scripts that access your wallet.
+    # joinmarket.yieldgenerator.enable = true;
+    #
+    # Set this to enable the JoinMarket order book watcher.
+    # joinmarket-ob-watcher.enable = true;
+
+    ### Backups
+    # Set this to enable nix-bitcoin's own backup service. By default, it
+    # uses duplicity to incrementally back up all important files in /var/lib to
+    # /var/lib/localBackups once a day.
+    backups.enable = true;
+    #
+    # You can pull the localBackups folder with
+    # `scp -r bitcoin-node:/var/lib/localBackups /my-backup-path/`
+    # Alternatively, you can also set a remote target url, for example
+    # services.backups.destination = "sftp://user@host[:port]/[relative|/absolute]_path";
+    # Supply the sftp password by appending the FTP_PASSWORD environment variable
+    # to secrets/backup-encryption-env like so
+    # `echo "FTP_PASSWORD=<password>" >> secrets/backup-encryption-env`
+    # You many also need to set a ssh host and publickey with
+    # programs.ssh.knownHosts."host" = {
+    #   hostNames = [ "host" ];
+    #   publicKey = "<ssh public from `ssh-keyscan`>";
+    # };
+    # If you also want to backup bulk data like the Bitcoin & Liquid blockchains
+    # and electrs data directory, enable
+    # backups.with-bulk-data = true;
+
+  }; # end services
+
+  nix-bitcoin = {
+    onionServices.bitcoind.public = true; # announce onion
+
+    secrets = {
+      bitcoin-rpcpassword-dojo.user = "bitcoin";
+      bitcoin-HMAC-dojo.user = config.services.bitcoind.user;
+    };
+
+    ### netns-isolation (EXPERIMENTAL)
+    # Enable this module to use Network Namespace Isolation. This feature places
+    # every service in its own network namespace and only allows truly necessary
+    # connections between network namespaces, making sure services are isolated on
+    # a network-level as much as possible.
+    # nix-bitcoin.netns-isolation.enable = true;
+
+    # The nix-bitcoin release version that your config is compatible with.
+    # When upgrading to a backwards-incompatible release, nix-bitcoin will display an
+    # an error and provide instructions for migrating your config to the new release.
+    configVersion = "0.0.85";
   };
 
   system.stateVersion = "23.05";
-
-  # The nix-bitcoin release version that your config is compatible with.
-  # When upgrading to a backwards-incompatible release, nix-bitcoin will display an
-  # an error and provide instructions for migrating your config to the new release.
-  nix-bitcoin.configVersion = "0.0.85";
 }
