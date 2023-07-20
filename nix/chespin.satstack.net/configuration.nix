@@ -193,6 +193,7 @@
         ];
         users = { # HMAC files are configured in nix-bitcoin.secrets further down
           dojo.passwordHMACFromFile = true;
+          mempool.passwordHMACFromFile = true;
         };
       };
   #   dbCache = 1024; # defined in presets/secure-node.nix, so cannot be changed here
@@ -211,9 +212,10 @@
       address = "0.0.0.0";
       tor.enforce = false;
     };
+
     ### CLIGHTNING
-    #services.clightning.enable = true;
-    #nix-bitcoin.onionServices.clightning.public = true;
+    services.clightning.enable = true;
+    nix-bitcoin.onionServices.clightning.public = true;
     #services.clightning.plugins.prometheus.enable = true;
 
     # == REST server
@@ -274,6 +276,8 @@
     onionServices.bitcoind.public = true; # announce onion
 
     secrets = {
+      bitcoin-rpcpassword-mempool.user = config.services.bitcoind.user;
+      bitcoin-HMAC-mempool.user = config.services.bitcoind.user;
       bitcoin-rpcpassword-dojo.user = config.services.bitcoind.user;
       bitcoin-HMAC-dojo.user = config.services.bitcoind.user;
     };

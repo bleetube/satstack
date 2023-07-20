@@ -1,5 +1,4 @@
 ---
-nixbitcoin_address: 192.168.1.219
 samourai_dojo_https_port: 4480
 samourai_dojo_ws_http_port: 8080
 samourai_dojo_pushtx_http_port: 8081
