@@ -10,33 +10,42 @@
   #
   # Set this to accounce the onion service address to peers.
   # The onion service allows accepting incoming connections via Tor.
-  # nix-bitcoin.onionServices.bitcoind.public = true;
+  nix-bitcoin.onionServices.bitcoind.public = true;
   #
   # You can add options that are not defined in modules/bitcoind.nix as follows
-  services.bitcoind.extraConfig = ''
-    #rpcbind=0.0.0.0:8332
-    #rpcallowip=192.168.0.0/16
-    #rpcallowip=172.12.0.0/16
-    #proxy=127.0.0.1:9050
-    #server=1
-    #bind=127.0.0.1
-    #bind=192.168.0.42:8333 # bisq
-    #whitelist=192.168.0.0/23
-    #maxmempool=1024
-    #rpcthreads=6
-    #dbcache=1024
-    # for dojo and lnd:
-    #txindex=1
-    #zmqpubrawblock=tcp://0.0.0.0:28332
-    #zmqpubrawtx=tcp://0.0.0.0:28333
-    #zmqpubhashblock=tcp://0.0.0.0:28334
-    maxorphantx=110
-  '';
+  # https://github.com/fort-nix/nix-bitcoin/blob/master/modules/bitcoind.nix
+  services.bitcoind = {
+    disablewallet = true;
+    rpc = {
+      address = "0.0.0.0";
+      #port = 8332;
+      #threads = 6;
+      allowip = [ 
+        "192.168.0.0/16"
+        "172.16.0.0/12"
+        "10.0.0.0/8"
+      ];
+#     users = {
+#       alice = {
+#         passwordHMACFromFile = true;
+#       };
+#     };
+    };
+#   dbCache = 1024; # defined in presets/secure-node.nix, so cannot be changed here
+    txindex = true;
+    zmqpubrawblock = "tcp://0.0.0.0:28332";
+    zmqpubrawtx = "tcp://0.0.0.0:28333";
+    extraConfig = ''
+      maxmempool=1024
+      zmqpubhashblock=tcp://0.0.0.0:28334 # dojo
+      maxorphantx=110
+    '';
+  };
 
   ### CLIGHTNING
-  services.clightning.enable = true;
-  nix-bitcoin.onionServices.clightning.public = true;
-  services.clightning.plugins.prometheus.enable = true;
+  #services.clightning.enable = true;
+  #nix-bitcoin.onionServices.clightning.public = true;
+  #services.clightning.plugins.prometheus.enable = true;
 
   # == REST server
   # Set this to create a clightning REST onion service.
@@ -46,17 +55,20 @@
   # You can also connect via WireGuard instead of Tor.
   # See ../docs/services.md for details.
   #
-  services.clightning-rest = {
-    enable = true;
-    lndconnect = {
-      enable = true;
-      onion = false;
-    };
-  };
+  #services.clightning-rest = {
+  #  enable = true;
+  #  lndconnect = {
+  #    enable = true;
+  #    onion = false;
+  #  };
+  #};
 
   ### ELECTRS
   # Set this to enable electrs, an Electrum server implemented in Rust.
-  # services.electrs.enable = true;
+  services.electrs = {
+    enable = true;
+    address = "0.0.0.0";
+  };
 
   ### JOINMARKET
   # Set this to enable the JoinMarket service, including its command-line scripts.
@@ -158,7 +170,7 @@
     enableSSHSupport = true;
   };
 
-  networking.firewall.enable = true;
+# networking.firewall.enable = false; # enabled by nixbitcoin already
 # networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [ 22 80 443 8333 50001 ];
   networking.firewall.allowedTCPPortRanges = [{ from = 4400; to = 4499; }];
@@ -212,6 +224,14 @@
             listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
             locations."/" = { proxyPass = "http://127.0.0.1:8031"; };
           });
+          "electrs_exporter" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4432; ssl = true; }];
+            locations."/" = { proxyPass = "http://127.0.0.1:4224"; };
+          });
+          "vaultwarden" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4435; ssl = true; }];
+            locations."/" = { proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}"; };
+          });
         };
     };
 
@@ -226,6 +246,35 @@
         LISTEN_ADDR = "127.0.0.1:8031";
         BASE_URL = "https://chespin.satstack.net:4431/";
         METRICS_COLLECTOR = "1";
+      };
+    };
+    postfix = {
+      enable = true;
+      domain = "satstack.net";
+      hostname = "chespin.satstack.net";
+      config = {
+        myhostname = "chespin.satstack.net";
+        smtp_tls_security_level = "encrypt";
+        smtpd_tls_security_level = "may";
+        smtp_tls_CApath = "/etc/ssl/certs";
+      };
+    };
+    vaultwarden = {
+      enable = true;
+      backupDir = "/var/lib/vaultwarden/backups";
+      #environmentFile = "/var/lib/vaultwarden.env";
+      config = {
+        DOMAIN = "https://chespin.satstack.net:4435";
+        SIGNUPS_ALLOWED = true;
+        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_PORT = 8035;
+        ROCKET_LOG = "critical";
+        # https://github.com/dani-garcia/vaultwarden/wiki/SMTP-configuration
+        SMTP_HOST = "127.0.0.1";
+        SMTP_PORT = 25;
+        SMTP_SSL = false;
+        SMTP_FROM = "vaultwarden@satstack.net";
+        SMTP_FROM_NAME = "satstack.net Bitwarden server";
       };
     };
 

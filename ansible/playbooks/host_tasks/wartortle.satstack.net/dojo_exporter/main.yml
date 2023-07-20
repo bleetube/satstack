@@ -14,7 +14,6 @@
         createhome: yes
         home: "{{ dojo_exporter_home|default('/opt/dojo_exporter') }}"
         password: '!'
-        update_password: on_create
 
     - include_tasks:
         file: install.yml

@@ -47,6 +47,5 @@ ssh root@${TARGET} chmod 600 /etc/miniflux.env
 ssh root@${TARGET} nixos-install
 
 # nixbitcoin
-#echo export NIX_PATH=$(nix-shell --run "echo $NIX_PATH") > nix-env.sh
-#source nix-env.sh
+# eval "export NIX_PATH=$(nix-shell --run 'echo $NIX_PATH')"
 #nix-shell --command deploy

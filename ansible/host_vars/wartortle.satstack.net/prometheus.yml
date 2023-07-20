@@ -49,11 +49,11 @@ prometheus_scrape_configs:
       - files:
           - "{{ prometheus_config_dir }}/file_sd/node.yml"
 
-  - job_name: bitcoind
-    scheme: https
-    static_configs:
-      - targets:
-        - squirtle.satstack.net:9101
+# - job_name: bitcoind
+#   scheme: https
+#   static_configs:
+#     - targets:
+#       - squirtle.satstack.net:9101
 
 # broken https://github.com/lightningd/plugins/pull/451
   - job_name: lightningd
@@ -80,7 +80,8 @@ prometheus_scrape_configs:
     scrape_interval: 2m
     static_configs:
       - targets:
-        - squirtle.satstack.net:4224
+#       - squirtle.satstack.net:4224
+        - chespin.satstack.net:4432
 
   # https://wartortle.brenise.com:4434/docs/api/rest#get-mempool
   - job_name: mempool
@@ -105,7 +106,7 @@ prometheus_scrape_configs:
     scrape_interval: 30s
     static_configs:
       - targets:
-        - squirtle.satstack.net:9102
+        - wartortle.satstack.net:4444
 
   - job_name: miniflux
     scheme: https
@@ -139,11 +140,11 @@ prometheus_alert_rules:
     annotations:
       summary: Server is running low on available disk space.
 
-  - alert: bitcoind online (test alert)
-    expr: up{job="bitcoind"} == 0
-    for: 1h
-    annotations:
-      summary: bitcoind is responding
+# - alert: bitcoind offline
+#   expr: up{job="bitcoind"} == 0
+#   for: 30m
+#   annotations:
+#     summary: bitcoind is responding
 
   - alert: electrs offline
     expr: up{job="electrum"} == 0
@@ -156,6 +157,12 @@ prometheus_alert_rules:
     for: 15m
     annotations:
       summary: mempool.space is not running.
+
+  - alert: samourai dojo offline
+    expr: probe_success{job="samourai-dojo"} == 0
+    for: 15m
+    annotations:
+      summary: samourai dojo is not running.
 
 # - alert: LND Monitor
 #   expr: lnd_channels_inactive_total{job="lndmon"} / lnd_channels_active_total{job="lndmon"} > 0.5

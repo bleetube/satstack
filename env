@@ -8,6 +8,7 @@ export wartortle_GRAFANA_ADMIN_PASSWORD=$(pass satstack.net/wartortle/GRAFANA_AD
 export wartortle_MEMPOOL_CORE_RPC_PASSWORD=$(pass satstack.net/wartortle/MEMPOOL_CORE_RPC)
 export wartortle_MEMPOOL_MARIADB_PASSWORD=$(pass satstack.net/wartortle/MEMPOOL_MARIADB)
 export wartortle_RTL_PASSWORD=$(pass satstack.net/wartortle/RTL_PASS)
+export wartortle_TESTNET_POSTGRES_PASSWORD=$(pass satstack.net/wartortle/TESTNET_POSTGRES)
 export wartortle_NEXTCLOUD_POSTGRES_PASSWORD=$(pass satstack.net/wartortle/NEXTCLOUD_POSTGRES)
 export wartortle_WIKIJS_POSTGRES_PASSWORD=$(pass satstack.net/wartortle/WIKIJS_POSTGRES)
 export wartortle_SAMOURAI_ONION=$(pass satstack.net/wartortle/SAMOURAI_ONION)

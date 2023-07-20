@@ -1,6 +1,7 @@
 #!/bin/bash
 HOSTS=(
     garchomp.bitcoiner.social
+    metagross.bitcoiner.social
     shinx.charlgiwnbro.com
     wartortle.satstack.net
 )

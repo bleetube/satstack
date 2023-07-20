@@ -8,6 +8,7 @@ postgresql_autovacuum: on
 postgresql_synchronous_commit: off
 postgresql_password_encryption: scram-sha-256
 postgresql_default_auth_method_hosts: scram-sha-256
+#postgresql_full_page_writes: off #temp
 
 # pgtune automation is broken.
 # https://github.com/ANXS/postgresql/issues/201
@@ -60,13 +61,22 @@ postgresql_users:
     pass: "{{ lookup('ansible.builtin.env', 'wartortle_NEXTCLOUD_POSTGRES_PASSWORD') }}"
     encrypted: yes
     state: present
+  - name: testnet
+    pass: "{{ lookup('ansible.builtin.env', 'wartortle_TESTNET_POSTGRES_PASSWORD') }}"
+    encrypted: yes
+    state: present
 
 postgresql_databases:
   - name: wikijs
     owner: wikijs
     state: present
+    lc_collate: C.UTF-8
+    lc_ctype: C.UTF-8
   - name: nextcloud
     owner: nextcloud
+    state: present
+  - name: testnet
+    owner: testnet
     state: present
 #   hstore: yes         # flag to install the hstore extension on this database (yes/no)
 #   uuid_ossp: yes      # flag to install the uuid-ossp extension on this database (yes/no)

@@ -1,4 +1,5 @@
 ---
+nixbitcoin_address: 192.168.1.219
 samourai_dojo_https_port: 4480
 samourai_dojo_ws_http_port: 8080
 samourai_dojo_pushtx_http_port: 8081
@@ -32,14 +33,14 @@ samourai_dojo_config:
   NODE_ACTIVE_INDEXER: local_indexer
   NODE_FEE_TYPE: ECONOMICAL
   # ~/src/samourai-dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-  INDEXER_IP: 192.168.0.42
+  INDEXER_IP: "{{ nixbitcoin_address }}"
   INDEXER_RPC_PORT: 50001
   INDEXER_BATCH_SUPPORT: active
   INDEXER_PROTOCOL: tcp
   # ~/src/samourai-dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
   BITCOIND_RPC_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_SAMOURAI_BITCOIND_RPC_PASSWORD') }}"
   BITCOIND_RPC_USER: dojo
-  BITCOIND_IP: 192.168.0.42
+  BITCOIND_IP: "{{ nixbitcoin_address }}"
   BITCOIND_RPC_PORT: 8332
   BITCOIND_ZMQ_RAWTXS: 28333
   BITCOIND_ZMQ_BLK_HASH: 28334

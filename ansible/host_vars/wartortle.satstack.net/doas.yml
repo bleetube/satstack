@@ -7,3 +7,7 @@ doas_permit_list:
     role: postgres
   - username: blee
     role: dojo-exp
+  - username: blee
+    role: testnet
+  - username: blee
+    role: testnet_exporter
