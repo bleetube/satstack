@@ -65,7 +65,13 @@
 
 # networking.firewall.enable = false; # enabled by nixbitcoin already
 # networking.firewall.allowPing = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8333 50001 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    80
+    443
+    config.services.bitcoind.rpc.port
+    config.services.electrs.port
+  ];
   networking.firewall.allowedTCPPortRanges = [{ from = 4400; to = 4499; }];
 # networking.firewall.allowedUDPPorts = [ ];
 # networking.firewall.allowedUDPPortRanges = [ ];
@@ -175,6 +181,7 @@
 
     bitcoind = {
       disablewallet = true;
+      tor.enforce = false;
       rpc = {
         address = "0.0.0.0";
         #port = 8332;
@@ -202,6 +209,7 @@
     electrs = {
       enable = true;
       address = "0.0.0.0";
+      tor.enforce = false;
     };
     ### CLIGHTNING
     #services.clightning.enable = true;
@@ -266,7 +274,7 @@
     onionServices.bitcoind.public = true; # announce onion
 
     secrets = {
-      bitcoin-rpcpassword-dojo.user = "bitcoin";
+      bitcoin-rpcpassword-dojo.user = config.services.bitcoind.user;
       bitcoin-HMAC-dojo.user = config.services.bitcoind.user;
     };
 
