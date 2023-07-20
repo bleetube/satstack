@@ -181,7 +181,7 @@
 
     bitcoind = {
       disablewallet = true;
-      tor.enforce = false;
+      tor.enforce = false; # permit lan connections
       rpc = {
         address = "0.0.0.0";
         #port = 8332;
@@ -194,6 +194,7 @@
         users = { # HMAC files are configured in nix-bitcoin.secrets further down
           dojo.passwordHMACFromFile = true;
           mempool.passwordHMACFromFile = true;
+          lightningd.passwordHMACFromFile = true;
         };
       };
   #   dbCache = 1024; # defined in presets/secure-node.nix, so cannot be changed here
@@ -210,13 +211,14 @@
     electrs = {
       enable = true;
       address = "0.0.0.0";
-      tor.enforce = false;
+      tor.enforce = false; # permit lan connections
     };
 
     ### CLIGHTNING
-    services.clightning.enable = true;
-    nix-bitcoin.onionServices.clightning.public = true;
-    #services.clightning.plugins.prometheus.enable = true;
+    clightning = {
+      enable = true;
+      plugins.prometheus.enable = true;
+    };
 
     # == REST server
     # Set this to create a clightning REST onion service.
@@ -226,13 +228,13 @@
     # You can also connect via WireGuard instead of Tor.
     # See ../docs/services.md for details.
     #
-    #clightning-rest = {
-    #  enable = true;
-    #  lndconnect = {
-    #    enable = true;
-    #    onion = false;
-    #  };
-    #};
+    clightning-rest = {
+      enable = true;
+      lndconnect = {
+        enable = true;
+        onion = false;
+      };
+    };
 
     ### JOINMARKET
     # Set this to enable the JoinMarket service, including its command-line scripts.
@@ -273,9 +275,13 @@
   }; # end services
 
   nix-bitcoin = {
-    onionServices.bitcoind.public = true; # announce onion
+    # announce onions
+    onionServices.bitcoind.public = true;
+    onionServices.clightning.public = true;
 
     secrets = {
+      bitcoin-rpcpassword-lightningd.user = config.services.bitcoind.user;
+      bitcoin-HMAC-lightningd.user = config.services.bitcoind.user;
       bitcoin-rpcpassword-mempool.user = config.services.bitcoind.user;
       bitcoin-HMAC-mempool.user = config.services.bitcoind.user;
       bitcoin-rpcpassword-dojo.user = config.services.bitcoind.user;
