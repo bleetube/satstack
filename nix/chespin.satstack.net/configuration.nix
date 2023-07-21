@@ -72,7 +72,10 @@
     config.services.bitcoind.rpc.port
     config.services.electrs.port
   ];
-  networking.firewall.allowedTCPPortRanges = [{ from = 4400; to = 4499; }];
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 4400; to = 4499; }
+    { from = 28332; to = 28334; }
+  ];
 # networking.firewall.allowedUDPPorts = [ ];
 # networking.firewall.allowedUDPPortRanges = [ ];
 
