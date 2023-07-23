@@ -32,3 +32,10 @@ Few of the container deployments are zero-touch, requiring configuration of vari
 ## podman-compose vs ansible module
 
 Using environment variables avoids needing to merge changes to `mempool-config.json` in the future.
+
+## Preferences
+
+Prefer:
+
+* unix sockets for inter-process communication, at least when its reasonably convenient
+* strong encryption for network communications

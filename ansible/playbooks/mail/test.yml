@@ -1,0 +1,5 @@
+---
+- hosts: mail
+
+  roles:
+    - role: bleetube.disposable-mail

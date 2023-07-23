@@ -21,9 +21,6 @@ roles:
   - name: bleetube.dotfiles
     src:  https://github.com/bleetube/ansible-role-dotfiles
 
-  - name: bleetube.lego
-    src:  https://github.com/bleetube/ansible-role-lego
-
   - name: bleetube.linux
     src:  https://github.com/bleetube/ansible-role-linux
 
@@ -33,8 +30,11 @@ roles:
   - name: bleetube.wireguard
     src:  https://github.com/bleetube/ansible-role-wireguard
 
-# - name: bleetube.mail
-#   src:  https://github.com/bleetube/ansible-role-mail
+  - name: robertdebock.dovecot
+    src:  https://github.com/robertdebock/ansible-role-dovecot
+
+# - name: bleetube.disposable-mail
+#   src:  https://github.com/bleetube/ansible-role-disposable-mail
 
   - name: bleetube.ntfy
     src:  https://github.com/bleetube/ansible-role-ntfy
@@ -47,9 +47,6 @@ roles:
 
   - name: bleetube.wikijs
     src:  https://github.com/bleetube/ansible-role-wikijs
-
-  - name: oefenweb.postfix
-    src:  https://github.com/bleetube/ansible-role-postfix
 
   - name: geerlingguy.certbot
     src:  https://github.com/geerlingguy/ansible-role-certbot

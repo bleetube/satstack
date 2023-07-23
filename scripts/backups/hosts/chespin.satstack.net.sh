@@ -4,7 +4,7 @@ set -x
 TARGET=chespin.satstack.net
 TIMESTAMP=$(date +%m-%d-%Y)
 
-#source ../postgres.sh
+#source ../functions.sh
 #
 #BACKUP_PG_DB miniflux
 

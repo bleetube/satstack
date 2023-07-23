@@ -4,7 +4,7 @@ set -x
 TARGET=squirtle.satstack.net
 TIMESTAMP=$(date +%m-%d-%Y)
 
-source ../postgres.sh
+source ../functions.sh
 
 BACKUP_PG_DB wikijs
 

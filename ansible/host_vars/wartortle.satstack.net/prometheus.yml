@@ -164,6 +164,12 @@ prometheus_alert_rules:
     annotations:
       summary: samourai dojo is not running.
 
+  - alert: lightningd offline
+    expr: up{job="lightningd"} == 0
+    for: 15m
+    annotations:
+      summary: lightningd is not running.
+
 # - alert: LND Monitor
 #   expr: lnd_channels_inactive_total{job="lndmon"} / lnd_channels_active_total{job="lndmon"} > 0.5
 #   for: 15m 
@@ -190,12 +196,6 @@ prometheus_alert_rules:
 #   annotations:
 #     summary: Dojo indicates that the electrum server appears to have stalled or crashed.
 #     description: Check electrs and dojo logs. Restart if necessary.
-
-# - alert: lightningd offline
-#   expr: up{job="lightningd"} == 0
-#   for: 15m
-#   annotations:
-#     summary: lightningd is not running.
 
 # - alert: LND uptime
 #   expr: up{job="lnd"} == 0

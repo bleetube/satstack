@@ -14,3 +14,8 @@ BACKUP_PG_DB() {
         echo "No newer backups found. Old backups not pruned."
     fi
 }
+BACKUP_MAIL() {
+    mkdir -p $HOME/archive/${TARGET}/{dovecot,postfix}
+    rsync -tav root@${TARGET}:/etc/dovecot/imap.passwd $HOME/archive/${TARGET}/
+    rsync -tav root@${TARGET}:/etc/postfix/virtual $HOME/archive/${TARGET}/postfix
+}
