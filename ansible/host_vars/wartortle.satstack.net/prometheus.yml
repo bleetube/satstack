@@ -12,7 +12,6 @@ prometheus_external_labels:
 prometheus_targets:
   node:
     - targets:
-#       - bulbasaur.charlgiwnbro.com:4430
         - shinx.charlgiwnbro.com:4430
       labels:
         group: charlgiwnbro
@@ -63,43 +62,12 @@ prometheus_scrape_configs:
       - targets:
         - squirtle.satstack.net:9105
 
-# - job_name: lnd
-#   scheme: https
-#   static_configs:
-#     - targets:
-#       - omastar.satstack.net:9101
-
-# - job_name: lndmon
-#   scheme: https
-#   static_configs:
-#     - targets:
-#       - squirtle.satstack.net:9092
-
   - job_name: electrum
     scheme: https
     scrape_interval: 2m
     static_configs:
       - targets:
-#       - squirtle.satstack.net:4224
         - chespin.satstack.net:4432
-
-  # https://wartortle.brenise.com:4434/docs/api/rest#get-mempool
-  - job_name: mempool
-    scheme: https
-    scrape_interval: 2m
-    params:
-      module: [http_2xx]
-    metrics_path: /probe
-    static_configs:
-      - targets:
-        - https://wartortle.satstack.net:4434/api/mempool
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: "{{ inventory_hostname }}:4431"
 
   - job_name: testnet
     scheme: https
@@ -119,6 +87,25 @@ prometheus_scrape_configs:
     static_configs:
       - targets:
         - wartortle.satstack.net:4442
+
+  - job_name: health-checks
+    scheme: https
+    scrape_interval: 2m
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://matrix.brenise.com/health
+        - https://blee.tube/api/v1/videos
+        - https://wartortle.satstack.net:4434/api/mempool
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ inventory_hostname }}:4431"
 
 prometheus_alert_rules:
   - alert: Prometheus
@@ -140,6 +127,12 @@ prometheus_alert_rules:
     annotations:
       summary: Server is running low on available disk space.
 
+  - alert: Health checks
+    expr: probe_success{job="health-checks"} == 0
+    for: 15m
+    annotations:
+      summary: A health-check has failed.
+
 # - alert: bitcoind offline
 #   expr: up{job="bitcoind"} == 0
 #   for: 30m
@@ -151,12 +144,6 @@ prometheus_alert_rules:
     for: 15m
     annotations:
       summary: electrs is not responding
-
-  - alert: mempool.space offline
-    expr: probe_success{job="mempool"} == 0
-    for: 15m
-    annotations:
-      summary: mempool.space is not running.
 
   - alert: samourai dojo offline
     expr: probe_success{job="samourai-dojo"} == 0

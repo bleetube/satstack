@@ -9,6 +9,10 @@ collections:
     src: https://github.com/prometheus-community/ansible
 #   version: '>=0.5.0'
 
+  - name: grafana.grafana
+    src: https://github.com/grafana/grafana-ansible-collection
+#   version: '>=2.1.4'
+
   - name: containers.podman
     src: https://github.com/containers/ansible-podman-collections
 #   version: '>=1.10.2'
@@ -55,8 +59,8 @@ roles:
     src:  https://github.com/geerlingguy/ansible-role-certbot
 
   # requires commenting out warn in tasks/dashboards.yml
-  - src:  https://github.com/cloudalchemy/ansible-grafana
-    name: cloudalchemy.grafana
+# - src:  https://github.com/cloudalchemy/ansible-grafana
+#   name: cloudalchemy.grafana
 
 # - src:  https://github.com/haxorof/ansible-role-docker-ce
 #   name: haxorof.docker_ce

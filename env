@@ -19,6 +19,9 @@ export wartortle_SAMOURAI_MARIADB_PASSWORD=$(pass satstack.net/wartortle/SAMOURA
 export wartortle_SAMOURAI_BITCOIND_RPC_PASSWORD=$(pass satstack.net/wartortle/SAMOURAI_BITCOIND_RPC)
 source ~/.secrets/homelab/env
 
+# satstack_cloud
+export sableye_GRAFANA_ADMIN_PASSWORD=$(pass satstack.cloud/sableye/GRAFANA_ADMIN)
+
 # brenise.com
 export pancham_TANDOOR_SECRET_KEY=$(pass brenise.com/pancham/TANDOOR_SECRET_KEY)
 export pancham_TANDOOR_POSTGRES_PASSWORD=$(pass brenise.com/pancham/TANDOOR_POSTGRES)
@@ -27,7 +30,6 @@ export pancham_PEERTUBE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_PO
 export pancham_PEERTUBE_SMTP_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_SMTP)
 export pancham_SYNAPSE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/SYNAPSE_POSTGRES)
 export pancham_WIREGUARD_PRIVATE_KEY=$(pass brenise.com/pancham/WIREGUARD_PRIVATE_KEY)
-
 
 # bitcoiner.social
 export rhyperior_CASTOPOD_MYSQL_PASSWORD=$(pass bitcoiner.social/rhyperior/CASTOPOD_MYSQL)

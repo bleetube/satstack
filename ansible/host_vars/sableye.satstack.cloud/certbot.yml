@@ -4,8 +4,8 @@ certbot_certs:
       - "{{ inventory_hostname }}"
     webroot: /var/www/html
   - domains:
-      - cast.bitcoiner.social
+      - mail.satstack.cloud
     webroot: /var/www/html
-certbot_admin_email: acme@bitcoiner.social
+certbot_admin_email: acme@satstack.cloud
 certbot_auto_renew_hour: 1
-certbot_auto_renew_minute: 12
+certbot_auto_renew_minute: 13
