@@ -27,3 +27,16 @@ export pancham_PEERTUBE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_PO
 export pancham_PEERTUBE_SMTP_PASSWORD=$(pass brenise.com/pancham/PEERTUBE_SMTP)
 export pancham_SYNAPSE_POSTGRES_PASSWORD=$(pass brenise.com/pancham/SYNAPSE_POSTGRES)
 export pancham_WIREGUARD_PRIVATE_KEY=$(pass brenise.com/pancham/WIREGUARD_PRIVATE_KEY)
+
+
+# bitcoiner.social
+export rhyperior_CASTOPOD_MYSQL_PASSWORD=$(pass bitcoiner.social/rhyperior/CASTOPOD_MYSQL)
+export rhyperior_CASTOPOD_SALT=$(pass bitcoiner.social/rhyperior/CASTOPOD_SALT)
+export rhyperior_CASTOPOD_SMTP_PASSWORD=$(pass bitcoiner.social/rhyperior/CASTOPOD_SMTP)
+#export rhyperior_SYNAPSE_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/SYNAPSE_POSTGRES)
+#export rhyperior_HEDGEDOC_SESSION_SECRET=$(pass bitcoiner.social/rhyperior/SESSION_SECRET)
+#export rhyperior_HEDGEDOC_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/HEDGEDOC_POSTGRES)
+#export rhyperior_GETTOGETHER_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/GETTOGETHER_POSTGRES)
+#export rhyperior_GETTOGETHER_SMTP_PASSWORD=$(pass bitcoiner.social/rhyperior/GETTOGETHER_SMTP)
+#export rhyperior_GETTOGETHER_SECRET_KEY=$(pass bitcoiner.social/rhyperior/GETTOGETHER_SECRET_KEY)
+#export rhyperior_GETTOGETHER_GOOGLE_API=$(pass bitcoiner.social/rhyperior/GETTOGETHER_GOOGLE_API)

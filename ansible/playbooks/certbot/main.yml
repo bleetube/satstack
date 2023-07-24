@@ -1,29 +1,8 @@
 ---
 - hosts: certbot
 
-  vars:
-    certbot_auto_renew: true
-    certbot_create_if_missing: true
-
   pre_tasks:
-    - name: Register pre-generated dhparams
-      ansible.builtin.stat:
-        path: files/dhparams.pem
-      delegate_to: localhost
-      register: dhparams
-      tags: dhparams
-
-    - name: Use pre-generated dhparams to reduce deployment time by several minutes.
-      ansible.builtin.copy:
-        src: dhparams.pem
-        dest: /etc/ssl/
-        force: false
-      when: dhparams.stat.exists
-      tags: dhparams
-
-    - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
-      community.crypto.openssl_dhparam:
-        path: /etc/ssl/dhparams.pem
+    - import_tasks: tasks/dhparams.yml
       tags: dhparams
 
     - name: Loop through the Certbot certificate list to configure nginx for each ACME domain
@@ -39,7 +18,19 @@
         path: /var/www/html
         state: directory
         mode: 0755
+      become: yes
+
+    - name: Remove default nginx page so it doesn't interfere with certbot
+      ansible.builtin.file:
+        path: /etc/nginx/conf.d/default.conf
+        state: absent
+      become: yes
 
   roles:
     - role: geerlingguy.certbot
+      become: yes
       tags: certbot
+      vars:
+        certbot_auto_renew: true
+        certbot_create_if_missing: true
+

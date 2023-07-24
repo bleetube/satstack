@@ -1,0 +1,22 @@
+---
+- name: Register pre-generated dhparams
+  ansible.builtin.stat:
+    path: files/dhparams.pem
+  delegate_to: localhost
+  register: dhparams
+  tags: dhparams
+
+- name: Use pre-generated dhparams to reduce deployment time by several minutes.
+  ansible.builtin.copy:
+    src: dhparams.pem
+    dest: /etc/ssl/
+    force: false
+  when: dhparams.stat.exists
+  become: yes
+  tags: dhparams
+
+- name: Generate Diffie-Hellman parameters with the default size (4096 bits)
+  community.crypto.openssl_dhparam:
+    path: /etc/ssl/dhparams.pem
+  become: yes
+  tags: dhparams

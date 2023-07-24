@@ -1,0 +1,24 @@
+---
+# https://github.com/fauust/ansible-role-mariadb/blob/main/defaults/main.yml
+mariadb_use_official_repo: true
+#mariadb_use_official_repo_version: "10.10"
+# You can only bind to one address. https://serverfault.com/q/139323/70156
+mariadb_bind_address: 0.0.0.0 # for container access, the firewall must prohibit external connections
+mariadb_databases:
+  - name: castopod
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: false
+
+# Both localhost and * (all hosts) are mutually exclusive: https://stackoverflow.com/q/10823854/9290
+mariadb_users:
+  - name: castopod
+    host: localhost
+    password: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_MYSQL_PASSWORD') }}"
+    priv: "castopod.*:ALL"
+    state: present
+  - name: castopod
+    host: '%'
+    password: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_MYSQL_PASSWORD') }}"
+    priv: "castopod.*:ALL"
+    state: present

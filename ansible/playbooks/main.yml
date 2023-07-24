@@ -1,17 +1,19 @@
 ---
 - hosts: all
+  become: yes
 
   roles:
+    - role: bleetube.linux
     - role: nginxinc.nginx_core.nginx
     - role: bleetube.dotfiles
       tags: dotfiles
 
-- import_playbook: linux.yml
-- import_playbook: certbot/main.yml
+#- import_playbook: certbot/main.yml
 - import_playbook: lego.yml
 - import_playbook: node_exporter.yml
 - import_playbook: wireguard.yml
 - import_playbook: observability/main.yml
 - import_playbook: proxmox/main.yml
 - import_playbook: mariadb.yml
-#- import_playbook: docker.yml
+- import_playbook: redis.yml
+- import_playbook: podman.yml

@@ -13,7 +13,7 @@
 
   tasks:
     - include_tasks:
-        file: ../../containers/nextcloud/nginx_conf.yml
+        file: ../../nginx/nextcloud/nginx_conf.yml
         apply:
           become: true
           tags: nginx

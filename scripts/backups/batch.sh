@@ -2,6 +2,7 @@
 HOSTS=(
     garchomp.bitcoiner.social
     metagross.bitcoiner.social
+    rhyperior.bitcoiner.social
     shinx.charlgiwnbro.com
     wartortle.satstack.net
 )

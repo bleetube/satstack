@@ -1,0 +1,36 @@
+---
+nginx_castopod_port: 443
+castopod_web_root: /var/www/html
+castopod_fpm_upstream: 127.0.0.1:8031
+castopod_domain: cast.bitcoiner.social
+
+castopod_web_root: /var/compose/castopod/public
+castopod_media_path: /var/compose/castopod/public/media
+
+castopod_volumes:
+  - /var/compose/castopod/public/media:/var/www/castopod/public/media
+
+# https://docs.castopod.org/getting-started/docker.html#environment-variables
+# https://github.com/castopod/docker/blob/master/README.md#auto-configuration-via-environment-variables
+castopod_config:
+  MYSQL_ROOT_PASSWORD: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_MYSQL_PASSWORD') }}"
+  MYSQL_DATABASE: castopod
+  MYSQL_USER: castopod
+  MYSQL_PASSWORD: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_MYSQL_PASSWORD') }}"
+  CP_DATABASE_HOSTNAME: host.containers.internal
+  CP_BASEURL: "https://{{ castopod_domain }}"
+  CP_ANALYTICS_SALT: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_SALT') }}"
+  CP_CACHE_HANDLER: host.containers.internal
+  CP_REDIS_HOST: host.containers.internal
+
+  # https://codeigniter.com/user_guide/libraries/email.html
+  CP_EMAIL_FROM: castopod@bitcoiner.social
+  CP_EMAIL_SMTP_HOST: mail.bitcoiner.social
+  CP_EMAIL_SMTP_USERNAME: castopod
+  CP_EMAIL_SMTP_PASSWORD: "{{ lookup('ansible.builtin.env', 'rhyperior_CASTOPOD_SMTP_PASSWORD') }}"
+  CP_EMAIL_SMTP_PORT: 25
+  # SMTP Encryption. Setting this to “ssl” will create a secure
+  # channel to the server using SSL and “tls” will issue a
+  # STARTTLS command to the server. Connection on port 465 should
+  # set this to blank.
+  CP_EMAIL_SMTP_CRYPTO: tls

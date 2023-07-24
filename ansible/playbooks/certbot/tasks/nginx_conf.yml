@@ -4,6 +4,7 @@
     name: nginxinc.nginx_core.nginx_config
     allow_duplicates: true
   tags: nginx
+  become: yes
   vars:
     nginx_config_dhparam: /etc/ssl/dhparams.pem
     nginx_config_http_template_enable: true

@@ -43,3 +43,6 @@ samourai_dojo_version: "1.20.0"
 
 # https://github.com/Requarks/wiki/pkgs/container/wiki
 wikijs_version: 2
+
+# https://hub.docker.com/r/castopod/app/tags
+castopod_version: "1.4.7"

@@ -1,0 +1,41 @@
+---
+- name: Castopod | Configure nginx with the template
+  ansible.builtin.template:
+    src: templates/castopod_template.conf
+    dest: /etc/nginx/castopod_template.conf
+  tags: nginx
+
+# https://code.castopod.org/adaures/castopod/-/blob/develop/docker/production/web-server/nginx.template.conf
+- name: Castopod | Configure nginx to include the template
+  ansible.builtin.import_role:
+    name: nginxinc.nginx_core.nginx_config
+  tags: nginx
+  vars:
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/castopod_{{ castopod_domain }}.conf"
+        backup: false
+        config:
+          upstreams:
+            - name: php-handler
+              servers:
+                - address: "{{ castopod_fpm_upstream }}"
+          core:
+              types:
+                - mime: text/vtt
+                  extensions: vtt
+                - mime: text/srt
+                  extensions: srt
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_castopod_port|default(443) }} ssl"
+#                   http2: true
+                include:
+                  - "/etc/nginx/acme_{{ castopod_domain }}.conf"
+                  - /etc/nginx/castopod_template.conf
+          headers:
+            add_headers:
+              - name: X-Real-IP
+                value: $remote_addr
