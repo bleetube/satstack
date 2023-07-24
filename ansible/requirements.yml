@@ -48,6 +48,9 @@ roles:
   - name: bleetube.wikijs
     src:  https://github.com/bleetube/ansible-role-wikijs
 
+  - name: bleetube.jellyfin
+    src:  https://github.com/bleetube/ansible-role-jellyfin
+
   - name: geerlingguy.certbot
     src:  https://github.com/geerlingguy/ansible-role-certbot
 

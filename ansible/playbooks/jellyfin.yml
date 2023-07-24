@@ -1,0 +1,6 @@
+---
+- hosts: jellyfin
+
+  roles:
+    - role: bleetube.jellyfin
+      become: yes
