@@ -4,3 +4,11 @@
   roles:
     - role: bleetube.jellyfin
       become: yes
+
+  tasks:
+    - include_tasks:
+        file: nginx/jellyfin/nginx_conf.yml
+        apply:
+          become: true
+          tags: nginx
+      tags: nginx

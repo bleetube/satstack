@@ -1,0 +1,29 @@
+---
+# Based on the nginx sample at https://wiki.archlinux.org/title/Jellyfin
+- name: Jellyfin | Configure nginx with the template
+  ansible.builtin.template:
+    src: templates/jellyfin_template.conf.j2
+    dest: /etc/nginx/jellyfin_template.conf
+
+- name: Jellyfin | Configure nginx to include the template
+  ansible.builtin.import_role:
+    name: nginxinc.nginx_core.nginx_config
+  vars:
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/jellyfin_{{ inventory_hostname }}.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ jellyfin_https_port|default(4445) }} ssl"
+#                   http2: true
+                include:
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
+                  - /etc/nginx/jellyfin_template.conf
+          headers:
+            add_headers:
+              - name: X-Real-IP
+                value: $remote_addr
