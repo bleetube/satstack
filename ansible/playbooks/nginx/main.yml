@@ -1,11 +1,18 @@
 ---
-- hosts: certbot
+- hosts: all
   become: true
 
   roles:
     - role: nginxinc.nginx_core.nginx
 
   tasks:
+    - name: Create http2 shim until nginx_conf 0.7.0 is merged into the nginx-core collection
+      ansible.builtin.lineinfile:
+        create: yes
+        path: /etc/nginx/enable_http2.conf
+        line: "http2 on;"
+      tags: test
+
     - name: Configure nginx
       ansible.builtin.import_role:
         name: nginxinc.nginx_core.nginx_config

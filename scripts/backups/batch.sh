@@ -6,10 +6,13 @@ HOSTS=(
     shinx.charlgiwnbro.com
     wartortle.satstack.net
 )
-for host in ${HOSTS[@]}; do
-    exec hosts/${hostname}.sh
+
+source functions.sh
+for hostname in ${HOSTS[@]}; do
+    echo "Running script for $hostname"
+    (exec ./hosts/${hostname}.sh)
+    echo "Finished running script for $hostname"
 done
 
-# TODO: also sync to squirtle
-
 du -sh $HOME/archive
+rsync -ta $HOME/archive blee@squirtle.satstack.net:

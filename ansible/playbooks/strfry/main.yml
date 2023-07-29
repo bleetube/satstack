@@ -1,0 +1,9 @@
+---
+- hosts: strfry
+  roles:
+    - role: bleetube.strfry
+      tags: strfry
+  tasks:
+    - import_tasks: tasks/nginx_conf.yml
+      tags: nginx
+      become: yes

@@ -1,0 +1,43 @@
+---
+nginx_strfry_https_port: 4447
+nginx_strfry_domain: "{{ inventory_hostname }}"
+strfry_relay:
+  bind: "127.0.0.1"
+  port: 8047
+  nofiles: 65536
+  realIpHeader: x-forwarded-for
+  info:
+    name: wartortle.satstack.net
+    description: bleetube archive of nostr events
+    pubkey: 6b1b35c6dee48851bac53a4494ca8f819503be00212dbceb899dc03acd7641db
+    contact: admin@offchain.pub
+  maxWebsocketPayloadSize: 131072
+  autoPingSeconds: 55
+  enableTcpKeepalive: false
+  queryTimesliceBudgetMicroseconds: 10000
+  maxFilterLimit: 500
+  maxSubsPerConnection: 20
+  writePolicy:
+    plugin: /opt/strfry/spamfilter.py
+    lookbackSeconds: 0
+  compression:
+    enabled: true
+    slidingWindow: true
+  logging:
+    dumpInAll: false
+    dumpInEvents: false
+    dumpInReqs: false
+    dbScanPerf: false
+  numThreads:
+    ingester: 3
+    reqWorker: 3
+    reqMonitor: 3
+    yesstr: 1
+strfry_events:
+  maxEventSize: 16384
+  rejectEventsNewerThanSeconds: 900
+  rejectEventsOlderThanSeconds: 94608000
+  rejectEphemeralEventsOlderThanSeconds: 60
+  ephemeralEventsLifetimeSeconds: 300
+  maxNumTags: 2000
+  maxTagValSize: 1024

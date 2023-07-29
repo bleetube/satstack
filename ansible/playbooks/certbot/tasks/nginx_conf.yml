@@ -15,6 +15,20 @@
         config:
           core:
             server_name: "{{ acme_domain.domains[0] }}"
+            http2:
+              enable: true
+              body_preread_size: 128k
+              chunk_size: 8k
+              max_concurrent_streams: 31
+              recv_buffer_size: 128k
+              recv_timeout: 10s
+          http2:
+            enable: true
+            body_preread_size: 128k
+            chunk_size: 8k
+            max_concurrent_streams: 31
+            recv_buffer_size: 128k
+            recv_timeout: 10s
           ssl:
             certificate: "/etc/letsencrypt/live/{{ acme_domain.domains[0] }}/fullchain.pem"
             certificate_key: "/etc/letsencrypt/live/{{ acme_domain.domains[0] }}/privkey.pem"

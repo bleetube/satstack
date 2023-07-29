@@ -4,7 +4,6 @@ set -x
 TARGET=rhyperior.bitcoiner.social
 TIMESTAMP=$(date +%m-%d-%Y)
 
-source ../functions.sh
 #BACKUP_PG_DB hedgedoc
 BACKUP_PG_DB synapse
 BACKUP_MARIADB castopod

@@ -22,8 +22,9 @@
                 - core:
                     listen:
                       # Use IP address in Ansible facts. https://stackoverflow.com/q/39819378/9290
-                      - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:4430 ssl"
-                        http2: true
+                      - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}"
+                        ssl: true
+                        port: 4430
                     include:
                       - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                   locations:
@@ -31,4 +32,3 @@
                       proxy:
                         pass: "http://127.0.0.1:4430"
                         http_version: 1.1
-

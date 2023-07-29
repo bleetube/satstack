@@ -9,7 +9,7 @@
       # See: https://github.com/binwiederhier/ntfy-ansible/blob/main/roles/nginx/templates/sites-available/ntfy.j2
       # Also, ntfy will not work in a subdirectory: https://github.com/binwiederhier/ntfy/issues/256
       - template_file: http/default.conf.j2
-        deployment_location: "/etc/nginx/conf.d/ntfy_ntfy.bitcoiner.social.conf"
+        deployment_location: "/etc/nginx/conf.d/ntfy_{{ inventory_hostname }}.conf"
         backup: false
         config:
           upstreams:
@@ -19,10 +19,10 @@
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_ntfy_https_port|default(4432) }} ssl"
                     #http2: true
                 include:
-                  - "/etc/nginx/acme_ntfy.bitcoiner.social.conf"
+                  - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                 client_max_body_size: 0 # Stream request body to backend
               locations:
                 - location: /

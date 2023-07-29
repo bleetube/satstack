@@ -4,8 +4,6 @@ set -x
 TARGET=wartortle.satstack.net
 TIMESTAMP=$(date +%m-%d-%Y)
 
-source ../functions.sh
-
 # changedetection
 rsync --delete-after -ta root@${TARGET}:/var/compose/changedetection $HOME/archive/${TARGET}/
 # nextcloud
