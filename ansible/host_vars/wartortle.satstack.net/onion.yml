@@ -20,5 +20,5 @@ onion_services:
 
 onions_configuration:
   SocksPort: 0.0.0.0:9050
-  SocksPolicy: accept 127.0.0.0/8, reject *
+  SocksPolicy: accept 127.0.0.0/8, accept 192.168.0.0/23, reject *
   NoExec: 1

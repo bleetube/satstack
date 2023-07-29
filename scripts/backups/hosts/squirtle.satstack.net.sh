@@ -4,8 +4,6 @@ set -x
 TARGET=squirtle.satstack.net
 TIMESTAMP=$(date +%m-%d-%Y)
 
-source ../functions.sh
-
-BACKUP_PG_DB wikijs
+rsync -taP --exclude archive root@${TARGET}:/etc/nginx $HOME/archive/${TARGET}/
 
 du -sh $HOME/archive/${TARGET}/

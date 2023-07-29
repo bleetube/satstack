@@ -3,4 +3,5 @@
 
   roles:
     - role: bleetube.wireguard
+      become: true
       tags: wireguard

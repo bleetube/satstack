@@ -21,5 +21,20 @@
       
     - name: Configure authorized keys
       ansible.builtin.copy:
-        src: ~/.ssh/authorized_keys
+        src: ~/.ssh/ansible_sysadmin_keys
         dest: "/etc/ssh/authorized_keys.d/{{ sysadmin_username }}"
+        owner: "{{ sysadmin_username }}"
+        group: "{{ sysadmin_username }}"
+
+    - name: Ensure root ssh directory
+      ansible.builtin.file:
+        path: /root/.ssh
+        state: directory
+        mode: '0700'
+
+    - name: Configure authorized keys for root
+      ansible.builtin.copy:
+        src: ~/.ssh/ansible_root_keys
+        dest: /root/.ssh/authorized_keys
+        owner: "{{ sysadmin_username }}"
+        group: "{{ sysadmin_username }}"

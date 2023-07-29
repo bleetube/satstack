@@ -21,6 +21,7 @@ source ~/.secrets/homelab/env
 
 # satstack_cloud
 export sableye_GRAFANA_ADMIN_PASSWORD=$(pass satstack.cloud/sableye/GRAFANA_ADMIN)
+export sableye_WIREGUARD_PRIVATE_KEY=$(pass satstack.cloud/sableye/WIREGUARD_PRIVATE_KEY)
 
 # brenise.com
 export pancham_TANDOOR_SECRET_KEY=$(pass brenise.com/pancham/TANDOOR_SECRET_KEY)
@@ -35,7 +36,7 @@ export pancham_WIREGUARD_PRIVATE_KEY=$(pass brenise.com/pancham/WIREGUARD_PRIVAT
 export rhyperior_CASTOPOD_MYSQL_PASSWORD=$(pass bitcoiner.social/rhyperior/CASTOPOD_MYSQL)
 export rhyperior_CASTOPOD_SALT=$(pass bitcoiner.social/rhyperior/CASTOPOD_SALT)
 export rhyperior_CASTOPOD_SMTP_PASSWORD=$(pass bitcoiner.social/rhyperior/CASTOPOD_SMTP)
-#export rhyperior_SYNAPSE_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/SYNAPSE_POSTGRES)
+export rhyperior_SYNAPSE_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/SYNAPSE_POSTGRES)
 #export rhyperior_HEDGEDOC_SESSION_SECRET=$(pass bitcoiner.social/rhyperior/SESSION_SECRET)
 #export rhyperior_HEDGEDOC_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/HEDGEDOC_POSTGRES)
 #export rhyperior_GETTOGETHER_POSTGRES_PASSWORD=$(pass bitcoiner.social/rhyperior/GETTOGETHER_POSTGRES)

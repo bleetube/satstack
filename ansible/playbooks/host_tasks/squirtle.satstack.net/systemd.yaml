@@ -1,0 +1,19 @@
+---
+- hosts: squirtle.satstack.net
+  become: true
+
+  handlers:
+    - name: restart systemd-journald
+      ansible.builtin.systemd:
+        name: systemd-journald
+        state: restarted
+        daemon_reload: yes
+
+  tasks:
+    - name: Configure systemd-journald 
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/journald.conf
+        regexp: '^#?MaxRetentionSec'
+        line: 'MaxRetentionSec=30day'
+        state: present
+      notify: restart systemd-journald

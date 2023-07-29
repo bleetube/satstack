@@ -21,10 +21,6 @@ BACKUP_MARIADB(){
     mkdir -p ${BACKUP_DIR}
     rsync -tav root@${TARGET}:${DUMP_FILE} ${BACKUP_DIR}/
     ssh root@${TARGET} rm -v ${DUMP_FILE}
-    # To restore:
-    #doas -u mysql mysql -c 'drop database castopod;'
-    #doas -u mysql mysql -c 'create database castopod;'
-    #doas -u mysql bzcat /tmp/*.dump.bz2 | mysql -uroot
 }
 BACKUP_MAIL() {
     mkdir -p $HOME/archive/${TARGET}/{dovecot,postfix}

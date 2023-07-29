@@ -10,4 +10,6 @@ for host in ${HOSTS[@]}; do
     exec hosts/${hostname}.sh
 done
 
+# TODO: also sync to squirtle
+
 du -sh $HOME/archive

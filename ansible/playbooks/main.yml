@@ -4,12 +4,13 @@
 
   roles:
     - role: bleetube.linux
-    - role: nginxinc.nginx_core.nginx
+      tags: linux
     - role: bleetube.dotfiles
       tags: dotfiles
 
-#- import_playbook: certbot/main.yml
-- import_playbook: lego.yml
+- import_playbook: nginx/main.yml
+- import_playbook: certbot/main.yml
+#- import_playbook: lego.yml
 - import_playbook: node_exporter.yml
 - import_playbook: wireguard.yml
 - import_playbook: observability/main.yml

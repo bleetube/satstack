@@ -4,13 +4,15 @@ mempool_http_port: 8034
 
 # https://github.com/mempool/mempool/blob/master/docker/backend/start.sh
 mempool_config:
-  CORE_RPC_HOST: "{{ nixbitcoin_address }}"
+# CORE_RPC_HOST: "{{ nixbitcoin_address }}"
+  CORE_RPC_HOST: 192.168.0.42
   CORE_RPC_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_CORE_RPC_PASSWORD') }}"
   DATABASE_HOST: host.containers.internal   # used by container shell command
   DATABASE_SOCKET: /var/run/mysqld/mysqld.sock
   DATABASE_PASSWORD: "{{ lookup('ansible.builtin.env', 'wartortle_MEMPOOL_MARIADB_PASSWORD') }}"
-  ELECTRUM_HOST: "{{ nixbitcoin_address }}"
+# ELECTRUM_HOST: "{{ nixbitcoin_address }}"
+  ELECTRUM_HOST: 192.168.0.42
   ELECTRUM_PORT: 50001
   ELECTRUM_TLS_ENABLED: "true"
-  SOCKS5PROXY_ENABLED: "true"
-  SOCKS5PROXY_HOST: host.containers.internal
+# SOCKS5PROXY_ENABLED: "true"
+# SOCKS5PROXY_HOST: host.containers.internal # tor problems

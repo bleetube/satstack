@@ -68,7 +68,7 @@
             - core:
                 server_name: "{{ samourai_dojo_onion_address|default('_') }}"
                 listen:
-                  - address: "127.0.0.1:{{ samourai_dojo_onion_port|default(80) }}"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ samourai_dojo_onion_port|default(9080) }}"
                 send_timeout: 600s
               log:
                 access:

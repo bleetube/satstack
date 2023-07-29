@@ -14,7 +14,7 @@
             - core:
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ rtl_https_port|default(4438) }} ssl"
-                    http2: true
+                    #http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
               locations:

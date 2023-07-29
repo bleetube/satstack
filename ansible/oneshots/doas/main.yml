@@ -6,24 +6,16 @@
       ansible.builtin.user:
         name: "{{ sysadmin_username }}"
         shell: /bin/bash
-      register: user_for_sysadmin
+      register: new_sysadmin
 
-    - name: Ensure .ssh directory
-      ansible.builtin.file:
-        path: ~/.ssh
-        state: directory
-        mode: '0700'
-      become: yes
-      become_user: "{{ sysadmin_username }}"
-#     when: user_for_sysadmin.changed
-
-    - name: "Copy ssh pubkey for {{ sysadmin_username }}"
+    - name: Copy ssh directory
       ansible.builtin.copy:
-        src: ~/.ssh/id_ed25519.pub
-        dest: ~/.ssh/authorized_keys
-      become: yes
-      become_user: "{{ sysadmin_username }}"
-#     when: user_for_sysadmin.changed
+        remote_src: true
+        src: /root/.ssh
+        dest: "/home/{{ sysadmin_username }}/"
+        owner: "{{ sysadmin_username }}" 
+        group:  "{{ sysadmin_username }}" 
+      when: new_sysadmin.changed
 
     - name: Ensure doas is installed. 
       ansible.builtin.package:

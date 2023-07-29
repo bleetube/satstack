@@ -1,0 +1,13 @@
+---
+# bleetube.linux vars
+
+sysadmin_packages_custom:
+  - man-db
+  - nftables
+  - ngrep
+  - unzip
+  - rename
+
+  # Jellyfin
+  - intel-gpu-tools
+  - intel-opencl-icd>=22

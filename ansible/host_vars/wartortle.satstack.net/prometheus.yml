@@ -98,7 +98,8 @@ prometheus_scrape_configs:
       - targets:
         - https://matrix.brenise.com/health
         - https://blee.tube/api/v1/videos
-        - https://wartortle.satstack.net:4434/api/mempool
+#       - https://wartortle.satstack.net:4434/api/mempool
+#       - https://squirtle.satstack.net:4439/api/mempool
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -170,12 +171,13 @@ prometheus_alert_rules:
 #     summary: Node has fewer blocks than peers, possibly indicating an outage.
 #     description: Check node logs and restart if necessary.
 
-# - alert: Stale Electrum Server index tip height
+  - alert: Dojo shows stale indexer tip height
 #   expr: dojo_indexer_max_height < max(bitcoin_latest_block_height)
-#   for: 1h
-#   annotations:
-#     summary: Electrum server appears to have stalled or crashed.
-#     description: Check electrs logs. Restart if necessary.
+    expr: dojo_indexer_max_height < max(dojo_block_height)
+    for: 1h
+    annotations:
+      summary: Dojo is not longer seeing up block updates from electrs.
+      description: This alerts on the brittle connection between the electrs daemon and the dojo container. These issues present far less frequently in the monolith stack, but since we run them on separate machines we observe that dojo fails to restore connections to either ZMQ ports on bitcoind or the electrs port.
 
 # - alert: Stale lightningd block height
 #   expr: lightning_node_blockheight < max(bitcoin_latest_block_height)

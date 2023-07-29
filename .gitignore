@@ -4,6 +4,7 @@ archive
 dhparams.pem
 imap.passwd
 self-signed-ca
+external-requirements-only.yml
 
 # nix
 secrets/

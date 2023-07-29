@@ -1,0 +1,7 @@
+---
+wireguard_private_key: "{{ lookup('ansible.builtin.env', 'sableye_WIREGUARD_PRIVATE_KEY') }}"
+wireguard_subnet: 10.19.21.0/24
+wireguard_address: 10.19.21.1/24
+wireguard_listen_port: 61420
+wireguard_peers:
+  - { allowed_ips: '10.19.21.42/32', public_key: 'Qx8tKNJoK7uJ6jmpFjtNE5u0g28Z614p+xOwDF9VbHY=' } # squirtle
