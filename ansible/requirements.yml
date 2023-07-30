@@ -81,7 +81,3 @@ roles:
 
   - src: https://github.com/ANXS/postgresql
     name: anxs.postgresql
-
-  - src: https://github.com/JensTimmerman/ansible-role-vaultwarden
-    name: jenstimmerman.vaultwarden
-#   version: '>=1.1.0'
