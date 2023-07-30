@@ -12,20 +12,21 @@ prometheus_external_labels:
 prometheus_targets:
   node:
     - targets: 
-      - sableye.satstack.cloud:4430
-      - farfetchd.satstack.cloud:4430
+        - sableye.satstack.cloud:4430
+        - farfetchd.satstack.cloud:4430
+        - pancham.brenise.com:4430
       labels:
         group: virmach
 
     - targets: 
-      - garchomp.bitcoiner.social:4430
-      - rhyperior.bitcoiner.social:4430
+        - garchomp.bitcoiner.social:4430
+        - rhyperior.bitcoiner.social:4430
       labels:
         group: racknerd
 
     - targets: 
-      - metagross.offchain.pub:4430
-      - tyranitar.bitcoiner.social:4430
+        - metagross.offchain.pub:4430
+        - tyranitar.bitcoiner.social:4430
       labels:
         group: relays
 

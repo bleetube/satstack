@@ -1,5 +1,5 @@
 ---
-- hosts: all, !strfry
+- hosts: strfry
   become: true
 
   roles:
@@ -7,10 +7,9 @@
     - role: nginx_core.nginx
 
   tasks:
-    - name: Configure nginx
-      ansible.builtin.import_role:
-#       name: nginxinc.nginx_core.nginx_config
-        name: nginx_conf.nginx_config
+    - debug:
+        var: nginx_config_main_template
+      tags: test
       vars:
         # https://github.com/nginxinc/ansible-role-nginx-config/blob/main/defaults/main/template.yml
         nginx_config_main_template_enable: true

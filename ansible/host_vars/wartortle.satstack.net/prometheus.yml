@@ -19,7 +19,6 @@ prometheus_targets:
     - targets:
         - charmander.brenise.com:4430
         - incineroar.brenise.com:4430
-        - pancham.brenise.com:4430
       labels:
         group: brenise
 

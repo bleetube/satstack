@@ -1,8 +1,9 @@
 ---
 collections:
 
-  - name: nginxinc.nginx_core
-    src: https://github.com/nginxinc/ansible-collection-nginx
+    # Warning: does not consistently bring in the latest version of the nginx_conf role
+# - name: nginxinc.nginx_core
+#   src: https://github.com/nginxinc/ansible-collection-nginx
 #   version: '>=0.6.0'
 
   - name: prometheus.prometheus
@@ -81,3 +82,10 @@ roles:
 
   - src: https://github.com/ANXS/postgresql
     name: anxs.postgresql
+
+  - src: https://github.com/nginxinc/ansible-role-nginx
+    name: nginx_core.nginx
+
+  - src: https://github.com/nginxinc/ansible-role-nginx-config
+    name: nginx_core.nginx_config
+    version: '>=0.7.0'
