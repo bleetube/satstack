@@ -7,6 +7,11 @@
     - role: nginx_core.nginx
 
   tasks:
+    - name: Clean up http2 shim (temporary workaround)
+      ansible.builtin.file:
+        path: /etc/nginx/enable_http2.conf
+        state: absent
+
     - name: Configure nginx
       ansible.builtin.import_role:
 #       name: nginxinc.nginx_core.nginx_config

@@ -1,17 +1,11 @@
 ---
-- name: Create http2 shim to include later (temporary workaround)
-  ansible.builtin.lineinfile:
-    create: yes
-    path: /etc/nginx/enable_http2.conf
-    line: "http2 on;"
-
 - name: strfry | Configure nginx
   ansible.builtin.import_role:
     name: nginx_core.nginx_config
   vars:
     # afaict, overriding any numeric values in the main nginx config requires replacing the entire dictionary.
     # See: https://github.com/nginxinc/ansible-role-nginx-config/issues/352
-    # The only difference between this and the main nginx config is the worker_rlimit_nofile value and worker_connections.
+    # The only difference between this and the nginx config used in playbooks/nginx/main.yml is the worker_rlimit_nofile value and worker_connections.
     nginx_config_main_template_enable: true
     nginx_config_main_template:
       template_file: nginx.conf.j2
@@ -60,19 +54,12 @@
               servers:
                 - address: "127.0.0.1:{{ strfry_relay.port|default(7777) }}"
                #- address: unix:/var/lib/strfry/strfry.sock
-          http2:
-            enable: true
           servers:
             - core:
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_strfry_https_port|default(443) }} ssl"
-                    http2:
-                      enable: true
-                http2:
-                  enable: true
                 include:
                   - "/etc/nginx/acme_{{ nginx_strfry_domain }}.conf"
-                  - /etc/nginx/enable_http2.conf
                 client_max_body_size: 0 # Stream request body to backend
               locations:
                 - location: /

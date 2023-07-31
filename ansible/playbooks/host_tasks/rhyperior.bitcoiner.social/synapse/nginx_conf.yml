@@ -15,10 +15,8 @@
             - core:
                 listen:
                   - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:443 ssl"
-                    #http2: true
                   # For the federation port
                   - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:8448 ssl"
-                    #http2: true
                 include:
                   - "/etc/nginx/acme_{{ synapse_domain }}.conf"
                 client_max_body_size: 50M

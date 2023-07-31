@@ -20,7 +20,6 @@
             - core:
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_ntfy_https_port|default(4432) }} ssl"
-                    #http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                 client_max_body_size: 0 # Stream request body to backend

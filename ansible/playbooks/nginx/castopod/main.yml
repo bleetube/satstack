@@ -31,10 +31,11 @@
             - core:
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_castopod_port|default(443) }} ssl"
-#                   http2: true
                 include:
                   - "/etc/nginx/acme_{{ castopod_domain }}.conf"
                   - /etc/nginx/castopod_template.conf
+              http2:
+                enabled: true
           headers:
             add_headers:
               - name: X-Real-IP

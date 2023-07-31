@@ -19,10 +19,11 @@
             - core:
                 listen:
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ jellyfin_https_port|default(4445) }} ssl"
-#                   http2: true
                 include:
                   - "/etc/nginx/acme_{{ inventory_hostname }}.conf"
                   - /etc/nginx/jellyfin_template.conf
+              http2:
+                enabled: true
           headers:
             add_headers:
               - name: X-Real-IP
