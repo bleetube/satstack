@@ -89,3 +89,7 @@ roles:
   - src: https://github.com/nginxinc/ansible-role-nginx-config
     name: nginx_core.nginx_config
     version: '>=0.7.0'
+
+    # does not work
+# - src: https://github.com/megabyte-labs/ansible-deno
+#   name: professormanhattan.deno

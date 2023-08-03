@@ -9,8 +9,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "chespin";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "chespin";
+#   networkmanager.enable = true;
+    interfaces = {
+      eno1.ipv4.addresses = [{
+        address = "192.168.1.219";
+        prefixLength = 24;
+      }];
+    };
+    defaultGateway6 = {
+      address = "192.168.1.1";
+      interface = "eno1";
+    };
+  };
 
   time.timeZone = "America/Los_Angeles";
 

@@ -18,3 +18,4 @@
 - import_playbook: mariadb.yml
 - import_playbook: redis.yml
 - import_playbook: podman.yml
+- import_playbook: strfry/main.yml

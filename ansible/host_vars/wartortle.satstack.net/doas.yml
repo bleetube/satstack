@@ -11,3 +11,5 @@ doas_permit_list:
     role: testnet
   - username: blee
     role: testnet_exporter
+  - username: meeseeks
+    role: jellyfin

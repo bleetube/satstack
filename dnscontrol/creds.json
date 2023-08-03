@@ -4,7 +4,7 @@
   },
   "namecheap": {
     "TYPE": "NAMECHEAP",
-    "apikey": "d30ed73d58184981b60d575f38e806b8",
-    "apiuser": "meaninglessinfo"
+    "apikey": "$NAMECHEAP_API_KEY",
+    "apiuser": "$NAMECHEAP_API_USER"
   }
 }
