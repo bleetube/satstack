@@ -2,9 +2,9 @@
 collections:
 
     # Warning: does not consistently bring in the latest version of the nginx_conf role
-# - name: nginxinc.nginx_core
-#   src: https://github.com/nginxinc/ansible-collection-nginx
-#   version: '>=0.6.0'
+  - name: nginxinc.nginx_core
+    src: https://github.com/nginxinc/ansible-collection-nginx
+    version: '>=0.6.0'
 
   - name: prometheus.prometheus
     src: https://github.com/prometheus-community/ansible

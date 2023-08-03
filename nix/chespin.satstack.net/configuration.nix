@@ -18,7 +18,7 @@
         prefixLength = 24;
       }];
     };
-    defaultGateway6 = {
+    defaultGateway = {
       address = "192.168.1.1";
       interface = "eno1";
     };
@@ -97,6 +97,7 @@
   services = {
 
     openssh.enable = true;
+    journald.extraConfig = "MaxRetentionSec=30day";
 
     # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/monitoring/prometheus/exporters.nix
     prometheus.exporters.node = {

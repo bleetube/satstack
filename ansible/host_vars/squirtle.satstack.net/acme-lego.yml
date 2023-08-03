@@ -4,3 +4,4 @@ acme_domains:
   - { domain: "{{ inventory_hostname }}", provider: namecheap }
   - { domain: omastar.satstack.net, provider: namecheap }
   - { domain: chespin.satstack.net, provider: namecheap }
+  - { domain: charmander.satstack.net, provider: namecheap }

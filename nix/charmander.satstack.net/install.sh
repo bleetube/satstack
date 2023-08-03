@@ -47,8 +47,10 @@ else
     rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/authorized_keys
 fi
 
-# certificates
-rsync -avz -e ssh blee:.secrets/acme/certificates/${TARGET}.${TARGET_DOMAIN}.* user2@remote2:/path/where/to/put/
-
+# copy certificates from the acme cronboss device
+ssh root@${TARGET} mkdir -p /var/acme/certificates
+rsync -avz -e ssh blee:".secrets/acme/certificates/${TARGET}.${TARGET_DOMAIN}.*" root@${TARGET}:/var/acme/certificates
+# WARNING: the acme user will not exist until at least the next step, but probably also needs a reboot
+# so we probably need to disable nginx until the next reboot because we're using external certificate pipeline management
 
 ssh root@${TARGET} nixos-install

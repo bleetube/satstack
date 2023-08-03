@@ -8,19 +8,19 @@
 
   networking = {
     hostName = "charmander";
-#   networkmanager.enable = true;
     interfaces = {
       enp0s31f6.ipv4.addresses = [{
         address = "192.168.1.39";
         prefixLength = 24;
       }];
     };
-    defaultGateway6 = {
+    defaultGateway = {
       address = "192.168.1.1";
       interface = "enp0s31f6";
     };
+    # TODO https://nixos.wiki/wiki/Encrypted_DNS
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
   };
-
 
   time.timeZone = "America/Los_Angeles";
 
@@ -64,7 +64,7 @@
     tcpdump
     tree
     vim
-    nginx
+#   nginx
   ];
 
   programs.mtr.enable = true;
@@ -95,6 +95,7 @@
   services = {
 
     openssh.enable = true;
+    journald.extraConfig = "MaxRetentionSec=30day";
 
     # https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/services/monitoring/prometheus/exporters.nix
     prometheus.exporters.node = {
