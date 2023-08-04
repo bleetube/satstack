@@ -31,46 +31,90 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  users.users.blee = {
-    openssh.authorizedKeys.keyFiles = [
-      /etc/nixos/ssh/authorized_keys
-    ];
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-      curl
-      dnsutils
-      git
-      jq
-      netcat
-      tmux
-      wget
-    ];
+  users = {
+    groups.acme = {};
+    users = {
+      blee = {
+        openssh.authorizedKeys.keyFiles = [
+          /etc/nixos/ssh/authorized_keys
+        ];
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+        packages = with pkgs; [
+          curl
+          dnsutils
+          git
+          jq
+          netcat
+          tmux
+          wget
+        ];
+      };
+      timburr = {
+        openssh.authorizedKeys.keyFiles = [
+          /etc/nixos/ssh/authorized_timburr_keys
+        ];
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+      };
+      acme = {
+        isSystemUser = true;
+        createHome = true;
+        home = "/var/acme";
+        shell = "/usr/sbin/nologin";
+        group = "acme";
+      };
+      nginx = {
+        extraGroups = [ "acme" ];
+      };
+      root = {
+        openssh.authorizedKeys.keyFiles = [
+          /etc/nixos/ssh/authorized_keys
+        ];
+      };
+    };
   };
 
-  users.users.root = {
-    openssh.authorizedKeys.keyFiles = [
-      /etc/nixos/ssh/authorized_keys
-    ];
-  };
-
-  environment.systemPackages = with pkgs; [
-    doas
-    file
-    htop
-    nettools
-    psmisc
-    rsync
-    tcpdump
-    tree
-    vim
-#   nginx
+  # permit read access to certificates for the users in the acme group, such as nginx
+  systemd.tmpfiles.rules = [
+    "d /var/acme 0750 acme acme - -"
+    "d /var/acme/certificates 0750 acme acme - -"
   ];
 
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+  environment = {
+    systemPackages = with pkgs; [
+      doas
+      file
+      htop
+      libressl
+      nettools
+      psmisc
+      rsync
+      tcpdump
+      tree
+      vim
+      #nginx
+    ];
+    shellInit = ''
+      export EDITOR=vim
+      export VISUAL=vim
+      pheonix() {
+          systemctl restart "$1"
+          journalctl -fu "$1"
+      }
+    '';
+  };
+
+  programs = {
+    bash.shellAliases = {
+      ll = "ls -lAF --classify --group-directories-first";
+      l  = "ls -lF --group-directories-first";
+    };
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 
   networking.firewall.enable = false;
@@ -89,8 +133,24 @@
 # networking.firewall.allowedUDPPorts = [ ];
 # networking.firewall.allowedUDPPortRanges = [ ];
 
-  security.doas.enable = true;
-  security.sudo.enable = false;
+  security = {
+    sudo.enable = false;
+    doas = {
+      enable = true;
+      extraRules = [
+        {
+          users = [ "blee" ];
+          noPass = true;
+        }
+        { # remotely reboot this PC remotely via Termius on Android
+          users = [ "timburr" ];
+          noPass = true;
+          cmd = "reboot";
+        }
+      ];
+    };
+    dhparams.enable = true; # seems to not work, had to generate one manually
+  };
 
   services = {
 
@@ -119,10 +179,11 @@
         recommendedTlsSettings = true;
         recommendedOptimisation = true;
         sslProtocols = "TLSv1.3";
-        sslDhparam = "/var/acme/dhparams.pem";
+#       sslDhparam = config.security.dhparams.path;
+        sslDhparam = "/etc/ssl/dhparams.pem";
         virtualHosts =  
         let
-          domainName = "charmander.brenise.com";
+          domainName = "charmander.satstack.net";
           tlsConfig = {
                 onlySSL = true;
                 serverName = domainName;
@@ -134,6 +195,10 @@
           "node_exporter" =  (tlsConfig // {
             listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
             locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
+          });
+          "sd-webui" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
+            locations."/" = { proxyPass = "http://127.0.0.1:7861"; };
           });
         };
     };

@@ -17,12 +17,13 @@ prometheus_targets:
         group: charlgiwnbro
 
     - targets:
-        - charmander.brenise.com:4430
+#       - charmander.brenise.com:4430
         - incineroar.brenise.com:4430
       labels:
         group: brenise
 
     - targets:
+        - charmander.satstack.net:4430
         - chespin.satstack.net:4430
         - wartortle.satstack.net:4430
         - squirtle.satstack.net:4430

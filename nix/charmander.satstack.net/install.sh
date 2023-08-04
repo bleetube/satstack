@@ -6,7 +6,6 @@ set -x
 TARGET=charmander
 TARGET_DOMAIN=satstack.net
 
-
 FORMAT_DISK ()
 {
     dd if=/dev/zero count=1 bs=21M of=/dev/nvme0n1
@@ -43,14 +42,16 @@ rsync -tv configuration.nix root@${TARGET}:/mnt/etc/nixos/
 ssh root@${TARGET} mkdir -p /etc/nixos/ssh
 if [ -f ~/.ssh/ansible_root_keys ]; then
     rsync -v ~/.ssh/ansible_root_keys root@${TARGET}:/etc/nixos/ssh/authorized_keys
+    rsync -v ~/.ssh/ansible_timburr_keys root@${TARGET}:/etc/nixos/ssh/authorized_timburr_keys
 else
     rsync -v ~/.ssh/authorized_keys root@${TARGET}:/etc/nixos/ssh/authorized_keys
 fi
 
-# copy certificates from the acme cronboss device
 ssh root@${TARGET} mkdir -p /var/acme/certificates
-rsync -avz -e ssh blee:".secrets/acme/certificates/${TARGET}.${TARGET_DOMAIN}.*" root@${TARGET}:/var/acme/certificates
-# WARNING: the acme user will not exist until at least the next step, but probably also needs a reboot
-# so we probably need to disable nginx until the next reboot because we're using external certificate pipeline management
 
 ssh root@${TARGET} nixos-install
+
+# acme user exists after nixos-install
+ssh root@${TARGET} openssl dhparam -out /etc/ssl/dhparams.pem 3072
+ssh blee "rsync -ta .secrets/acme/certificates/charmander.satstack.net.* --rsync-path='doas -u acme rsync' root@charmander.satstack.net:/var/acme/certificates/"
+ssh root@${TARGET} "chmod 640 /var/acme/certificates/charmander.satstack.net.*"

@@ -11,7 +11,7 @@
 
   networking = {
     hostName = "chespin";
-#   networkmanager.enable = true;
+    #networkmanager.enable = true;
     interfaces = {
       eno1.ipv4.addresses = [{
         address = "192.168.1.219";
@@ -29,7 +29,7 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
-#   keyMap = "us";
+    #keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
