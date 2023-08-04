@@ -112,8 +112,6 @@
         shell = "/run/current-system/sw/bin/bash";
         packages = with pkgs; [
           git
-          python311
-          python311Packages.pip
           tmux
         ];
         group = "a1";
@@ -252,7 +250,7 @@
           });
           "sd-webui" =  (tlsConfig // {
             listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
-            locations."/" = { proxyPass = "http://127.0.0.1:7861"; };
+            locations."/" = { proxyPass = "http://127.0.0.1:7860"; };
           });
         };
     };

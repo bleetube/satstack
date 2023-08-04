@@ -20,3 +20,4 @@ Tools in packages provided by official upstream repositories
 
 * ln-ws-proxy, bitcoind and electrs
 * vaultwarden, miniflux
+* [stable-diffusion-webui](nix/charmander.satstack.net/configuration.nix)

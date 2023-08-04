@@ -60,7 +60,11 @@ ssh root@${TARGET} "chmod 640 /var/acme/certificates/charmander.satstack.net.*"
 # Use a staged automatic1111/stable-diffusion-webui
 rsync -ta ~/ai/sd-webui/ --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111
 rsync -tv automatic1111-webui-nix/*.nix --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111
+# copy sd models (this probably needs updating by the next time I do this)
+#rsync -tP ~/ai/stabilityai/stable-diffusion-xl-base-1.0/sd_xl_base_1.0_0.9vae.safetensors ~/ai/stabilityai/stable-diffusion-xl-refiner-1.0/sd_xl_refiner_1.0_0.9vae.safetensors --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111/models/Stable-Diffusion/
 # enable unfree packages for the webui
-ssh root@char  doas -u a1 mkdir -p /opt/automatic1111/.config/nixpkgs
+ssh root@${TARGET}  doas -u a1 mkdir -p /opt/automatic1111/.config/nixpkgs
 rsync -tv unfree-config.nix --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111/.config/nixpkgs/
+rsync -tv files/webui-user.sh --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111/
 #ssh root@char "cd /opt/automatic1111 && doas -u a1 git add *.nix"
+# To use a1, start a `nix shell` and then run ./webui.sh
