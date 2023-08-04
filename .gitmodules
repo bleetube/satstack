@@ -1,0 +1,3 @@
+[submodule "nix/charmander.satstack.net/automatic1111-webui-nix"]
+	path = nix/charmander.satstack.net/automatic1111-webui-nix
+	url = https://github.com/virchau13/automatic1111-webui-nix

@@ -55,3 +55,12 @@ ssh root@${TARGET} nixos-install
 ssh root@${TARGET} openssl dhparam -out /etc/ssl/dhparams.pem 3072
 ssh blee "rsync -ta .secrets/acme/certificates/charmander.satstack.net.* --rsync-path='doas -u acme rsync' root@charmander.satstack.net:/var/acme/certificates/"
 ssh root@${TARGET} "chmod 640 /var/acme/certificates/charmander.satstack.net.*"
+
+# See https://github.com/virchau13/automatic1111-webui-nix
+# Use a staged automatic1111/stable-diffusion-webui
+rsync -ta ~/ai/sd-webui/ --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111
+rsync -tv automatic1111-webui-nix/*.nix --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111
+# enable unfree packages for the webui
+ssh root@char  doas -u a1 mkdir -p /opt/automatic1111/.config/nixpkgs
+rsync -tv unfree-config.nix --rsync-path='doas -u a1 rsync' root@${TARGET}:/opt/automatic1111/.config/nixpkgs/
+#ssh root@char "cd /opt/automatic1111 && doas -u a1 git add *.nix"

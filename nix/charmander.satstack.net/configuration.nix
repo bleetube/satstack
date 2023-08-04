@@ -2,9 +2,45 @@
   imports = [
     ./hardware-configuration.nix
   ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "nvidia-x11"
+      "nvidia-settings"
+      "nvidia-persistenced"
+    ];
+  # https://nixos.wiki/wiki/Nvidia
+  hardware ={
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
+    nvidia = {
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+      # Modesetting is needed for most Wayland compositors
+      #modesetting.enable = true;
+
+      # Use the open source version of the kernel module
+      # Only available on driver 515.43.04+
+      open = false;
+
+      # Enable the nvidia settings menu
+      nvidiaSettings = true;
+
+      # Optionally, you may need to select the appropriate driver version for your specific GPU.
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+  };
+
+  # WARNING: massive amount of packages will be installed and we won't even use Xorg.
+  # But this gives you nvidia-smi
+  # Tell Xorg to use the nvidia driver (also valid for Wayland)
+  services.xserver.videoDrivers = ["nvidia"];
+
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
   networking = {
     hostName = "charmander";
@@ -32,7 +68,10 @@
   };
 
   users = {
-    groups.acme = {};
+    groups ={
+      acme = {};
+      a1 = {};
+    };
     users = {
       blee = {
         openssh.authorizedKeys.keyFiles = [
@@ -61,11 +100,23 @@
         isSystemUser = true;
         createHome = true;
         home = "/var/acme";
-        shell = "/usr/sbin/nologin";
+        shell = "/run/current-system/sw/bin/nologin";
         group = "acme";
       };
       nginx = {
         extraGroups = [ "acme" ];
+      };
+      a1 = {
+        isSystemUser = true;
+        home = "/opt/automatic1111";
+        shell = "/run/current-system/sw/bin/bash";
+        packages = with pkgs; [
+          git
+          python311
+          python311Packages.pip
+          tmux
+        ];
+        group = "a1";
       };
       root = {
         openssh.authorizedKeys.keyFiles = [
@@ -93,7 +144,10 @@
       tcpdump
       tree
       vim
-      #nginx
+      # GPU tools
+      inxi
+      glxinfo
+      pciutils # lspci
     ];
     shellInit = ''
       export EDITOR=vim
