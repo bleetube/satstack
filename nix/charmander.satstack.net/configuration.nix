@@ -250,11 +250,13 @@
           });
           "sd-webui" =  (tlsConfig // {
             listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
-            locations."/" = { proxyPass = "http://127.0.0.1:7860"; };
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:7860";
+              proxyWebsockets = true;
+            };
           });
         };
     };
-
   };
 
   system.stateVersion = "23.05";

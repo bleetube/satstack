@@ -22,6 +22,8 @@
       address = "192.168.1.1";
       interface = "eno1";
     };
+    # TODO https://nixos.wiki/wiki/Encrypted_DNS
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
   };
 
   time.timeZone = "America/Los_Angeles";

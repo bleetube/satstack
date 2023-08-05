@@ -146,12 +146,6 @@ prometheus_alert_rules:
     annotations:
       summary: electrs is not responding
 
-  - alert: samourai dojo offline
-    expr: probe_success{job="samourai-dojo"} == 0
-    for: 15m
-    annotations:
-      summary: samourai dojo is not running.
-
   - alert: lightningd offline
     expr: up{job="lightningd"} == 0
     for: 15m
@@ -164,20 +158,27 @@ prometheus_alert_rules:
 #   annotations:
 #     summary: Most lightning channels are inactive. Check LND and Tor.
 
-# - alert: Stale Samourai Dojo block height
+  - alert: samourai dojo offline
+    expr: probe_success{job="samourai-dojo"} == 0
+    for: 15m
+    annotations:
+      summary: samourai dojo is not running.
+
+  - alert: Stale Samourai Dojo block height
 #   expr: min(dojo_block_height) < max(bitcoin_latest_block_height)
-#   for: 1h
-#   annotations:
-#     summary: Node has fewer blocks than peers, possibly indicating an outage.
-#     description: Check node logs and restart if necessary.
+    expr: dojo_block_height < dojo_indexer_max_height
+    for: 1h
+    annotations:
+      summary: Node has fewer blocks than peers, possibly indicating an outage.
+      description: Dojo shows stale blocks. You should probably check on bitcoind, and then restart Samourai Dojo.
 
   - alert: Dojo shows stale indexer tip height
 #   expr: dojo_indexer_max_height < max(bitcoin_latest_block_height)
-    expr: dojo_indexer_max_height < max(dojo_block_height)
+    expr: dojo_indexer_max_height < dojo_block_height
     for: 1h
     annotations:
       summary: Dojo is not longer seeing up block updates from electrs.
-      description: This alerts on the brittle connection between the electrs daemon and the dojo container. These issues present far less frequently in the monolith stack, but since we run them on separate machines we observe that dojo fails to restore connections to either ZMQ ports on bitcoind or the electrs port.
+      description: Dojo shows the indexer with an lower (stale) block height. It could mean there is a problem with the indexer, or it could be a connectivity problem where the Dojo is unable to reach the ZMQ ports on bitcoind.
 
 # - alert: Stale lightningd block height
 #   expr: lightning_node_blockheight < max(bitcoin_latest_block_height)
