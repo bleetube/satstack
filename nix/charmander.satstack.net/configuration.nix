@@ -7,6 +7,9 @@
       "nvidia-x11"
       "nvidia-settings"
       "nvidia-persistenced"
+      "steam"
+      "steam-original"
+      "steam-run"
     ];
   # https://nixos.wiki/wiki/Nvidia
   hardware ={
@@ -31,11 +34,6 @@
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
   };
-
-  # WARNING: massive amount of packages will be installed and we won't even use Xorg.
-  # But this gives you nvidia-smi
-  # Tell Xorg to use the nvidia driver (also valid for Wayland)
-  services.xserver.videoDrivers = ["nvidia"];
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -69,10 +67,37 @@
 
   users = {
     groups ={
-      acme = {};
       a1 = {};
+      acme = {};
+      steam = {};
     };
     users = {
+
+      root = {
+        openssh.authorizedKeys.keyFiles = [
+          /etc/nixos/ssh/authorized_keys
+        ];
+      };
+
+      a1 = {
+        isSystemUser = true;
+        home = "/opt/automatic1111";
+        shell = "/run/current-system/sw/bin/bash";
+        packages = with pkgs; [
+          git
+          tmux
+        ];
+        group = "a1";
+      };
+
+      acme = {
+        isSystemUser = true;
+        createHome = true;
+        home = "/var/acme";
+        shell = "/run/current-system/sw/bin/nologin";
+        group = "acme";
+      };
+
       blee = {
         openssh.authorizedKeys.keyFiles = [
           /etc/nixos/ssh/authorized_keys
@@ -89,37 +114,25 @@
           wget
         ];
       };
+
+      nginx = {
+        extraGroups = [ "acme" ];
+      };
+
+      steam = {
+        openssh.authorizedKeys.keyFiles = [
+          /etc/nixos/ssh/authorized_keys
+        ];
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+      };
+
       timburr = {
         openssh.authorizedKeys.keyFiles = [
           /etc/nixos/ssh/authorized_timburr_keys
         ];
         isNormalUser = true;
         extraGroups = [ "wheel" ];
-      };
-      acme = {
-        isSystemUser = true;
-        createHome = true;
-        home = "/var/acme";
-        shell = "/run/current-system/sw/bin/nologin";
-        group = "acme";
-      };
-      nginx = {
-        extraGroups = [ "acme" ];
-      };
-      a1 = {
-        isSystemUser = true;
-        home = "/opt/automatic1111";
-        shell = "/run/current-system/sw/bin/bash";
-        packages = with pkgs; [
-          git
-          tmux
-        ];
-        group = "a1";
-      };
-      root = {
-        openssh.authorizedKeys.keyFiles = [
-          /etc/nixos/ssh/authorized_keys
-        ];
       };
     };
   };
@@ -129,6 +142,8 @@
     "d /var/acme 0750 acme acme - -"
     "d /var/acme/certificates 0750 acme acme - -"
   ];
+
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   environment = {
     systemPackages = with pkgs; [
@@ -146,7 +161,10 @@
       inxi
       glxinfo
       pciutils # lspci
+      # gnome
+      #gnomeExtensions.appindicator
     ];
+
     shellInit = ''
       export EDITOR=vim
       export VISUAL=vim
@@ -155,6 +173,25 @@
           journalctl -fu "$1"
       }
     '';
+
+    gnome.excludePackages = (with pkgs; [
+      gnome-photos
+      gnome-tour
+    ]) ++ (with pkgs.gnome; [
+      cheese # webcam tool
+      gnome-music
+      gnome-terminal
+      gedit # text editor
+      epiphany # web browser
+      geary # email reader
+      evince # document viewer
+      gnome-characters
+      totem # video player
+      tali # poker game
+      iagno # go game
+      hitori # sudoku game
+      atomix # puzzle game
+    ]);
   };
 
   programs = {
@@ -167,23 +204,16 @@
       enable = true;
       enableSSHSupport = true;
     };
+    steam.enable = true;
+    chromium = {
+      enable = true;
+      extraOpts = {
+        "SpellcheckEnabled" = false;
+      };
+    };
   };
 
   networking.firewall.enable = false;
-# networking.firewall.allowPing = true;
-# networking.firewall.allowedTCPPorts = [
-#   22
-#   80
-#   443
-#   config.services.bitcoind.rpc.port
-#   config.services.electrs.port
-# ];
-# networking.firewall.allowedTCPPortRanges = [
-#   { from = 4400; to = 4499; }
-#   { from = 28332; to = 28334; }
-# ];
-# networking.firewall.allowedUDPPorts = [ ];
-# networking.firewall.allowedUDPPortRanges = [ ];
 
   security = {
     sudo.enable = false;
@@ -256,6 +286,16 @@
             };
           });
         };
+    };
+    xserver = {
+      enable = true;
+      videoDrivers = ["nvidia"]; # nvidia-smi
+      displayManager = {
+        gdm.enable = true;
+        autoLogin.enable = true;
+        autoLogin.user = "steam";
+      };
+      desktopManager.gnome.enable = true;
     };
   };
 
