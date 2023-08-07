@@ -36,5 +36,5 @@
       ansible.builtin.copy:
         src: ~/.ssh/ansible_root_keys
         dest: /root/.ssh/authorized_keys
-        owner: "{{ sysadmin_username }}"
-        group: "{{ sysadmin_username }}"
+        owner: root
+        group: root

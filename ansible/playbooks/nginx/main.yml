@@ -3,10 +3,13 @@
   become: true
 
   roles:
-#   - role: nginxinc.nginx_core.nginx
-    - role: nginx_core.nginx
+    - role: nginxinc.nginx_core.nginx
+      when: ansible_os_family != 'Archlinux'
 
   tasks:
+    - import_tasks: install-Archlinux.yml
+      when: ansible_os_family == 'Archlinux'
+
     - name: Clean up http2 shim (temporary workaround)
       ansible.builtin.file:
         path: /etc/nginx/enable_http2.conf
@@ -14,8 +17,7 @@
 
     - name: Configure nginx
       ansible.builtin.import_role:
-#       name: nginxinc.nginx_core.nginx_config
-        name: nginx_conf.nginx_config
+        name: nginx_core.nginx_config
       vars:
         # https://github.com/nginxinc/ansible-role-nginx-config/blob/main/defaults/main/template.yml
         nginx_config_main_template_enable: true
@@ -32,7 +34,7 @@
               error_log:
                 file: /var/log/nginx/error.log
                 level: notice
-              pid: /var/run/nginx.pid
+                pid: "{{ '/run/nginx.pid' if ansible_os_family == 'Archlinux' else '/var/run/nginx.pid' }}"
             http: # https://nginx.org/en/docs/http/ngx_http_core_module.html
               default_type: application/octet-stream
               sendfile: true

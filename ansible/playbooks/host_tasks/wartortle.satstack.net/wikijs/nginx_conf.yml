@@ -2,7 +2,7 @@
 # https://code.samourai.io/dojo/samourai-dojo/-/tree/develop/docker/my-dojo/nginx/mainnet.conf
 - name: Wiki.js | Configure nginx
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
   vars:
     nginx_config_http_template_enable: true
     nginx_config_http_template:

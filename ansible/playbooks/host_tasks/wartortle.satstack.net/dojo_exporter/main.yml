@@ -9,10 +9,9 @@
     - name: dojo_exporter | Create a user
       ansible.builtin.user:
         name: "{{ dojo_exporter_user|default('dojo-exp') }}"
-        state: present
+        home: "{{ dojo_exporter_home|default('/opt/dojo_exporter') }}"
         shell: /bin/bash
         createhome: yes
-        home: "{{ dojo_exporter_home|default('/opt/dojo_exporter') }}"
         password: '!'
 
     - include_tasks:

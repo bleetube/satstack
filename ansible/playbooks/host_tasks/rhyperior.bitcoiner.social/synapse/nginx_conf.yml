@@ -2,7 +2,7 @@
 # https://matrix-org.github.io/synapse/latest/reverse_proxy.html
 - name: Matrix Synapse | Configure nginx
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
   vars:
     nginx_config_http_template_enable: true
     nginx_config_http_template:

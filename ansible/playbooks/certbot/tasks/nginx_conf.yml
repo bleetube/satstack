@@ -1,7 +1,7 @@
 ---
 - name: Configure nginx for certbot challenge and TLSv1.2 for {{ acme_domain.domains[0] }}
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
     allow_duplicates: true
   tags: nginx
   become: yes

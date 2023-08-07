@@ -17,7 +17,7 @@
 
   roles:
     # configure nginx ssl using the existing acme.sh certificates
-    - role: nginxinc.nginx_core.nginx_config
+    - role: nginx_core.nginx_config
       tags: nginx
 
   tasks:

@@ -1,7 +1,7 @@
 ---
 - name: Configure nginx
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
   tags: nginx
   become: true
   vars:

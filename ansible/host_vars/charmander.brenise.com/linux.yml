@@ -1,0 +1,13 @@
+--- # bleetube.linux variables
+
+
+sysadmin_packages_custom:
+  - chromium
+  - fzf
+  - kdialog
+  - lm_sensors
+  - man
+  - man-db
+  - steam
+  - strace
+  - syncthing

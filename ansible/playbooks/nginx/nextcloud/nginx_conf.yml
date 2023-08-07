@@ -8,7 +8,7 @@
 # https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/postgres/fpm/web/nginx.conf
 - name: Nextcloud | Configure nginx to include the template
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
   vars:
     nginx_config_http_template_enable: true
     nginx_config_http_template:

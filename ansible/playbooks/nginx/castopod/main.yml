@@ -8,7 +8,7 @@
 # https://code.castopod.org/adaures/castopod/-/blob/develop/docker/production/web-server/nginx.template.conf
 - name: Castopod | Configure nginx to include the template
   ansible.builtin.import_role:
-    name: nginxinc.nginx_core.nginx_config
+    name: nginx_core.nginx_config
   tags: nginx
   vars:
     nginx_config_http_template_enable: true

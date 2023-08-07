@@ -1,0 +1,20 @@
+---
+- name: Install nginx from os repository
+  ansible.builtin.package:
+    name: nginx
+    state: latest
+
+- name: Create an nginx system group
+  ansible.builtin.group:
+    name: nginx
+    system: true
+
+- name: Create an nginx system user
+  ansible.builtin.user:
+    name: nginx
+    comment: "nginx user"
+    system: true
+    shell: /usr/bin/false
+    home: /nonexistent
+    create_home: false
+    password: '!'
