@@ -2,27 +2,50 @@
   imports = [
     ./hardware-configuration.nix
   ];
-  # NVIDIA GP104 [GeForce GTX 1070] 01:00.0
-  services.xserver.videoDrivers = ["nvidia"]; # proprietary
-  hardware.nvidia.nvidiaPersistenced = true; # keep GPUs awake in headless-mode
-  nixpkgs.config = {
-    allowUnfreePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        "nvidia-x11"
-        "nvidia-settings"
-        "nvidia-persistenced"
-      ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "nvidia-x11"
+      "nvidia-settings"
+      "nvidia-persistenced"
+      "steam"
+      "steam-original"
+      "steam-run"
+    ];
+  # https://nixos.wiki/wiki/Nvidia
+  hardware = {
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
+    nvidia = {
+
+      # Modesetting is needed for most Wayland compositors
+      #modesetting.enable = true;
+
+      # Use the open source version of the kernel module
+      # Only available on driver 515.43.04+
+      open = false;
+
+      # Enable the nvidia settings menu
+      nvidiaSettings = true;
+
+      # Optionally, you may need to select the appropriate driver version for your specific GPU.
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
   };
 
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
+
   networking = {
-    hostName = "charmander";
+    hostName = "incineroar";
+    networkmanager.enable = false;
     interfaces = {
       enp0s31f6.ipv4.addresses = [{
-        address = "192.168.1.39";
+        address = "192.168.1.36";
         prefixLength = 24;
       }];
     };
@@ -33,9 +56,18 @@
     # TODO https://nixos.wiki/wiki/Encrypted_DNS
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
   };
+
   time.timeZone = "America/Los_Angeles";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+#   keyMap = "us";
+    useXkbConfig = true; # use xkbOptions in tty.
+  };
+
   users = {
-    groups = {
+    groups ={
       a1 = {};
       acme = {};
       steam = {};
@@ -93,6 +125,7 @@
           /etc/nixos/ssh/authorized_keys
         ];
         isNormalUser = true;
+        extraGroups = [ "wheel" ];
       };
 
       timburr = {
@@ -104,12 +137,15 @@
       };
     };
   };
+
   # permit read access to certificates for the users in the acme group, such as nginx
   systemd.tmpfiles.rules = [
     "d /var/acme 0750 acme acme - -"
     "d /var/acme/certificates 0750 acme acme - -"
   ];
-  #services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
   environment = {
     systemPackages = with pkgs; [
       doas
@@ -127,6 +163,8 @@
       inxi
       glxinfo
       pciutils # lspci
+      # gnome
+      #gnomeExtensions.appindicator
     ];
 
     shellInit = ''
@@ -138,7 +176,18 @@
       }
     '';
 
+    plasma5.excludePackages = with pkgs.libsForQt5; [
+      #elisa # music player
+      #gwenview # image viewer
+      #okular # document viewer
+      #oxygen # widgets
+      #khelpcenter
+      #konsole
+      plasma-browser-integration
+      #print-manager
+    ];
   };
+
   programs = {
     bash.shellAliases = {
       ll = "ls -lAF --classify --group-directories-first";
@@ -149,8 +198,17 @@
       enable = true;
       enableSSHSupport = true;
     };
+    steam.enable = true;
+    chromium = {
+      enable = true;
+      extraOpts = {
+        "SpellcheckEnabled" = false;
+      };
+    };
   };
+
   networking.firewall.enable = false;
+
   security = {
     sudo.enable = false;
     doas = {
@@ -159,11 +217,6 @@
         {
           users = [ "blee" ];
           noPass = true;
-        }
-        { # troubleshooting
-          users = [ "steam" ];
-          noPass = true;
-          cmd = "dmesg";
         }
         { # remotely reboot this PC remotely via Termius on Android
           users = [ "timburr" ];
@@ -174,7 +227,9 @@
     };
     dhparams.enable = true; # seems to not work, had to generate one manually
   };
+
   services = {
+
     openssh.enable = true;
     journald.extraConfig = "MaxRetentionSec=30day";
 
@@ -217,7 +272,7 @@
             listen = [{ addr = "0.0.0.0"; port = 4430; ssl = true; }];
             locations."/" = { proxyPass = "http://127.0.0.1:8030"; };
           });
-          "sd-webui" =  (tlsConfig // {
+          "text-generation-webui" =  (tlsConfig // {
             listen = [{ addr = "0.0.0.0"; port = 4431; ssl = true; }];
             locations."/" = {
               proxyPass = "http://127.0.0.1:7860";
@@ -226,7 +281,15 @@
           });
         };
     };
-
+    xserver = {
+      enable = true;
+      videoDrivers = ["nvidia"]; # nvidia-smi
+      displayManager = {
+        sddm.enable = true;
+        #defaultSession = "plasmawayland";
+      };
+      desktopManager.plasma5.enable = true;
+    };
   };
 
   system.stateVersion = "23.05";
