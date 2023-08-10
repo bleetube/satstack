@@ -16,6 +16,10 @@
 #- import_playbook: observability/main.yml # gantsign.golang throws an error _only_ when called from here?
 - import_playbook: proxmox/main.yml
 - import_playbook: mariadb.yml
-- import_playbook: redis.yml
+- import_playbook: postgresql.yml
 - import_playbook: podman.yml
+- import_playbook: synapse.yml
 - import_playbook: strfry/main.yml
+
+# Tasks that are specific to the hosts they run on
+- import_playbook: host_tasks/rhyperior.bitcoiner.social/castopod.yml

@@ -10,11 +10,6 @@
     - import_tasks: install-Archlinux.yml
       when: ansible_os_family == 'Archlinux'
 
-    - name: Clean up http2 shim (temporary workaround)
-      ansible.builtin.file:
-        path: /etc/nginx/enable_http2.conf
-        state: absent
-
     - name: Configure nginx
       ansible.builtin.import_role:
         name: nginx_core.nginx_config

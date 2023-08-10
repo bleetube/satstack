@@ -4,5 +4,6 @@
     - role: bleetube.castopod
       tags: castopod
   tasks:
-    - import_tasks: ../../nginx/castopod/main.yml
+    - import_tasks: ../../nginx/castopod/nginx_conf.yml
+      tags: nginx
       become: yes

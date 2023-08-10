@@ -1,0 +1,17 @@
+---
+- hosts: matrix
+  become: yes
+
+  roles:
+    - role: bleetube.synapse
+      tags: synapse
+    - role: bleetube.ntfy
+      tags: ntfy
+    - role: bleetube.redis
+      tags: redis
+
+  tasks:
+    - import_tasks: nginx/synapse/nginx_conf.yml
+      tags: nginx
+    - import_tasks: nginx/ntfy/nginx_conf.yml
+      tags: nginx

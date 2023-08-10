@@ -1,3 +1,7 @@
 ---
 synapse_name: bitcoiner.social
 synapse_domain: matrix.bitcoiner.social
+nginx_ntfy_domain: ntfy.bitcoiner.social
+nginx_ntfy_https_port: 443
+ntfy_base_url: "https://nfty.bitcoiner.social"
+ntfy_listen_http: "127.0.0.1:8032"

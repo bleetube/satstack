@@ -1,0 +1,41 @@
+---
+peertube_domain: example.com
+peertube_root_path: /var/www/peertube # MUST be writable by ansible_user
+peertube_secret: ""
+peertube_postgres_password: ""
+peertube_smtp_password: ""
+peertube_metrics_enabled: True
+peertube_ports:
+  - "{{ peertube_http_port|default(1935) }}:1935"
+  - "{{ peertube_https_port|default(9000) }}:9000"
+  - "{{ peertube_metrics_port|default(9091) }}:9091" # prometheus
+peertube_volumes:
+  - /var/run/postgresql:/var/run/postgresql
+  - /var/run/redis:/var/run/redis
+  - "{{ peertube_root_path }}:/var/www/peertube"
+  - "{{ peertube_root_path }}/storage:/data"
+  - "{{ peertube_root_path }}/config:/config"
+
+# https://hub.docker.com/r/chocobozzz/peertube/tags
+peertube_image: "docker.io/chocobozzz/peertube:{{ peertube_version }}-bullseye"
+peertube_name: peertube
+peertube_version: production # latest
+
+peertube_config:
+  PEERTUBE_SECRET: '{{ peertube_secret }}'
+  #NODE_ENV: production
+  #NODE_CONFIG_DIR: /var/www/peertube/config
+
+  PEERTUBE_SMTP_USERNAME: peertube
+  PEERTUBE_SMTP_PASSWORD: '{{ peertube_smtp_password }}'
+  PEERTUBE_SMTP_HOSTNAME: mail.blee.tube
+  PEERTUBE_SMTP_PORT: 25
+  PEERTUBE_SMTP_FROM: noreply@blee.tube
+  PEERTUBE_SMTP_TLS: false
+  PEERTUBE_SMTP_DISABLE_STARTTLS: false
+  PEERTUBE_ADMIN_EMAIL: peertube@blee.tube
+
+  # /!\ Prefer to use the PeerTube admin interface to set the following configurations /!\
+  #PEERTUBE_SIGNUP_ENABLED: true
+  #PEERTUBE_TRANSCODING_ENABLED: true
+  #PEERTUBE_CONTACT_FORM_ENABLED: true

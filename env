@@ -23,7 +23,7 @@ source ~/.secrets/homelab/env
 export sableye_GRAFANA_ADMIN_PASSWORD=$(pass satstack.cloud/sableye/GRAFANA_ADMIN)
 export sableye_WIREGUARD_PRIVATE_KEY=$(pass satstack.cloud/sableye/WIREGUARD_PRIVATE_KEY)
 
-# brenise.com
+# brenise
 export pancham_TANDOOR_SECRET_KEY=$(pass brenise.com/pancham/TANDOOR_SECRET_KEY)
 export pancham_TANDOOR_POSTGRES_PASSWORD=$(pass brenise.com/pancham/TANDOOR_POSTGRES)
 export pancham_PEERTUBE_SECRET=$(pass brenise.com/pancham/PEERTUBE_SECRET)

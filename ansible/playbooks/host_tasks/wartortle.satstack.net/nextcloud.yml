@@ -10,6 +10,9 @@
   roles:
     - role: bleetube.nextcloud
       tags: nextcloud
+   #- role: bleetube.redis
+   #  tags: redis
+   #  become: yes
 
   tasks:
     - include_tasks:

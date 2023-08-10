@@ -1,9 +1,0 @@
----
-- hosts: rhyperior.bitcoiner.social
-  become: yes
-  roles:
-    - role: bleetube.ntfy
-      tags: ntfy
-  tasks:
-    - import_tasks: nginx_conf.yml
-      tags: nginx

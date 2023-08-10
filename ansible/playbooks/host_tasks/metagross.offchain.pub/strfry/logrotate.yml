@@ -1,0 +1,18 @@
+---
+- name: Install logrotate
+  ansible.builtin.package:
+    name: logrotate
+    state: present
+
+- name: Rotate strfry plugin logs
+  ansible.builtin.blockinfile:
+    path: /etc/logrotate.d/strfry
+    state: present
+    create: true
+    block: |
+      /var/lib/strfry/plugin/plugin.log {
+          daily
+          rotate 3
+          create
+          truncate
+      }

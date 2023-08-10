@@ -1,0 +1,10 @@
+---
+# prefer lego because synapse uses a version of python3-zope.interface that conflicts with certbot
+acme_email: acme@blee.tube
+acme_domains:
+  - { domain: "{{ inventory_hostname }}", provider: namecheap }
+  - { domain: blee.tube, provider: namecheap }
+  - { domain: mail.blee.tube, provider: namecheap }
+  - { domain: blee.tube, provider: namecheap }
+  - { domain: matrix.brenise.com, provider: namecheap }
+  - { domain: brenise.com, provider: namecheap }

@@ -82,6 +82,7 @@ roles:
 
   - src: https://github.com/ANXS/postgresql
     name: anxs.postgresql
+    version: development
 
   - src: https://github.com/nginxinc/ansible-role-nginx
     name: nginx_core.nginx

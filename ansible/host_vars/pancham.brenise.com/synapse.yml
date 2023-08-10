@@ -1,4 +1,6 @@
 ---
+synapse_name: brenise.com
+synapse_domain: matrix.brenise.com
 nginx_ntfy_https_port: 4440
 ntfy_base_url: "https://{{ inventory_hostname }}:{{ nginx_ntfy_https_port }}}}"
 ntfy_listen_http: "127.0.0.1:8032"
