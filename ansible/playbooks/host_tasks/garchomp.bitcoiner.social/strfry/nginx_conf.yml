@@ -1,0 +1,175 @@
+---
+- name: strfry | Configure nginx
+  ansible.builtin.import_role:
+    name: nginx_core.nginx_config
+  become: true
+  vars:
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/strfry_{{ nginx_strfry_domain }}.conf"
+        backup: false
+        config:
+          upstreams:
+            - name: strfry
+              servers:
+                - address: "127.0.0.1:{{ strfry_relay.port|default(7777) }}"
+               #- address: unix:/var/lib/strfry/strfry.sock
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_strfry_https_port|default(443) }} ssl"
+                # - address: "[2607:f130:0:105:216:3cff:fefb:92c2]:443 ssl"
+                include:
+                  - "/etc/nginx/acme_{{ nginx_strfry_domain }}.conf"
+                client_max_body_size: 0 # Stream request body to backend
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://strfry
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+                      - field: Connection
+                        value: $connection_upgrade
+                      - field: Upgrade
+                        value: $http_upgrade
+                      - field: X-Forwarded-For
+                        value: $proxy_add_x_forwarded_for
+                    connect_timeout: 3m
+                    send_timeout: 3m
+                    read_timeout: 3m
+                - location: /metrics
+                  proxy:
+                    pass: "http://127.0.0.1:{{ strfry_relay_metrics_port|default(8034) }}"
+                    set_header:
+                      - field: Host
+                        value: $http_host
+                - location: /static
+                  core:
+                    alias: /var/www/static
+                - location: /.well-known/nostr.json
+                  core:
+                    alias: /var/www/static/nostr.json
+                  headers:
+                    add_headers:
+                      - name: Access-Control-Allow-Origin
+                        value: '*'
+                - location: /favicon.ico
+                  core:
+                    alias: /var/www/static/favicon96.png
+                # https://matrix-org.github.io/synapse/latest/delegate.html
+                - location: '= /.well-known/matrix/server'
+                  rewrite: # https://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite
+                    return:
+                      code: 200
+                      text: >
+                        '{"m.server":"matrix.bitcoiner.social:443"}'
+                - location: '~ ^(/_matrix|/_synapse/client)'
+                  rewrite:
+                    return:
+                      url: "https://matrix.bitcoiner.social$request_uri"
+                      code: 301
+                # satdress
+              # - location: /.well-known/lnurlp/
+              #   proxy:
+              #     pass: "http://127.0.0.1:17422/.well-known/lnurlp/"
+              #     http_version: '1.1'
+              #     set_header:
+              #     - field: Host
+              #       value: $http_host
+              #     - field: x-forwarded-for
+              #       value: $remote_addr
+
+      # nostr.bitcoiner.social
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/nostr.bitcoiner.social.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:443 ssl"
+                include:
+                  - "/etc/nginx/acme_nostr.bitcoiner.social.conf"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://strfry
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+                      - field: Connection
+                        value: $connection_upgrade
+                      - field: Upgrade
+                        value: $http_upgrade
+                      - field: X-Forwarded-For
+                        value: $proxy_add_x_forwarded_for
+                    connect_timeout: 3m
+                    send_timeout: 3m
+                    read_timeout: 3m
+                # headers:
+                #   add_headers:
+                #     - name: Access-Control-Allow-Origin
+                #       value: '*'
+                # limit_req: # https://www.nginx.com/blog/rate-limiting-nginx/
+                #   limit_reqs: # see files/limits.conf
+                #     - zone: nostr
+                #       burst: 5
+                #       delay: false
+
+      # bitcoinr6de5lkvx4tpwdmzrdfdpla5sya2afwpcabjup2xpi5dulbad.onion
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/tor_{{ nginx_strfry_domain }}.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "127.0.0.1:9080"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://strfry
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+                      - field: Connection
+                        value: $connection_upgrade
+                      - field: Upgrade
+                        value: $http_upgrade
+                      - field: X-Forwarded-For
+                        value: $proxy_add_x_forwarded_for
+                    connect_timeout: 3m
+                    send_timeout: 3m
+                    read_timeout: 3m
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/http_{{ nginx_strfry_domain }}.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                server_name: "{{ nginx_strfry_domain }}"
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:80"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  rewrite:
+                    return:
+                      url: "https://{{ nginx_strfry_domain }}$request_uri"
+                      code: 301

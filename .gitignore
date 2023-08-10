@@ -5,6 +5,7 @@ dhparams.pem
 imap.passwd
 self-signed-ca
 external-requirements-only.yml
+ansible/playbooks/test.yml
 
 # nix
 secrets/

@@ -1,0 +1,5 @@
+---
+- hosts: garchomp.bitcoiner.social
+  tasks:
+    - import_tasks: strfry/nginx_conf.yml
+      tags: nginx

@@ -58,9 +58,10 @@
                   - off
               locations:
                 - location: /
-                  rewrite:
+                  rewrite: # https://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite
                     return:
-                      code: 404
+                      url: "https://{{ acme_domain.domains[0] }}$request_uri"
+                      code: 301
                 - location: /.well-known/acme-challenge/
                   core:
                     alias: /var/www/html/.well-known/acme-challenge/

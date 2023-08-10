@@ -1,35 +1,33 @@
 ---
-nginx_strfry_https_port: 443
-nginx_strfry_metrics_port: 4434
-strfry_metrics_plugin_port: 8034
-nginx_strfry_domain: bitcoiner.social
+nginx_strfry_https_port: 4442
+nginx_strfry_domain: "{{ inventory_hostname }}"
 strfry_relay:
   bind: "127.0.0.1"
-  port: 8030
+  port: 8047
   nofiles: 65536
   realIpHeader: x-forwarded-for
   info:
-    name: bitcoiner.social
-    description: A fast, reliable, and up-to-date nostr relay with monitored server availability and nightly off-site backups.
+    name: "{{ inventory_hostname }}"
+    description: test
     pubkey: 6b1b35c6dee48851bac53a4494ca8f819503be00212dbceb899dc03acd7641db
-    contact: nostr@bitcoiner.social
+    contact: admin@satstack.net
   maxWebsocketPayloadSize: 131072
   autoPingSeconds: 55
-  enableTcpKeepalive: "false"
+  enableTcpKeepalive: false
   queryTimesliceBudgetMicroseconds: 10000
   maxFilterLimit: 500
   maxSubsPerConnection: 20
   writePolicy:
-    plugin: /var/lib/strfry/plugin/bitcoinersocial.py
+    plugin: ''
     lookbackSeconds: 0
   compression:
-    enabled: "true"
-    slidingWindow: "true"
+    enabled: true
+    slidingWindow: true
   logging:
-    dumpInAll: "false"
-    dumpInEvents: "false"
-    dumpInReqs: "false"
-    dbScanPerf: "false"
+    dumpInAll: false
+    dumpInEvents: false
+    dumpInReqs: false
+    dbScanPerf: false
   numThreads:
     ingester: 3
     reqWorker: 3

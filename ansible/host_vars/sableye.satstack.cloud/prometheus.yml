@@ -26,7 +26,6 @@ prometheus_targets:
 
     - targets: 
         - metagross.offchain.pub:4430
-        - tyranitar.bitcoiner.social:4430
       labels:
         group: relays
 
@@ -62,9 +61,9 @@ prometheus_scrape_configs:
     scrape_interval: 1m
     static_configs:
       - targets:
-        - garchomp.bitcoiner.social:4432
+#       - garchomp.bitcoiner.social:4432
         - metagross.offchain.pub:4432
-        - tyranitar.bitcoiner.social:4432
+        - bitcoiner.social
 
   - job_name: health-checks
     scheme: https
@@ -74,8 +73,8 @@ prometheus_scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-          - https://bitcoiner.social/healthz
-          - https://nostr.bitcoiner.social/
+          - https://bitcoiner.social/
+#         - https://nostr.bitcoiner.social/
           - https://offchain.pub/
           - https://cast.bitcoiner.social
 #         - https://matrix.bitcoiner.social/health

@@ -34,7 +34,8 @@
               error_log:
                 file: /var/log/nginx/error.log
                 level: notice
-                pid: "{{ '/run/nginx.pid' if ansible_os_family == 'Archlinux' else '/var/run/nginx.pid' }}"
+                # nginx on Arch will throw an error: "pid" directive is duplicate
+                #pid: /var/run/nginx.pid
             http: # https://nginx.org/en/docs/http/ngx_http_core_module.html
               default_type: application/octet-stream
               sendfile: true
@@ -71,12 +72,6 @@
                       '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"  "$realip_remote_addr"'
-        #         - name: debugposts
-        #           format: |
-        #             '$remote_addr - $remote_user [$time_local] "$request" '
-        #             '$status $body_bytes_sent "$http_referer" '
-        #             '"$http_user_agent" "$http_x_forwarded_for"  "$realip_remote_addr"'
-        #             '"$request_data"'
               gzip: # https://nginx.org/en/docs/http/ngx_http_gzip_module.html
                 enable: true
                 comp_level: 3

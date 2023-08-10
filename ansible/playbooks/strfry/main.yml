@@ -1,5 +1,6 @@
 ---
 - hosts: strfry
+  gather_facts: yes
   roles:
     - role: bleetube.strfry
       tags: strfry
@@ -7,3 +8,5 @@
     - import_tasks: tasks/nginx_conf.yml
       tags: nginx
       become: yes
+      # nginx on Arch will throw an error: "pid" directive is duplicate
+      #when: ansible_os_family != 'Archlinux'
