@@ -1,0 +1,9 @@
+---
+#- name: Peertube | Configure nginx
+#  ansible.builtin.import_role:
+#    name: nginx_core.nginx_config
+# vars:
+#   nginx_config_http_template_enable: true
+#   nginx_config_http_template:
+#     # See: https://github.com/binwiederhier/ntfy-ansible/blob/main/roles/nginx/templates/sites-available/ntfy.j2
+#     # Also, ntfy will not work in a subdirectory: https://github.com/binwiederhier/ntfy/issues/256

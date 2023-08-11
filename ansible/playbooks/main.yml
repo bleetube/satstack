@@ -12,6 +12,7 @@
 - import_playbook: certbot/main.yml
 - import_playbook: lego.yml
 - import_playbook: node_exporter.yml
+- import_playbook: mail.yml
 - import_playbook: wireguard.yml
 #- import_playbook: observability/main.yml # gantsign.golang throws an error _only_ when called from here?
 - import_playbook: proxmox/main.yml

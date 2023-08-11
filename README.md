@@ -3,7 +3,7 @@
 Codifed private infrastructure services built on open source. Composed with Ansible Roles, dockerless containers, and Nix.
 
 * [strfry nostr relay](https://github.com/bleetube/ansible-role-strfry), [matrix-synapse](https://github.com/bleetube/ansible-role-synapse), [disposable-mail aliases](https://github.com/bleetube/ansible-role-disposable-mail)
-* [jellyfin](https://github.com/bleetube/ansible-role-jellyfin), peertube, [castopod](https://github.com/bleetube/ansible-role-castopod)
+* [jellyfin](https://github.com/bleetube/ansible-role-jellyfin), [peertube](https://github.com/bleetube/ansible-role-peertube), [castopod](https://github.com/bleetube/ansible-role-castopod)
 * lnbits, fedi alpha, btcpayserver
 
 Podman Containers for JS/PHP (better opsec, lower maintenance):

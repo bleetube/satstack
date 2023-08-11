@@ -1,0 +1,29 @@
+---
+- hosts: pancham.brenise.com
+  handlers:
+    - name: restart redis
+      ansible.builtin.service:
+        name: redis-server
+        state: restarted
+      become: yes
+  roles:
+    - role: bleetube.peertube
+      tags: peertube
+  # - role: bleetube.redis
+  #   tags: redis
+  tasks:
+    - import_tasks: ../../nginx/peertube/nginx_conf.yml
+      become: yes
+    - name: Configure redis-server to listen on a unix socket.
+      ansible.builtin.lineinfile:
+        path: /etc/redis/redis.conf
+        regexp: "{{ item.regexp }}" 
+        line: "{{ item.line }}"
+        state: present
+      notify: restart redis
+      tags: redis
+      become: yes
+      with_items:
+        - { regexp: '^unixsocket\s', line: 'unixsocket /var/run/redis/redis-server.sock' }
+        - { regexp: '^unixsocketperm', line: 'unixsocketperm 777' }
+      # - { regexp: '^bind\s', line: 'bind 127.0.0.1 ::1 172.17.0.1' }

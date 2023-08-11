@@ -4,8 +4,8 @@ dkim_selector: mail
 dkim_key_path: /etc/dkimkeys
 postfix_hostname: "{{ dkim_selector }}.{{ postfix_domain }}"
 imap_bind_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/fullchain.pem"
-postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/privkey.pem"
+postfix_smtpd_tls_cert_file: "/var/acme/certificates/{{ postfix_hostname }}.crt"
+postfix_smtpd_tls_key_file: "/var/acme/certificates/{{ postfix_hostname }}.key"
 postfix_smtpd_tls_dh1024_param_file: /etc/ssl/dhparams.pem
 postfix_maildir_user: maildir
 postfix_virtual_uid: "{{ ansible_facts.getent_passwd.maildir[1] }}"
