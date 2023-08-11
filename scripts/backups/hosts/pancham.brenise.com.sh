@@ -4,7 +4,7 @@ set -x
 TARGET=pancham.brenise.com
 TIMESTAMP=$(date +%m-%d-%Y)
 
-#source ../functions.sh
+source ../functions.sh
 BACKUP_MAIL
 BACKUP_PG_DB synapse
 BACKUP_PG_DB peertube

@@ -1,9 +1,36 @@
 ---
-#- name: Peertube | Configure nginx
-#  ansible.builtin.import_role:
-#    name: nginx_core.nginx_config
-# vars:
-#   nginx_config_http_template_enable: true
-#   nginx_config_http_template:
-#     # See: https://github.com/binwiederhier/ntfy-ansible/blob/main/roles/nginx/templates/sites-available/ntfy.j2
-#     # Also, ntfy will not work in a subdirectory: https://github.com/binwiederhier/ntfy/issues/256
+# https://github.com/Chocobozzz/PeerTube/blob/v5.2.0/support/nginx/peertube
+- name: Peertube | Configure nginx with the template
+  ansible.builtin.template:
+    src: templates/peertube.conf
+    dest: /etc/nginx/peertube_template.conf
+  tags: nginx
+
+- name: Peertube | Configure nginx to include the template
+  ansible.builtin.import_role:
+    name: nginx_core.nginx_config
+  tags: nginx
+  vars:
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/peertube_{{ peertube_domain }}.conf"
+        backup: false
+        config:
+          upstreams:
+            - name: backend
+              servers:
+                - address: "127.0.0.1:{{ peertube_listen_port }}"
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_peertube_port|default(443) }} ssl"
+                include:
+                  - "/etc/nginx/acme_{{ peertube_domain }}.conf"
+                  - /etc/nginx/peertube_template.conf
+              http2:
+                enabled: true
+          headers:
+            add_headers:
+              - name: X-Forwarded-For
+                value: $proxy_add_x_forwarded_for

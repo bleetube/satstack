@@ -1,4 +1,4 @@
----
+--- # prometheus.prometheus.blacbox_exporter role variables
 # https://github.com/prometheus/blackbox_exporter
 blackbox_exporter_web_listen_address: "127.0.0.1:4431"
 

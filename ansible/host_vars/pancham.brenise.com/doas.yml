@@ -2,8 +2,6 @@
 # permit nopass blee as postgres
 doas_permit_list:
   - username: blee
-    role: root
-  - username: blee
     role: postgres
   - username: blee
     role: opendkim

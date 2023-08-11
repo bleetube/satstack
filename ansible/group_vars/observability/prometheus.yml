@@ -1,4 +1,4 @@
----
+--- # prometheus.prometheus.prometheus role variables
 prometheus_web_listen_address: "127.0.0.1:9090"
 # https://www.robustperception.io/using-external-urls-and-proxies-with-prometheus/
 # Note that the grafana_datasources variable also needs to reflect this path.

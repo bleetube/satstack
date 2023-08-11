@@ -1,0 +1,4 @@
+--- # bleetube.disposable-mail role variables
+postfix_domain: satstack.cloud
+postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/fullchain.pem"
+postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_hostname }}/privkey.pem"

@@ -16,8 +16,7 @@ Tools in packages provided by official upstream repositories
 * [nginx](ansible/playbooks/nginx/main.yml), [acme-lego](https://github.com/bleetube/ansible-role-lego), [tor onion services](ansible/playbooks/tor/)
 * [postgresql](ansible/playbooks/postgresql.yml), [mariadb](ansible/playbooks/mariadb.yml)
 
-[NixOS](nix/chespin.satstack.net/configuration.nix):
+Nix:
 
-* ln-ws-proxy, bitcoind and electrs
-* vaultwarden, miniflux
-* [stable-diffusion-webui](nix/charmander.satstack.net/configuration.nix)
+* [nix-bitcoin](nix/chespin.satstack.net/configuration.nix) with ln-ws-proxy, vaultwarden, miniflux
+* [stable-diffusion-webui](nix/charmander.satstack.net/configuration.nix) and steam

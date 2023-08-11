@@ -1,4 +1,4 @@
----
+--- # prometheus.prometheus.alertmanager role variables
 alertmanager_web_listen_address: "127.0.0.1:9093"
 alertmanager_web_external_url: "https://{{ inventory_hostname }}/alertmanager/"
 

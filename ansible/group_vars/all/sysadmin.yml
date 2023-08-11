@@ -1,2 +1,6 @@
----
+--- # This variable is used by:
+# playbooks/podman.yml
+# playbooks/ssh.yml
+# roles/bleetube.dotfiles
+
 sysadmin_username: blee

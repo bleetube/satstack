@@ -1,0 +1,2 @@
+--- # bleetube.disposable-mail role variables
+postfix_domain: blee.tube

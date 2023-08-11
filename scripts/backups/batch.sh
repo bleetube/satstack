@@ -7,7 +7,6 @@ HOSTS=(
     wartortle.satstack.net
 )
 
-source functions.sh
 for hostname in ${HOSTS[@]}; do
     echo "Running script for $hostname"
     (exec ./hosts/${hostname}.sh)

@@ -1,5 +1,4 @@
----
-postfix_domain: blee.tube
+--- # bleetube.disposable-mail role variables
 dkim_selector: mail
 dkim_key_path: /etc/dkimkeys
 postfix_hostname: "{{ dkim_selector }}.{{ postfix_domain }}"
@@ -8,8 +7,6 @@ postfix_smtpd_tls_cert_file: "/var/acme/certificates/{{ postfix_hostname }}.crt"
 postfix_smtpd_tls_key_file: "/var/acme/certificates/{{ postfix_hostname }}.key"
 postfix_smtpd_tls_dh1024_param_file: /etc/ssl/dhparams.pem
 postfix_maildir_user: maildir
-postfix_virtual_uid: "{{ ansible_facts.getent_passwd.maildir[1] }}"
-postfix_virtual_gid: "{{ ansible_facts.getent_group.maildir[1] }}"
 postfix_inet_interfaces: all
 postfix_virtual_mailbox_base: /var/vmail
 postfix_mynetworks:
