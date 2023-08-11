@@ -113,15 +113,13 @@ prometheus_alert_rules:
     annotations:
       summary: A health-check has failed.
 
-# - alert: Postfix Health Check
-#   expr: probe_success{job="postfix"} == 0
-#   for: 30m
-#   annotations:
-#     summary: SMTP StartTLS failed
+  - alert: Postfix Health Check
+    expr: probe_success{job="postfix"} == 0
+    for: 30m
+    annotations:
+      summary: SMTP StartTLS failed
 
   - alert: Outbound Network Flooding (Level 1)
-    # 07/2020 dcrd is allowing bandwidth vampires
-    # detect egress throughput exceeding one megabyte
     expr: irate(node_network_transmit_bytes_total{job=~"node",group!="relays"}[5m]) > 1000000
     for: 1h
     labels:

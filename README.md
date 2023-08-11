@@ -14,9 +14,11 @@ Tools in packages provided by official upstream repositories
 
 * <img src="docs/logos/grafana.svg" width="16" height="16"> [grafana](ansible/playbooks/observability/main.yml), <img src="docs/logos/prometheus.svg" width="16" height="16"> [prometheus](ansible/host_vars/wartortle.satstack.net/prometheus.yml), <img src="docs/logos/ntfy.svg" width="16" height="16"> [ntfy](https://github.com/bleetube/ansible-role-ntfy)+[alertmanager](https://github.com/bleetube/ansible-role-ntfy-alertmanager)
 * [nginx](ansible/playbooks/nginx/main.yml), [acme-lego](https://github.com/bleetube/ansible-role-lego), [tor onion services](ansible/playbooks/tor/)
-* [postgresql](ansible/playbooks/postgresql.yml), [mariadb](ansible/playbooks/mariadb.yml)
+* [postgresql](ansible/playbooks/postgresql.yml), [mariadb](ansible/playbooks/mariadb.yml), [redis](https://github.com/bleetube/ansible-role-redis)
 
 Nix:
 
 * [nix-bitcoin](nix/chespin.satstack.net/configuration.nix) with ln-ws-proxy, vaultwarden, miniflux
 * [stable-diffusion-webui](nix/charmander.satstack.net/configuration.nix) and steam
+
+And [wireguard](https://github.com/bleetube/ansible-role-wireguard) configuration management for managing your own VPN services.
