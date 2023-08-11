@@ -1,0 +1,5 @@
+---
+# permit nopass blee as postgres
+doas_permit_list:
+  - username: blee
+    role: opendkim
