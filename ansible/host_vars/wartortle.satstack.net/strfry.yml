@@ -18,7 +18,7 @@ strfry_relay:
   maxFilterLimit: 500
   maxSubsPerConnection: 20
   writePolicy:
-    plugin: /opt/strfry/spamfilter.py
+    plugin: /var/lib/strfry/strfry-policy.ts
     lookbackSeconds: 0
   compression:
     enabled: true
