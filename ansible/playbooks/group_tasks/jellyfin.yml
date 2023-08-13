@@ -7,7 +7,7 @@
 
   tasks:
     - include_tasks:
-        file: nginx/jellyfin/nginx_conf.yml
+        file: ../nginx/jellyfin/nginx_conf.yml
         apply:
           become: true
           tags: nginx

@@ -5,14 +5,14 @@
     container_playbooks: ../../containers
 
   tasks:
-    - import_tasks: "{{ container_playbooks }}/rtl/setup.yml"
+    - import_tasks: tasks/setup.yml
       tags: setup
 
-    - import_tasks: "{{ container_playbooks }}/rtl/podman.yml"
+    - import_tasks: tasks/podman.yml
       tags: podman
 
     - include_tasks:
-        file: "{{ container_playbooks }}/rtl/nginx_conf.yml"
+        file: tasks/nginx_conf.yml
         apply:
           become: true
       tags: nginx

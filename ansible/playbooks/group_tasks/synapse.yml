@@ -11,7 +11,7 @@
       tags: redis
 
   tasks:
-    - import_tasks: nginx/synapse/nginx_conf.yml
+    - import_tasks: ../nginx/synapse/nginx_conf.yml
       tags: nginx
-    - import_tasks: nginx/ntfy/nginx_conf.yml
+    - import_tasks: ../nginx/ntfy/nginx_conf.yml
       tags: nginx

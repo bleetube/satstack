@@ -2,15 +2,14 @@
 - hosts: wartortle.satstack.net
 
   tasks:
-    - import_tasks: setup.yml
+    - import_tasks: tasks/setup.yml
       tags: setup
 
-    - import_tasks: podman.yml
+    - import_tasks: tasks/podman.yml
       tags: podman
 
     - include_tasks:
-        file: nginx_conf.yml
+        file: tasks/nginx_conf.yml
         apply:
           become: true
       tags: nginx
-

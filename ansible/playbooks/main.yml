@@ -9,18 +9,18 @@
       tags: dotfiles
 
 - import_playbook: nginx/main.yml
-- import_playbook: certbot/main.yml
-- import_playbook: lego.yml
 - import_playbook: node_exporter.yml
-- import_playbook: mail.yml
-- import_playbook: wireguard.yml
-#- import_playbook: observability/main.yml # gantsign.golang throws an error _only_ when called from here?
-- import_playbook: proxmox/main.yml
-- import_playbook: mariadb.yml
-- import_playbook: postgresql.yml
-- import_playbook: podman.yml
-- import_playbook: synapse.yml
-- import_playbook: strfry/main.yml
-
-# Tasks that are specific to the hosts they run on
+- import_playbook: group_tasks/certbot/main.yml
+- import_playbook: group_tasks/lego.yml
+- import_playbook: group_tasks/mail.yml
+- import_playbook: group_tasks/wireguard.yml
+#- import_playbook: group_tasks/observability/main.yml # gantsign.golang throws an error _only_ when called from here?
+- import_playbook: group_tasks/proxmox/main.yml
+- import_playbook: group_tasks/mariadb.yml
+- import_playbook: group_tasks/postgresql.yml
+- import_playbook: group_tasks/podman.yml
+#- import_playbook: group_tasks/docker.yml # migrated to podman
+- import_playbook: group_tasks/synapse.yml
+- import_playbook: group_tasks/strfry/main.yml
+- import_playbook: group_tasks/jellyfin.yml
 - import_playbook: host_tasks/rhyperior.bitcoiner.social/castopod.yml

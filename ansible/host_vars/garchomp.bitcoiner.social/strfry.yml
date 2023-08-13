@@ -3,6 +3,7 @@ nginx_strfry_https_port: 443
 nginx_strfry_metrics_port: 4434
 strfry_metrics_plugin_port: 8034
 nginx_strfry_domain: bitcoiner.social
+strfry_policies_enabled: no
 strfry_relay:
   bind: "127.0.0.1"
   port: 8030
@@ -15,7 +16,7 @@ strfry_relay:
     contact: nostr@bitcoiner.social
   maxWebsocketPayloadSize: 131072
   autoPingSeconds: 55
-  enableTcpKeepalive: "false"
+  enableTcpKeepalive: no
   queryTimesliceBudgetMicroseconds: 10000
   maxFilterLimit: 500
   maxSubsPerConnection: 20
@@ -23,13 +24,13 @@ strfry_relay:
     plugin: /var/lib/strfry/plugin/bitcoinersocial.py
     lookbackSeconds: 0
   compression:
-    enabled: "true"
-    slidingWindow: "true"
+    enabled: yes
+    slidingWindow: yes
   logging:
-    dumpInAll: "false"
-    dumpInEvents: "false"
-    dumpInReqs: "false"
-    dbScanPerf: "false"
+    dumpInAll: no
+    dumpInEvents: no
+    dumpInReqs: no
+    dbScanPerf: no
   numThreads:
     ingester: 3
     reqWorker: 3
