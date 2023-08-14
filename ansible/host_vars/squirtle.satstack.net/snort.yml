@@ -1,0 +1,4 @@
+---
+snort_repository_url: https://github.com/bleetube/snort.git
+snort_version: offchain.pub
+snort_devmode: yes

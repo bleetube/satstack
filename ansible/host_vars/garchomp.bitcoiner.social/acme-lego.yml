@@ -6,3 +6,4 @@ acme_domains:
   - { domain: bitcoiner.social, provider: easydns }
   - { domain: mail.bitcoiner.social, provider: easydns }
   - { domain: nostr.bitcoiner.social, provider: easydns }
+  - { domain: snort.bitcoiner.social, provider: easydns }

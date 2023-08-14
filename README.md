@@ -2,13 +2,13 @@
 
 Codifed private infrastructure services built on open source. Composed with Ansible Roles, dockerless containers, and Nix.
 
-* [strfry nostr relay](https://github.com/bleetube/ansible-role-strfry), [matrix-synapse](https://github.com/bleetube/ansible-role-synapse), [disposable-mail aliases](https://github.com/bleetube/ansible-role-disposable-mail)
-* [jellyfin](https://github.com/bleetube/ansible-role-jellyfin), [peertube](https://github.com/bleetube/ansible-role-peertube), [castopod](https://github.com/bleetube/ansible-role-castopod)
+* <img src="docs/logos/strfry.svg" width="26.53238788475561" height="16"> [strfry nostr relay](https://github.com/bleetube/ansible-role-strfry), <img src="docs/logos/matrix.svg" width="16" height="16"> [matrix-synapse](https://github.com/bleetube/ansible-role-synapse), [disposable-mail aliases](https://github.com/bleetube/ansible-role-disposable-mail)
+* <img src="docs/logos/jellyfin.png" width="16" height="16"> [jellyfin](https://github.com/bleetube/ansible-role-jellyfin), <img src="docs/logos/peertube.png" width="16" height="16"> [peertube](https://github.com/bleetube/ansible-role-peertube), <img src="docs/logos/castopod.svg" width="23.6" height="16"> [castopod](https://github.com/bleetube/ansible-role-castopod)
 * lnbits, fedi alpha, btcpayserver
 
 Podman Containers for JS/PHP (better opsec, lower maintenance):
-* [samourai-dojo](https://github.com/bleetube/ansible-role-samourai-dojo), [mempool.space](ansible/playbooks/containers/mempool/README.md), [ride-the-lightning](ansible/playbooks/containers/rtl/README.md)
-* [nextcloud](https://github.com/bleetube/ansible-role-nextcloud), [wiki.js](https://github.com/bleetube/ansible-role-wikijs), [changedetection](ansible/playbooks/containers/changedetection/README.md), [chat-with-gpt](ansible/playbooks/containers/chat-with-gpt/README.md)
+* <img src="docs/logos/samourai.png" width="16" height="16"> [samourai-dojo](https://github.com/bleetube/ansible-role-samourai-dojo), mempool.space, <img src="docs/logos/rtl.png" width="16" height="16"> [ride-the-lightning](ansible/playbooks/host_tasks/wartortle.satstack.net/rtl/README.md)
+* <img src="docs/logos/nextcloud.png" width="16" height="16"> [nextcloud](https://github.com/bleetube/ansible-role-nextcloud), <img src="docs/logos/wikijs.png" width="16" height="16"> [wiki.js](https://github.com/bleetube/ansible-role-wikijs), [changedetection](ansible/playbooks/host_tasks/wartortle.satstack.net/changedetection/README.md), [chat-with-gpt](ansible/playbooks/host_tasks/wartortle.satstack.net/chat-with-gpt/README.md)
 
 Tools in packages provided by official upstream repositories
 
@@ -18,7 +18,7 @@ Tools in packages provided by official upstream repositories
 
 Nix:
 
-* [nix-bitcoin](nix/chespin.satstack.net/configuration.nix) with ln-ws-proxy, vaultwarden, miniflux
+* <img src="docs/logos/nix-bitcoin.png" width="17" height="16"> [nix-bitcoin](nix/chespin.satstack.net/configuration.nix) with ln-ws-proxy, <img src="docs/logos/vaultwarden.png" width="16" height="16"> vaultwarden, <img src="docs/logos/miniflux.png" width="16" height="16"> miniflux
 * [stable-diffusion-webui](nix/charmander.satstack.net/configuration.nix) and steam
 
-And [wireguard](https://github.com/bleetube/ansible-role-wireguard) configuration management for managing your own VPN services.
+And <img src="docs/logos/wireguard.png" width="16" height="16"> [wireguard](https://github.com/bleetube/ansible-role-wireguard) configuration management for managing your own VPN services.

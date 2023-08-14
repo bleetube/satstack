@@ -4,3 +4,4 @@ acme_domains:
   - { domain: "{{ inventory_hostname }}", provider: namecheap }
   - { domain: offchain.pub, provider: namecheap }
   - { domain: mail.offchain.pub, provider: namecheap }
+  - { domain: snort.offchain.pub, provider: namecheap }

@@ -33,6 +33,7 @@ D('offchain.pub', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
     A('metagross', '173.82.197.238'),
     A('mail', '173.82.197.238'),
     CNAME('www', 'offchain.pub.'),
+    CNAME('snort', 'offchain.pub.'),
     MX('@', 10, 'mail.offchain.pub.'),
     TXT('@', 'v=spf1 mx ~all'),
     TXT('_dmarc', 'v=DMARC1; p=reject; rua=mailto:dmarc@offchain.pub; fo=1')
