@@ -1,4 +1,10 @@
 ---
+- name: Install redirect template for Snort
+  ansible.builtin.template:
+    src: templates/snort_redirect.conf.j2
+    dest: /etc/nginx/snort_redirect.conf
+  tags: nginx
+
 - name: strfry | Configure nginx
   ansible.builtin.import_role:
     name: nginx_core.nginx_config
@@ -22,6 +28,7 @@
                 # - address: "[2607:f130:0:105:216:3cff:fefb:92c2]:443 ssl"
                 include:
                   - "/etc/nginx/acme_{{ nginx_strfry_domain }}.conf"
+                  - /etc/nginx/snort_redirect.conf
                 client_max_body_size: 0 # Stream request body to backend
               log:
                 access:
@@ -74,16 +81,6 @@
                     return:
                       url: "https://matrix.bitcoiner.social$request_uri"
                       code: 301
-                # satdress
-              # - location: /.well-known/lnurlp/
-              #   proxy:
-              #     pass: "http://127.0.0.1:17422/.well-known/lnurlp/"
-              #     http_version: '1.1'
-              #     set_header:
-              #     - field: Host
-              #       value: $http_host
-              #     - field: x-forwarded-for
-              #       value: $remote_addr
 
       # nostr.bitcoiner.social
       - template_file: http/default.conf.j2

@@ -4,8 +4,12 @@
   roles:
     - role: bleetube.strfry
       tags: strfry
+    - role: bleetube.nodejs
+      tags: nodejs
+    - role: bleetube.snort
+      tags: snort
   tasks:
-    - import_tasks: tasks/nginx_conf.yml
+    - import_tasks: ../nginx/strfry/nginx_conf.yml
       tags: nginx
       become: yes
       # nginx on Arch will throw an error: "pid" directive is duplicate

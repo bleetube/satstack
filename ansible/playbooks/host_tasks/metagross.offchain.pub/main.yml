@@ -1,6 +1,7 @@
 ---
 - hosts: metagross.offchain.pub
   become: yes
+
   tasks:
     - import_tasks: strfry/nginx_conf.yml
       tags: nginx

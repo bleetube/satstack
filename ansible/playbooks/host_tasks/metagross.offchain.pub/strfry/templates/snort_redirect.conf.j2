@@ -1,0 +1,14 @@
+    location = / {
+        if ($connection_upgrade = "close") {
+            return 302 https://{{ nginx_snort_domain }}/global;
+        }
+        proxy_connect_timeout 3m;
+        proxy_http_version 1.1;
+        proxy_pass http://strfry;
+        proxy_read_timeout 3m;
+        proxy_send_timeout 3m;
+        proxy_set_header Host $http_host;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }

@@ -1,0 +1,5 @@
+---
+snort_repository_url: https://github.com/bleetube/snort.git
+snort_version: bitcoiner.social
+nginx_snort_domain: snort.bitcoiner.social
+nginx_snort_port: 443

@@ -1,7 +1,0 @@
----
-- hosts: nodejs
-
-  roles:
-    - role: bleetube.nodejs
-      become: true
-      tags: nodejs

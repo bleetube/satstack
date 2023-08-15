@@ -1,7 +1,14 @@
 ---
+- name: Install redirect template for Snort
+  ansible.builtin.template:
+    src: templates/snort_redirect.conf.j2
+    dest: /etc/nginx/snort_redirect.conf
+  tags: nginx
+
 - name: strfry | Configure nginx
   ansible.builtin.import_role:
     name: nginx_core.nginx_config
+  become: true
   vars:
     nginx_config_http_template_enable: true
     nginx_config_http_template:
@@ -20,6 +27,7 @@
                   - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_strfry_https_port|default(443) }} ssl"
                 include:
                   - "/etc/nginx/acme_{{ nginx_strfry_domain }}.conf"
+                  - /etc/nginx/snort_redirect.conf
                 client_max_body_size: 0 # Stream request body to backend
               locations:
                 - location: /
@@ -44,6 +52,32 @@
                     set_header:
                       - field: Host
                         value: $http_host
+                - location: /.well-known/nostr.json
+                  core:
+                    alias: /var/www/static/nostr.json
+                  headers:
+                    add_headers:
+                      - name: Access-Control-Allow-Origin
+                        value: '*'
+
+               # This breaks the relay without the conditional: if ($connection_upgrade = "close") {}
+               # afaict this cannot (and probably should not) be expressed with nginx_conf
+               # Workaround: include snort_redirect.conf above
+               #- location: = /
+               #  rewrite: # redirect to snort
+               #    return:
+               #      url: "https://snort.{{ nginx_strfry_domain }}$request_uri"
+               #      code: 302
+                # satdress
+              # - location: /.well-known/lnurlp/
+              #   proxy:
+              #     pass: "http://127.0.0.1:17422/.well-known/lnurlp/"
+              #     http_version: '1.1'
+              #     set_header:
+              #     - field: Host
+              #       value: $http_host
+              #     - field: x-forwarded-for
+              #       value: $remote_addr
 
       - template_file: http/default.conf.j2
         deployment_location: /etc/nginx/http.conf
@@ -115,4 +149,3 @@
 #                     rewrite:
 #                       return:
 #                         code: 404
-

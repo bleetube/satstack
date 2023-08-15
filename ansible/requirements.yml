@@ -56,6 +56,12 @@ roles:
   - name: bleetube.jellyfin
     src:  https://github.com/bleetube/ansible-role-jellyfin
 
+  - name: bleetube.strfry
+    src:  https://github.com/bleetube/ansible-role-strfry
+
+  - name: bleetube.snort
+    src:  https://github.com/bleetube/ansible-role-snort
+
   # includes a minor change that skips the outdated apt role dependency
   - src: https://github.com/bleetube/ansible-role-onion
     name: systemli.onion

@@ -23,4 +23,6 @@
 - import_playbook: group_tasks/synapse.yml
 - import_playbook: group_tasks/strfry/main.yml
 - import_playbook: group_tasks/jellyfin.yml
-- import_playbook: host_tasks/rhyperior.bitcoiner.social/castopod.yml
+- import_playbook: host_tasks/metagross.offchain.pub/main.yml
+- import_playbook: host_tasks/garchomp.bitcoiner.social/main.yml
+#- import_playbook: host_tasks/rhyperior.bitcoiner.social/castopod.yml

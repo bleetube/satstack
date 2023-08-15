@@ -2,7 +2,7 @@
 
 Codifed private infrastructure services built on open source. Composed with Ansible Roles, dockerless containers, and Nix.
 
-* [<img src="docs/logos/strfry.svg" width="26.53238788475561" height="16"> strfry nostr relay](https://github.com/bleetube/ansible-role-strfry), [<img src="docs/logos/matrix.svg" width="16" height="16"> matrix-synapse](https://github.com/bleetube/ansible-role-synapse), [disposable-mail aliases](https://github.com/bleetube/ansible-role-disposable-mail)
+* [<img src="docs/logos/strfry.svg" width="26.53238788475561" height="16"> strfry nostr relay](https://github.com/bleetube/ansible-role-strfry)+[snort](https://github.com/bleetube/ansible-role-snort), [<img src="docs/logos/matrix.svg" width="16" height="16"> matrix-synapse](https://github.com/bleetube/ansible-role-synapse), [disposable-mail aliases](https://github.com/bleetube/ansible-role-disposable-mail)
 * [<img src="docs/logos/jellyfin.png" width="16" height="16"> jellyfin](https://github.com/bleetube/ansible-role-jellyfin), [<img src="docs/logos/peertube.png" width="16" height="16"> peertube](https://github.com/bleetube/ansible-role-peertube), [<img src="docs/logos/castopod.svg" width="23.6" height="16"> castopod](https://github.com/bleetube/ansible-role-castopod)
 * lnbits, fedi alpha, btcpayserver
 
