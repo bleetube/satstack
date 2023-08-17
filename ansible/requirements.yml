@@ -56,6 +56,9 @@ roles:
   - name: bleetube.jellyfin
     src:  https://github.com/bleetube/ansible-role-jellyfin
 
+  - name: bleetube.nodejs
+    src:  https://github.com/bleetube/ansible-role-nodejs
+
   - name: bleetube.strfry
     src:  https://github.com/bleetube/ansible-role-strfry
 
@@ -95,7 +98,8 @@ roles:
 
   - src: https://github.com/nginxinc/ansible-role-nginx-config
     name: nginx_core.nginx_config
-    version: '>=0.7.0'
+    version: HEAD
+    #version: '>=0.7.0'
 
     # does not work
 # - src: https://github.com/megabyte-labs/ansible-deno

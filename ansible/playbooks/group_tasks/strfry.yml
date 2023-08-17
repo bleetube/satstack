@@ -5,12 +5,13 @@
     - role: bleetube.strfry
       tags: strfry
     - role: bleetube.nodejs
+      become: yes
       tags: nodejs
     - role: bleetube.snort
       tags: snort
   tasks:
     - import_tasks: ../nginx/strfry/nginx_conf.yml
-      tags: nginx
       become: yes
+      tags: nginx
       # nginx on Arch will throw an error: "pid" directive is duplicate
       #when: ansible_os_family != 'Archlinux'
