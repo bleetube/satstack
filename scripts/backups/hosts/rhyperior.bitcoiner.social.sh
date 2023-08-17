@@ -1,7 +1,6 @@
 #!/bin/bash
-set -e
 set -x
-TARGET=rhyperior.bitcoiner.social
+TARGET=$(basename -- "$0" .sh)
 TIMESTAMP=$(date +%m-%d-%Y)
 
 source ../functions.sh

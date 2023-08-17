@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 set -x
-TARGET=wartortle.satstack.net
+TARGET=$(basename -- "$0" .sh)
 TIMESTAMP=$(date +%m-%d-%Y)
 
 source ../functions.sh

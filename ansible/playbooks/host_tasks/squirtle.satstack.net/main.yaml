@@ -1,0 +1,52 @@
+---
+- hosts: squirtle.satstack.net
+  become: true
+
+  handlers:
+    - name: restart systemd-journald
+      ansible.builtin.systemd:
+        name: systemd-journald
+        state: restarted
+        daemon_reload: yes
+    - name: restart samba
+      ansible.builtin.systemd:
+        name: smb.service
+        state: restarted
+
+  tasks:
+    - name: Configure systemd-journald 
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/journald.conf
+        regexp: '^#?MaxRetentionSec'
+        line: 'MaxRetentionSec=30day'
+        state: present
+      notify: restart systemd-journald
+
+    # https://wiki.archlinux.org/title/Samba
+    - name: Install samba
+      ansible.builtin.package:
+        name: samba
+        state: latest
+
+    - name: Create a backup user for the Samba backup share
+      ansible.builtin.user:
+        name: backup
+        shell: /usr/bin/nologin
+        home: /nonexistent
+        system: yes
+        create_home: no
+        password: '!'
+
+    - name: Configure samba
+      ansible.builtin.copy:
+        src: files/smb.conf
+        dest: /etc/samba/smb.conf
+      notify: restart samba
+
+    - name: Ensure directory exists
+      ansible.builtin.file:
+        path: /mnt/squirtle/samba/backups
+        state: directory
+        mode: '0770'
+        owner: backup
+        group: backup

@@ -1,6 +1,6 @@
 #!/bin/bash
-
-TARGET=sableye.satstack.cloud
+set -x
+TARGET=$(basename -- "$0" .sh)
 
 source ../functions.sh
 BACKUP_MAIL

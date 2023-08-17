@@ -1,7 +1,6 @@
 #!/bin/bash
-set -e
 set -x
-TARGET=pancham.brenise.com
+TARGET=$(basename -- "$0" .sh)
 TIMESTAMP=$(date +%m-%d-%Y)
 
 source ../functions.sh

@@ -1,7 +1,6 @@
 #!/bin/bash
-set -e
 set -x
-TARGET=squirtle.satstack.net
+TARGET=$(basename -- "$0" .sh)
 TIMESTAMP=$(date +%m-%d-%Y)
 
 rsync -taP --exclude archive root@${TARGET}:/etc/nginx $HOME/archive/${TARGET}/

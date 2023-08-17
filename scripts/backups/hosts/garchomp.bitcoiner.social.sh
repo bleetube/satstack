@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-TARGET=garchomp.bitcoiner.social
+TARGET=$(basename -- "$0" .sh)
 
 source ../functions.sh
 BACKUP_MAIL

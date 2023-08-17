@@ -1,6 +1,6 @@
 #!/bin/bash
-
-TARGET=metagross.bitcoiner.social
+set -x
+TARGET=$(basename -- "$0" .sh)
 
 source ../functions.sh
 BACKUP_MAIL
