@@ -1,6 +1,6 @@
 ---
 - hosts: postgresql
-  become: true
+  become: yes
 
   vars:
     postgresql_apt_key_url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
@@ -13,7 +13,7 @@
           - item.pass != ''
         fail_msg: "FAILED: Database password for {{ item.name }} is not configured."
       loop: "{{ postgresql_users }}"
-      no_log: true
+      no_log: yes
 
   roles:
     - role: anxs.postgresql

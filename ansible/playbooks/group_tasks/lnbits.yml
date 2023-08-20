@@ -1,0 +1,11 @@
+---
+- hosts: lnbits
+  roles:
+    - role: bleetube.lnbits
+ #tasks:
+ #  - import_tasks: ../nginx/strfry/nginx_conf.yml
+ #    become: yes
+ #    tags: nginx
+ #    when: ansible_os_family != 'Archlinux'
+      # nginx on Arch will throw an error: "pid" directive is duplicate
+      #when: ansible_os_family != 'Archlinux'

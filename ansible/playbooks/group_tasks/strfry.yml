@@ -1,6 +1,5 @@
 ---
 - hosts: strfry
-  gather_facts: yes
   roles:
     - role: bleetube.strfry
       tags: strfry
