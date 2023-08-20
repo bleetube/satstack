@@ -1,0 +1,3 @@
+# https://github.com/grafana/grafana-ansible-collection/blob/a2a8f423d64b0507d3d0bc7fb4dd3ee4628de1f7/roles/grafana/README.md?plain=1#L14
+# required by grafana.grafana.grafana
+jmespath

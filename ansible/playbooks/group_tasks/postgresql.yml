@@ -15,25 +15,5 @@
       loop: "{{ postgresql_users }}"
       no_log: true
 
-    # fix for anxs.postgresql role
-#   - name: anxs.postgresql | Add postgresql apt repository key.
-#     ansible.builtin.get_url:
-#       url: "{{ postgresql_apt_key_url }}"
-#       dest: /usr/share/keyrings/postgresql.asc
-#       mode: '0644'
-
-#   - name: anxs.postgresql | Ensure the repository is added with the relevant trusted GPG key
-#     ansible.builtin.lineinfile:
-#       path: /etc/apt/sources.list.d/postgresql.list
-#       regexp: 'apt.postgresql.org'
-#       line: "deb [arch=amd64 signed-by=/usr/share/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main {{ postgresql_version }}"
-#       create: true
-
   roles:
     - role: anxs.postgresql
-
-  tasks:
-    - name: anxs.postgresql | Remove deprecated apt source entry
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/apt_postgresql_org_pub_repos_apt.list
-        state: absent

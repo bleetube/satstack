@@ -1,12 +1,18 @@
 #!/bin/bash
+set -x
 HOSTS=(
-    garchomp.bitcoiner.social
-    metagross.bitcoiner.social
-    rhyperior.bitcoiner.social
-    shinx.charlgiwnbro.com
+#   chespin.satstack.net
+#   garchomp.bitcoiner.social
+#   metagross.bitcoiner.social
+#   rhyperior.bitcoiner.social
+#   pancham.brenise.com
+#   sableye.satstack.cloud
+#   shinx.charlgiwnbro.com
+#   squirtle.satstack.net
     wartortle.satstack.net
 )
 
+source functions.sh
 for hostname in ${HOSTS[@]}; do
     echo "Running script for $hostname"
     (exec ./hosts/${hostname}.sh)
@@ -14,4 +20,4 @@ for hostname in ${HOSTS[@]}; do
 done
 
 du -sh $HOME/archive
-rsync -ta $HOME/archive blee@squirtle.satstack.net:
+rsync -taP $HOME/archive blee@squirtle.satstack.net:

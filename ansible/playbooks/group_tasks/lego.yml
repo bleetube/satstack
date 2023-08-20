@@ -17,4 +17,4 @@
 
   roles:
     - role: bleetube.lego
-      when: ansible_facts['nodename'] == 'squirtle'
+      when: ansible_nodename == 'squirtle'

@@ -1,9 +1,6 @@
 #!/bin/bash
 set -x
 TARGET=$(basename -- "$0" .sh)
-TIMESTAMP=$(date +%m-%d-%Y)
-
-source ../functions.sh
 
 #BACKUP_PG_DB miniflux
 

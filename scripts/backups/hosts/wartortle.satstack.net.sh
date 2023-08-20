@@ -4,7 +4,7 @@ set -x
 TARGET=$(basename -- "$0" .sh)
 TIMESTAMP=$(date +%m-%d-%Y)
 
-source ../functions.sh
+source "$(dirname "$0")/../functions.sh"
 BACKUP_PG_DB wikijs
 BACKUP_PG_DB nextcloud
 

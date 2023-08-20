@@ -74,6 +74,9 @@ roles:
   - name: geerlingguy.certbot
     src:  https://github.com/geerlingguy/ansible-role-certbot
 
+  - src: https://github.com/gantsign/ansible-role-golang
+    name: gantsign.golang
+
   # requires commenting out warn in tasks/dashboards.yml
 # - src:  https://github.com/cloudalchemy/ansible-grafana
 #   name: cloudalchemy.grafana

@@ -76,6 +76,7 @@ sysadmin_packages_custom:
   - patch
   - pkgconf
   - python-pip
+  - python-jmespath
   - qrencode
   - rclone
   - rsync

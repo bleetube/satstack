@@ -5,5 +5,5 @@
   tasks:
     - import_tasks: strfry/nginx_conf.yml
       tags: nginx
-    - import_tasks: strfry/logrotate.yml
-      tags: logrotate
+   #- import_tasks: strfry/logrotate.yml
+   #  tags: logrotate
