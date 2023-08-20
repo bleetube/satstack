@@ -1,0 +1,8 @@
+- hosts: wartortle.satstack.net
+  roles:
+    - role: bleetube.dojo
+      tags: dojo
+  tasks:
+    - import_tasks: ../../nginx/dojo/nginx_conf.yml
+      become: true
+      tags: nginx

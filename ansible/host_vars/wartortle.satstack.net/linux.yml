@@ -1,5 +1,4 @@
----
-# bleetube.linux vars
+--- # bleetube.linux vars
 
 sysadmin_packages_custom:
   - man-db
