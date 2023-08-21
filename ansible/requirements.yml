@@ -38,8 +38,14 @@ roles:
   - name: robertdebock.dovecot
     src:  https://github.com/robertdebock/ansible-role-dovecot
 
-# - name: bleetube.disposable-mail
-#   src:  https://github.com/bleetube/ansible-role-disposable-mail
+  - name: bleetube.disposable-mail
+    src:  https://github.com/bleetube/ansible-role-disposable-mail
+
+  - name: bleetube.dojo
+    src:  https://github.com/bleetube/ansible-role-dojo
+
+  - name: bleetube.dojo-exporter
+    src:  https://github.com/bleetube/ansible-role-dojo-exporter
 
   - name: bleetube.ntfy
     src:  https://github.com/bleetube/ansible-role-ntfy

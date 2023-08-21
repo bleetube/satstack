@@ -2,6 +2,8 @@
   roles:
     - role: bleetube.dojo
       tags: dojo
+    - role: bleetube.dojo-exporter
+      tags: dojo-exporter
   tasks:
     - import_tasks: ../../nginx/dojo/nginx_conf.yml
       become: true

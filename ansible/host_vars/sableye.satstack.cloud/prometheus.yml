@@ -61,9 +61,8 @@ prometheus_scrape_configs:
     scrape_interval: 1m
     static_configs:
       - targets:
-#       - garchomp.bitcoiner.social:4432
-        - metagross.offchain.pub:4432
         - bitcoiner.social
+      # - offchain.pub
 
   - job_name: health-checks
     scheme: https
