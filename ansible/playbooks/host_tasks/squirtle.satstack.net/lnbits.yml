@@ -1,0 +1,9 @@
+---
+- hosts: squirtle.satstack.net
+# roles:
+#   - role: bleetube.lnbits
+#     tags: lnbits
+  tasks:
+    - import_tasks: ../../nginx/lnbits/nginx_conf.yml
+      tags: nginx
+      become: yes

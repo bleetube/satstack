@@ -1,0 +1,15 @@
+[Unit]
+Description=Lightning SSH tunnel
+After=network.target
+
+[Service]
+User=lightning
+#ExecStart=/usr/bin/ssh -L /tmp/local.sock:/var/run/remote.sock user@remote_host -o ExitOnForwardFailure=yes
+ExecStart=/usr/bin/ssh -L /home/lightning/.lightning/bitcoin/lightning-rpc:/tmp/remote.sock user@garchomp.bitcoiner.social -o ExitOnForwardFailure=yes
+Restart=always
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

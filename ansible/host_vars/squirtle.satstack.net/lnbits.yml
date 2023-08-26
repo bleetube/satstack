@@ -1,0 +1,5 @@
+---
+#nginx_lnbits_domain: squirtle.satstack.net
+nginx_lnbits_https_port: 4438
+lnbits_port: 5000
+lnbits_root_path: /var/www/lnbits
