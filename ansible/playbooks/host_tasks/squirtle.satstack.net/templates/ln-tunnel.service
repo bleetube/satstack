@@ -1,11 +1,19 @@
+# I doubt I'll ever use this but it's here to demonstrate how inelegant the process is.
 [Unit]
 Description=Lightning SSH tunnel
 After=network.target
 
 [Service]
 User=lightning
-#ExecStart=/usr/bin/ssh -L /tmp/local.sock:/var/run/remote.sock user@remote_host -o ExitOnForwardFailure=yes
-ExecStart=/usr/bin/ssh -L /home/lightning/.lightning/bitcoin/lightning-rpc:/tmp/remote.sock user@garchomp.bitcoiner.social -o ExitOnForwardFailure=yes
+# The -f flag on rm ensures the command does not fail if the file does not exist
+ExecStartPre=ssh root@wartortle.satstack.net /bin/rm -f /var/run/lightning.sock
+ExecStart=/usr/bin/ssh -nNT\
+    -R /var/run/lightning.sock:/home/lightning/.lightning/bitcoin/lightning-rpc \
+    root@wartortle.satstack.net \
+    -o ExitOnForwardFailure=yes
+ExecStartPost=ssh root@wartortle.satstack.net chmod 640 /var/run/lightning.sock
+ExecStartPost=ssh root@wartortle.satstack.net chown :lnbits /var/run/lightning.sock
+ExecStopPost=ssh root@wartortle.satstack.net /bin/rm -f /var/run/lightning.sock
 Restart=always
 RestartSec=5
 StartLimitInterval=60s

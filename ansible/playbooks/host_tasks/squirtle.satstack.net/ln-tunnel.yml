@@ -1,0 +1,23 @@
+---
+# Provides core lightning rpc access to lnbits via a unix socket (the only way it works, currently).
+# Problem: lnbits is on a separate machine from the lightning node.
+# Solution: We forward the unix socket over ssh from the lightning node to the lnbits node.
+# Why: Haviing the ln node establish the tunnel means we don't have to grant priveleged remote access to the lnbits node.
+# See ../wartortle.satstack.net/ln-tunnel.service to the setup for the remote node.
+
+- hosts: squirtle.satstack.net
+  gather_facts: no
+  tasks:
+    - name: Install ln-tunnel service unit
+      ansible.builtin.template:
+        src: templates/ln-tunnel.service
+        dest: /etc/systemd/system/ln-tunnel.service
+      become: yes
+
+    - name: Enable ln-tunnel service unit
+      ansible.builtin.service:
+        name: ln-tunnel
+        enabled: yes
+        state: started
+        daemon_reload: yes
+      become: yes

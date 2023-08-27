@@ -100,7 +100,7 @@ roles:
 
   - src: https://github.com/ANXS/postgresql
     name: anxs.postgresql
-    version: development
+    version: v1.14.1
 
   - src: https://github.com/nginxinc/ansible-role-nginx
     name: nginx_core.nginx
@@ -113,3 +113,6 @@ roles:
     # does not work
 # - src: https://github.com/megabyte-labs/ansible-deno
 #   name: professormanhattan.deno
+
+  - src: https://github.com/nodi-gg/ansible-lnd
+    name: nodi.lnd
