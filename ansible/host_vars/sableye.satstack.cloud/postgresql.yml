@@ -1,0 +1,63 @@
+---
+# https://github.com/ANXS/postgresql/blob/master/defaults/main.yml
+# https://github.com/ANXS/postgresql/pull/534
+postgresql_version: 15
+
+postgresql_listen_addresses: []
+postgresql_autovacuum: on
+postgresql_synchronous_commit: off
+postgresql_password_encryption: scram-sha-256
+postgresql_default_auth_method_hosts: scram-sha-256
+#postgresql_full_page_writes: off #temp
+
+# pgtune automation is broken.
+# https://github.com/ANXS/postgresql/issues/201
+#postgresql_pgtune: true
+# Use the web app and prefix each variable with postgresql_
+# https://pgtune.leopard.in.ua/
+
+# DB Version: 15
+# OS Type: linux
+# DB Type: web
+# Total Memory (RAM): 2 GB
+# CPUs num: 2
+# Data Storage: ssd
+
+postgresql_max_connections: 200
+postgresql_shared_buffers: 512MB
+postgresql_effective_cache_size: 1536MB
+postgresql_maintenance_work_mem: 128MB
+postgresql_checkpoint_completion_target: 0.9
+postgresql_wal_buffers: 16MB
+postgresql_default_statistics_target: 100
+postgresql_random_page_cost: 1.1
+postgresql_effective_io_concurrency: 200
+postgresql_work_mem: 1310kB
+postgresql_min_wal_size: 1GB
+postgresql_max_wal_size: 4GB
+
+# Authentication (pg_hba.conf)
+postgresql_pg_hba_default:
+  - { type: local, database: all, user: postgres, address: "", method: peer, comment: '"local" is for Unix domain socket connections only' }
+  - { type: local, database: all, user: all, address: "", method: "{{ postgresql_default_auth_method_hosts }}", comment: '"local" is for Unix domain socket connections only' }
+  - { type: host,  database: all, user: all, address: "127.0.0.1/32", method: "{{ postgresql_default_auth_method_hosts }}", comment: "IPv4 local connections:" }
+  - { type: host,  database: all, user: all, address: "172.16.0.0/12", method: "{{ postgresql_default_auth_method_hosts }}", comment: "Docker container connections:"  }
+  - { type: host,  database: all, user: all, address: "::1/128", method: "{{ postgresql_default_auth_method_hosts }}", comment: "IPv6 local connections:" }
+
+# It's wierd they don't have a simple list for adding scram authentication: 
+# https://github.com/ANXS/postgresql/blob/63a22322fdb769a4649aea3ff936ce6aea0d963a/templates/pg_hba.conf.j2#L28
+
+# Troubleshoot authentication: tail -f /var/log/postgresql/postgresql-13-main.log
+postgresql_users:
+  - name: synapse
+    pass: "{{ lookup('ansible.builtin.env', 'sableye_SYNAPSE_POSTGRES_PASSWORD') }}"
+    encrypted: yes
+    state: present
+
+# psql -c "SELECT datname, datcollate FROM pg_database WHERE datname = 'synapse';"
+postgresql_databases:
+  - name: synapse
+    owner: synapse
+    state: present
+    lc_collate: C
+    lc_ctype: C

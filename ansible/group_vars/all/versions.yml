@@ -47,3 +47,7 @@ wikijs_version: latest
 
 # https://hub.docker.com/r/castopod/app/tags
 castopod_version: "1.4.7"
+
+# https://github.com/lightningnetwork/lnd/releases
+lnd_version: 0.17.0-beta.rc1
+#lnd_version: latest

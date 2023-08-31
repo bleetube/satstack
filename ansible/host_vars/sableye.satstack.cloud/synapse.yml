@@ -1,5 +1,5 @@
 ---
-synapse_name: bitcoiner.social
+synapse_name: satstack.cloud
 synapse_domain: "matrix.{{ synapse_name }}"
 nginx_ntfy_domain: "ntfy.{{ synapse_name }}"
 nginx_ntfy_https_port: 443

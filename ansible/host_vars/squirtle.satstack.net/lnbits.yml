@@ -1,5 +1,7 @@
 ---
-#nginx_lnbits_domain: squirtle.satstack.net
-nginx_lnbits_https_port: 4438
-lnbits_port: 5000
-lnbits_root_path: /var/www/lnbits
+lnbits_install_path: /var/lib/lnbits
+lnbits_version: 0.10.9 # github.com/lnbits/lnbits/releases
+lnbits_repository_path: "{{ ansible_env.HOME }}/src/lnbits" # ~/src/lnbits
+lnbits_devmode: no
+lnbits_user: lnbits
+lnbits_backend_servicename: lnd.service

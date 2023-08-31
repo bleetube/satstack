@@ -1,6 +1,5 @@
 ---
 # bleetube.linux vars
-linux_timezone: America/Los_Angeles
 
 sysadmin_package_aur: # installed manually via paru
   - core-lightning

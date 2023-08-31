@@ -4,3 +4,5 @@ acme_domains:
   - { domain: "{{ inventory_hostname }}", provider: namecheap }
   - { domain: satstack.cloud, provider: namecheap }
   - { domain: mail.satstack.cloud, provider: namecheap }
+  - { domain: matrix.satstack.cloud, provider: namecheap }
+  - { domain: ntfy.satstack.cloud, provider: namecheap }

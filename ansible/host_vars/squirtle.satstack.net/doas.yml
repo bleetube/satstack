@@ -1,0 +1,4 @@
+---
+doas_permit_list:
+  - username: blee
+    role: lnbits

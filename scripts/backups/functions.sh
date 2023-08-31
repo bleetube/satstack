@@ -30,6 +30,7 @@ BACKUP_MAIL() {
     rsync -tav root@${TARGET}:/etc/postfix/virtual $HOME/archive/${TARGET}/postfix
     rsync -tav root@${TARGET}:/etc/dkimkeys $HOME/archive/${TARGET}/
     rsync -tav root@${TARGET}:/var/vmail $HOME/archive/${TARGET}/
+    ssh root@${TARGET} find "/var/vmail/*/main/cur/" -type f -mtime +90 -delete
 }
 BACKUP_STRFRY_DB() {
     BACKUP_DIR=$HOME/archive/${TARGET}/strfry

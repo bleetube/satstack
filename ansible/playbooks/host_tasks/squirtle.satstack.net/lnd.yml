@@ -1,0 +1,5 @@
+---
+- hosts: squirtle.satstack.net
+  roles:
+    - role: bleetube.lnd
+      tags: lnd

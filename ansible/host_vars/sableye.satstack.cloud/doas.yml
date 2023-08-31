@@ -3,3 +3,5 @@
 doas_permit_list:
   - username: blee
     role: opendkim
+  - username: blee
+    role: postgres

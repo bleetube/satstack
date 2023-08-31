@@ -2,7 +2,7 @@
 # prefer lego because synapse uses a version of python3-zope.interface that conflicts with certbot
 acme_email: acme@bitcoiner.social
 acme_domains:
-  - { domain: "{{ inventory_hostname }}", provider: easydns }
-  - { domain: cast.bitcoiner.social, provider: easydns }
-  - { domain: matrix.bitcoiner.social, provider: easydns }
-  - { domain: ntfy.bitcoiner.social, provider: easydns }
+  - { domain: "{{ inventory_hostname }}", provider: namecheap }
+  - { domain: cast.bitcoiner.social, provider: namecheap }
+  - { domain: matrix.bitcoiner.social, provider: namecheap }
+  - { domain: ntfy.bitcoiner.social, provider: namecheap }

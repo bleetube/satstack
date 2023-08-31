@@ -13,7 +13,7 @@ strfry_relay:
     contact: admin@offchain.pub
   maxWebsocketPayloadSize: 131072
   autoPingSeconds: 55
-  enableTcpKeepalive: "false"
+  enableTcpKeepalive: no
   queryTimesliceBudgetMicroseconds: 10000
   maxFilterLimit: 500
   maxSubsPerConnection: 20
@@ -21,13 +21,13 @@ strfry_relay:
     plugin: /var/lib/strfry/entrypoint.ts
     lookbackSeconds: 0
   compression:
-    enabled: "true"
-    slidingWindow: "true"
+    enabled: yes
+    slidingWindow: yes
   logging:
-    dumpInAll: "false"
-    dumpInEvents: "false"
-    dumpInReqs: "false"
-    dbScanPerf: "false"
+    dumpInAll: no
+    dumpInEvents: no
+    dumpInReqs: no
+    dbScanPerf: no
   numThreads:
     ingester: 3
     reqWorker: 3
