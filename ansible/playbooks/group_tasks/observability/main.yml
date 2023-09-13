@@ -1,29 +1,6 @@
 ---
 - hosts: observability
 
-  vars:
-    grafana_apt_key_url: https://packages.grafana.com/gpg.key
-
-  # Fix grafana role: https://github.com/grafana/grafana-ansible-collection/issues/81
-  pre_tasks:
-    - name: Add grafana apt repository key.
-      ansible.builtin.get_url:
-        url: "{{ grafana_apt_key_url }}"
-        dest: /usr/share/keyrings/grafana.asc
-        mode: '0644'
-      tags: grafana
-      become: yes
-
-    - name: Ensure the repository is added with the relevant trusted GPG key
-      ansible.builtin.lineinfile:
-        path: /etc/apt/sources.list.d/grafana.list
-        regexp: 'apt.grafana.org'
-        line: "deb [arch=amd64 signed-by=/usr/share/keyrings/grafana.asc] https://apt.grafana.com stable main"
-        create: true
-      register: grafana_repo
-      become: yes
-      tags: grafana
-
   roles:
     - role: prometheus.prometheus.alertmanager
       become: true
@@ -48,10 +25,3 @@
     - name: Import nginx_conf as a task to isolate variable scope from other playbooks.
       import_tasks: tasks/nginx_conf.yml
       tags: nginx
-
-    - name: Remove deprecated Grafana apt source entry
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/packages_grafana_com_oss_deb.list
-        state: absent
-      become: yes
-      tags: grafana

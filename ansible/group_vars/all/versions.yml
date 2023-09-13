@@ -49,5 +49,5 @@ wikijs_version: latest
 castopod_version: "1.4.7"
 
 # https://github.com/lightningnetwork/lnd/releases
-lnd_version: 0.17.0-beta.rc1
+lnd_version: 0.17.0-beta.rc2
 #lnd_version: latest
