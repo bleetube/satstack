@@ -86,7 +86,7 @@
         backup: false
         config:
           upstreams:
-            - name: ntfy
+            - name: ntfy-am
               servers:
                 - address: unix:/var/lib/ntfy/ntfy.sock
           servers:
@@ -99,7 +99,7 @@
               locations:
                 - location: /
                   proxy:
-                    pass: http://ntfy
+                    pass: http://ntfy-am
                     http_version: '1.1'
                     set_header:
                       - field: Host

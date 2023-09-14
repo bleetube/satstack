@@ -4,7 +4,7 @@ Restoring mariadb:
 
 ```shell
 doas -u mysql mysql -c 'drop database castopod; create database castopod;'
-doas -u mysql bzcat /tmp/nextcloud_00-00-0000.dump.bz2 | mysql -uroot
+doas -u mysql bzcat /tmp/castopod_*.dump.bz2 | mysql -uroot
 ```
 
 Restoring postgresql:

@@ -12,7 +12,7 @@
           servers:
             - core:
                 listen:
-                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_lnbits_https_port|default(4432) }} ssl"
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:{{ nginx_lnbits_https_port|default(443) }} ssl"
                 include:
                   - "/etc/nginx/acme_{{ nginx_lnbits_domain|default(inventory_hostname) }}.conf"
                 root: "{{ lnbits_root_path|default('/var/www/lnbits') }}"

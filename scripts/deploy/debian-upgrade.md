@@ -7,11 +7,13 @@ Buster (10) to Bullseye (11)
 apt -y update &&
 apt -y upgrade &&
 apt -y autoremove  &&
+sed -i 's/debian-security buster-updates/debian-security bullseye-security/' /etc/apt/sources.list &&
 sed -i 's/buster\//bullseye-/' /etc/apt/sources.list &&
 sed -i 's/buster/bullseye/' /etc/apt/sources.list &&
 apt -y update &&
 apt -y full-upgrade &&
 reboot
+
 ```
 Bullseye (11) to Bookworm (12)
 
@@ -23,6 +25,7 @@ sed -i 's/bullseye/bookworm/' /etc/apt/sources.list &&
 apt -y update &&
 apt -y full-upgrade &&
 reboot
+
 ```
 
 Post ugprade:
@@ -30,4 +33,5 @@ Post ugprade:
 ```shell
 apt -y autoremove &&
 apt install -y doas
+
 ```

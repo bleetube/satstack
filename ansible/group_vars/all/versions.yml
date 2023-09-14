@@ -22,13 +22,13 @@ golang_version: "1.21.0" # gantsign.golang
 #golang_version: "1.20.4" # gantsign.golang
 
 # https://grafana.com/grafana/dashboards/1860-node-exporter-full/?tab=revisions
-grafana_node_dashboard_version: 31
+grafana_node_dashboard_version: 32
 
 # https://mariadb.org/mariadb/all-releases/
 mariadb_use_official_repo_version: "10.11"
 
 # https://github.com/mempool/mempool/releases
-mempool_version: v2.5.0
+#mempool_version: v2.5.0 # TODO: move to nix
 
 # https://github.com/Ride-The-Lightning/RTL/releases
 rtl_version: "0.14.0"
@@ -46,8 +46,12 @@ samourai_dojo_version: "1.20.0"
 wikijs_version: latest
 
 # https://hub.docker.com/r/castopod/app/tags
+# https://code.castopod.org/adaures/castopod/-/releases
 castopod_version: "1.4.7"
+#castopod_version: "1.5.2"
+#castopod_version: "1.6.2"
+#castopod_version: latest
 
 # https://github.com/lightningnetwork/lnd/releases
-lnd_version: 0.17.0-beta.rc2
-#lnd_version: latest
+lnd_version: 0.17.0-beta.rc3
+#lnd_version: latest # works, but (rightly) installs stable rather than release candidates
