@@ -28,7 +28,7 @@
                 # - address: "[2607:f130:0:105:216:3cff:fefb:92c2]:443 ssl"
                 include:
                   - "/etc/nginx/acme_{{ nginx_strfry_domain }}.conf"
-                  - /etc/nginx/snort_redirect.conf
+                 #- /etc/nginx/snort_redirect.conf # breaks amethyst relay profile
                 client_max_body_size: 0 # Stream request body to backend
               log:
                 access:
@@ -80,6 +80,11 @@
                   rewrite:
                     return:
                       url: "https://matrix.bitcoiner.social$request_uri"
+                      code: 301
+                - location: = /blee
+                  rewrite:
+                    return:
+                      url: https://snort.bitcoiner.social/p/npub1dxs2pygtfxsah77yuncsmu3ttqr274qr5g5zva3c7t5s3jtgy2xszsn4st
                       code: 301
 
       # nostr.bitcoiner.social

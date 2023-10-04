@@ -13,4 +13,8 @@ rsync -ta root@${TARGET}:/var/lib/matrix-synapse/media $HOME/archive/${TARGET}/m
 # iptables
 rsync -ta root@${TARGET}:/etc/iptables.rules $HOME/archive/${TARGET}/
 
+# tor
+mkdir -p $HOME/archive/${TARGET}/tor
+rsync -ta root@${TARGET}:/etc/tor/torrc $HOME/archive/${TARGET}/tor
+
 du -sh $HOME/archive/${TARGET}/

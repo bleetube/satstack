@@ -12,7 +12,7 @@ strfry_relay:
   info:
     name: bitcoiner.social
     description: A fast, reliable, and up-to-date nostr relay with monitored server availability and nightly off-site backups.
-    pubkey: 6b1b35c6dee48851bac53a4494ca8f819503be00212dbceb899dc03acd7641db
+    pubkey: ece3317bf8163930b5dafae50596b740b0608433b78568886a9a712a91a5d59b
     contact: nostr@bitcoiner.social
   maxWebsocketPayloadSize: 131072
   autoPingSeconds: 55
@@ -31,13 +31,17 @@ strfry_relay:
     dumpInEvents: no
     dumpInReqs: no
     dbScanPerf: no
+    invalidEvents: yes
   numThreads:
     ingester: 3
     reqWorker: 3
     reqMonitor: 3
-    yesstr: 1
+    negentropy: 2
+  negentropy:
+    enabled: yes
+    maxSyncEvents: 1000000
 strfry_events:
-  maxEventSize: 16384
+  maxEventSize: 32768
   rejectEventsNewerThanSeconds: 900
   rejectEventsOlderThanSeconds: 94608000
   rejectEphemeralEventsOlderThanSeconds: 60

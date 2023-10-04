@@ -7,7 +7,7 @@ Buster (10) to Bullseye (11)
 apt -y update &&
 apt -y upgrade &&
 apt -y autoremove  &&
-sed -i 's/debian-security buster-updates/debian-security bullseye-security/' /etc/apt/sources.list &&
+sed -i 's/debian-security buster\/updates/debian-security bullseye-security/' /etc/apt/sources.list &&
 sed -i 's/buster\//bullseye-/' /etc/apt/sources.list &&
 sed -i 's/buster/bullseye/' /etc/apt/sources.list &&
 apt -y update &&
@@ -24,14 +24,19 @@ apt -y autoremove  &&
 sed -i 's/bullseye/bookworm/' /etc/apt/sources.list &&
 apt -y update &&
 apt -y full-upgrade &&
+apt -y autoremove &&
 reboot
 
 ```
 
-Post ugprade:
+Bootstrap doas/ssh:
 
 ```shell
-apt -y autoremove &&
-apt install -y doas
+ansible-playbook playbooks/oneshots/doas/main.yml -e 'ansible_user=root'  --limit example.satstack.cloud
+```
 
+Remember to update DNS if necessary and then run the main playbook.
+
+```shell
+ansible-playbook playbooks/main.yml --limit example.satstack.cloud
 ```

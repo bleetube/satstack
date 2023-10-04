@@ -4,7 +4,7 @@
 - import_playbook: node_exporter.yml
 ##- import_playbook: group_tasks/certbot/main.yml # migrated to lego
 - import_playbook: group_tasks/lego.yml
-- import_playbook: group_tasks/mail.yml
+#- import_playbook: group_tasks/mail.yml # gather_facts getent passwd is broken when importing from here
 - import_playbook: group_tasks/wireguard.yml
 - import_playbook: group_tasks/observability/main.yml
 ##- import_playbook: group_tasks/proxmox/main.yml # needs testing
@@ -15,10 +15,12 @@
 - import_playbook: group_tasks/synapse.yml
 - import_playbook: group_tasks/strfry.yml
 - import_playbook: group_tasks/jellyfin.yml
+- import_playbook: host_tasks/sableye.satstack.cloud/homepage.yml
 - import_playbook: host_tasks/pancham.brenise.com/peertube.yml
 - import_playbook: host_tasks/rhyperior.bitcoiner.social/castopod.yml
 - import_playbook: host_tasks/metagross.offchain.pub/strfry.yml
 - import_playbook: host_tasks/garchomp.bitcoiner.social/strfry.yml
+- import_playbook: host_tasks/squirtle.satstack.net/lnd.yml
 - import_playbook: host_tasks/wartortle.satstack.net/nextcloud/main.yml # needs monitoring
 - import_playbook: host_tasks/wartortle.satstack.net/wikijs/main.yml
 - import_playbook: host_tasks/wartortle.satstack.net/dojo.yml

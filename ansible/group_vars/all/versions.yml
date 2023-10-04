@@ -53,5 +53,8 @@ castopod_version: "1.4.7"
 #castopod_version: latest
 
 # https://github.com/lightningnetwork/lnd/releases
-lnd_version: 0.17.0-beta.rc3
+#lnd_version: 0.17.0-beta.rc6
 #lnd_version: latest # works, but (rightly) installs stable rather than release candidates
+
+# https://github.com/hoytech/strfry/tags
+strfry_version: master

@@ -53,6 +53,17 @@
                         return:
                           url: "https://matrix.{{ nginx_homepage_domain }}$request_uri"
                           code: 301
+                    # lightning address server (satdress)
+                    - location: /.well-known/lnurlp/
+                      headers:
+                        add_headers: # web-based nostr clients need cors
+                          - name: Access-Control-Allow-Origin
+                            value: '*'
+                      proxy:
+                        pass: "http://10.19.21.42:8037"
+                        set_header:
+                        - field: Host
+                          value: $http_host
 
           - template_file: http/default.conf.j2
             deployment_location: "/etc/nginx/conf.d/http_{{ nginx_homepage_domain }}.conf"

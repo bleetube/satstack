@@ -19,5 +19,5 @@ for hostname in ${HOSTS[@]}; do
     echo "Finished running script for $hostname"
 done
 
-du -sh $HOME/archive
 rsync -taP $HOME/archive blee@squirtle.satstack.net:
+du -sh $HOME/archive

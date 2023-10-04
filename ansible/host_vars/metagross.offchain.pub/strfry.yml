@@ -28,11 +28,15 @@ strfry_relay:
     dumpInEvents: no
     dumpInReqs: no
     dbScanPerf: no
+    invalidEvents: yes
   numThreads:
     ingester: 3
     reqWorker: 3
     reqMonitor: 3
-    yesstr: 1
+    negentropy: 2
+  negentropy:
+    enabled: yes
+    maxSyncEvents: 1000000
 strfry_events:
   maxEventSize: 16384
   rejectEventsNewerThanSeconds: 900

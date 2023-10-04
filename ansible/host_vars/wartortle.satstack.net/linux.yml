@@ -12,3 +12,4 @@ sysadmin_packages_custom:
   # Jellyfin
   - intel-gpu-tools
   - intel-opencl-icd>=22
+  - imagemagick # for manually fixing album covers
