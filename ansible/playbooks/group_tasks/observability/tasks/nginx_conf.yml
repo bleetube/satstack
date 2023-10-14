@@ -28,14 +28,14 @@
               locations:
                 - location: /
                   proxy:
-                    pass: "http://127.0.0.1:3000"
+                    pass: "http://127.0.0.1:{{ grafana_port|default(3000) }}"
                     http_version: '1.1'
                     set_header:
                     - field: Host
                       value: $http_host
                 - location: /api/live/
                   proxy:
-                    pass: "http://127.0.0.1:3000"
+                    pass: "http://127.0.0.1:{{ grafana_port|default(3000) }}"
                     http_version: '1.1'
                     set_header:
                     - field: Host

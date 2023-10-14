@@ -1,9 +1,10 @@
 #!/bin/bash
 set -x
+set -e
 HOSTS=(
     chespin.satstack.net
     garchomp.bitcoiner.social
-    metagross.bitcoiner.social
+    metagross.offchain.pub
     rhyperior.bitcoiner.social
     pancham.brenise.com
     sableye.satstack.cloud

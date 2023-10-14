@@ -34,7 +34,13 @@
                 access:
                   - off
               locations:
+               # https://www.nginx.com/resources/wiki/community/faq/#what-does-this-thing-mean
                 - location: /
+                  core:
+                    try_files: # https://serverfault.com/a/923254/70156
+                      files: /nonexistent @$http_upgrade
+                - location: '@websocket'
+               #- location: /
                   proxy:
                     pass: http://strfry
                     http_version: '1.1'
@@ -50,9 +56,10 @@
                     connect_timeout: 3m
                     send_timeout: 3m
                     read_timeout: 3m
-                - location: /metrics
+                - location: '@'
                   proxy:
-                    pass: "http://127.0.0.1:{{ strfry_relay_metrics_port|default(8034) }}"
+                    pass: http://127.0.0.1:3000
+                    http_version: '1.1'
                     set_header:
                       - field: Host
                         value: $http_host
@@ -173,5 +180,62 @@
                 - location: /
                   rewrite:
                     return:
-                      url: "https://{{ nginx_strfry_domain }}$request_uri"
+                      url: https://$server_name$request_uri
+                      code: 301
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/cast.bitcoiner.social.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:443 ssl"
+                include:
+                  - "/etc/nginx/acme_cast.bitcoiner.social.conf"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  rewrite:
+                    return:
+                      url: "https://modusb.com$request_uri"
+                      code: 301
+                - location: = /@lacosanostr/feed.xml
+                  rewrite:
+                    return:
+                      url: https://modusb.com/LCN.rss
+                      code: 301
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/news.bitcoiner.social.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl"
+                include:
+                  - "/etc/nginx/acme_news.bitcoiner.social.conf"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://127.0.0.1:3000
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+            - core:
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:80"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  rewrite:
+                    return:
+                      url: https://$server_name$request_uri
                       code: 301

@@ -1,6 +1,4 @@
 ---
-prometheus_alert_rules_files: []
-
 prometheus_external_labels:
   region: us-california-1
   monitor: satstack-cloud
@@ -56,14 +54,6 @@ prometheus_scrape_configs:
       - target_label: __address__
         replacement: "{{ inventory_hostname }}:4431"
 
-  - job_name: relays
-    scheme: https
-    scrape_interval: 1m
-    static_configs:
-      - targets:
-        - bitcoiner.social
-      # - offchain.pub
-
   - job_name: health-checks
     scheme: https
     scrape_interval: 2m
@@ -73,11 +63,8 @@ prometheus_scrape_configs:
     static_configs:
       - targets:
           - https://bitcoiner.social/
-#         - https://nostr.bitcoiner.social/
+          - https://nostr.bitcoiner.social/
           - https://offchain.pub/
-          - https://cast.bitcoiner.social
-#         - https://matrix.bitcoiner.social/health
-#         - https://docs.bitcoiner.social/status
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

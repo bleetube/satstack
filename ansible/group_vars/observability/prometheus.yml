@@ -13,3 +13,6 @@ prometheus_alertmanager_config:
   - path_prefix: alertmanager/
     static_configs:
       - targets: [ "127.0.0.1:9093" ]
+
+prometheus_alert_rules_files:
+  - "/etc/prometheus/rules/*.rules"

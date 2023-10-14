@@ -1,6 +1,4 @@
 ---
-prometheus_alert_rules_files: []
-
 prometheus_external_labels:
   region: us-california-1
   monitor: satstack-homelab
