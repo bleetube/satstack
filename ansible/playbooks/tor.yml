@@ -1,5 +1,5 @@
 ---
-- hosts: tor
+- hosts: tor, racknerd, virmach, hosteons
   roles:
     - role: bleetube.tor
       tags: onion

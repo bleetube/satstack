@@ -6,6 +6,7 @@
 - import_playbook: node_exporter.yml
 #- import_playbook: group_tasks/mail.yml # gather_facts getent passwd is broken when importing from here
 - import_playbook: group_tasks/wireguard.yml
+- import_playbook: tor.yml
 #- import_playbook: group_tasks/observability/main.yml # Pending: https://stackoverflow.com/q/77318959/9290
 ##- import_playbook: group_tasks/proxmox/main.yml # needs testing
 - import_playbook: group_tasks/mariadb.yml
