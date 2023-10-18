@@ -72,10 +72,12 @@ roles:
     src:  https://github.com/bleetube/ansible-role-snort
 
   # includes a minor change that skips the outdated apt role dependency
-  - src: https://github.com/bleetube/ansible-role-onion
-    name: systemli.onion
-    version: skip_apt_key
+# - src: https://github.com/bleetube/ansible-role-onion
+#   name: systemli.onion
+#   version: skip_apt_key
 #   version: '>=2.3.0'
+  - src: https://github.com/systemli/ansible-role-onion
+    name: systemli.onion
 
   - name: geerlingguy.certbot
     src:  https://github.com/geerlingguy/ansible-role-certbot
@@ -83,36 +85,26 @@ roles:
   - src: https://github.com/gantsign/ansible-role-golang
     name: gantsign.golang
 
-  # requires commenting out warn in tasks/dashboards.yml
-# - src:  https://github.com/cloudalchemy/ansible-grafana
-#   name: cloudalchemy.grafana
-
 # - src:  https://github.com/haxorof/ansible-role-docker-ce
 #   name: haxorof.docker_ce
 #   version: '>=5.0.0'
 
   - src: https://github.com/alvistack/ansible-role-podman
     name: alvistack.podman
-#   version: '>=5.4.0'
 
   - src: https://github.com/fauust/ansible-role-mariadb
     name: fauust.mariadb
 
   - src: https://github.com/ANXS/postgresql
     name: anxs.postgresql
-    version: v1.14.1
+#   version: v1.14.1
 
   - src: https://github.com/nginxinc/ansible-role-nginx
     name: nginx_core.nginx
 
   - src: https://github.com/nginxinc/ansible-role-nginx-config
     name: nginx_core.nginx_config
-    version: HEAD
     #version: '>=0.7.0'
-
-    # does not work
-# - src: https://github.com/megabyte-labs/ansible-deno
-#   name: professormanhattan.deno
 
   - src: https://github.com/nodi-gg/ansible-lnd
     name: nodi.lnd

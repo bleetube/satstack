@@ -1,0 +1,78 @@
+---
+- hosts: metagross.offchain.pub
+
+  handlers:
+    - name: restart snort
+      ansible.builtin.service:
+        name: snort
+        state: restarted
+      become: yes
+
+  roles:
+    - role: bleetube.nodejs
+      become: yes
+      tags: nodejs
+  tasks:
+    - name: Create a snort group
+      ansible.builtin.group:
+        name: snort
+        state: present
+      become: yes
+      tags: group
+
+    - name: Create a snort user
+      ansible.builtin.user:
+        shell: /bin/bash
+        createhome: no
+        home: /var/www/snort
+        name: snort
+        group: snort
+        append: yes
+      become: yes
+      tags: user
+
+    - name: Create directory owned by snort
+      ansible.builtin.file:
+        path: /var/www/snort
+        state: directory
+        owner: snort
+        group: snort
+        mode: '0755'
+      become: yes
+      tags: directory
+      tags: git
+
+    - name: Clone git repository
+      ansible.builtin.git:
+        repo: https://github.com/bleetube/snort
+        dest: /var/www/snort/web
+        version: offchain.pub
+        force: true
+      become: yes
+      become_user: snort
+      register: git_repository
+      tags: git
+
+    - name: Build snort-web
+      ansible.builtin.command:
+        cmd: "{{ item }}"
+        chdir: /var/www/snort/web
+      become: yes
+      become_user: snort
+      notify: restart snort
+      tags: build
+      loop:
+        - npm install --legacy-peer-deps
+
+    - name: Install service unit
+      ansible.builtin.copy:
+        src: snort.service
+        dest: /etc/systemd/system/snort.service
+      become: yes
+      tags: systemd
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: yes
+      tags: systemd

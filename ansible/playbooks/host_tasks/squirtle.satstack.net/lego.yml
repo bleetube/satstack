@@ -1,0 +1,12 @@
+
+---
+- hosts: squirtle.satstack.net
+  become: yes
+  tasks:
+    - name: Copy updated certificate to chespin (ugly hack)
+      ansible.builtin.shell:
+        cmd: rsync -tv /var/acme/certificates/chespin.satstack.net.* --rsync-path="doas -u nginx rsync" root@chespin.satstack.net:/var/acme/certificates/
+
+    - name: Follow up copy by reload nginx on chespin via squirtle (ugly hack)
+      ansible.builtin.command:
+        cmd: ssh root@chespin.satstack.net systemctl restart nginx

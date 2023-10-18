@@ -5,3 +5,4 @@ acme_domains:
   - { domain: offchain.pub, provider: namecheap }
   - { domain: mail.offchain.pub, provider: namecheap }
   - { domain: snort.offchain.pub, provider: namecheap }
+  - { domain: satellite.offchain.pub, provider: namecheap }

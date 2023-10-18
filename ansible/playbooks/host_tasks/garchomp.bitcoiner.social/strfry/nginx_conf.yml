@@ -34,13 +34,7 @@
                 access:
                   - off
               locations:
-               # https://www.nginx.com/resources/wiki/community/faq/#what-does-this-thing-mean
                 - location: /
-                  core:
-                    try_files: # https://serverfault.com/a/923254/70156
-                      files: /nonexistent @$http_upgrade
-                - location: '@websocket'
-               #- location: /
                   proxy:
                     pass: http://strfry
                     http_version: '1.1'
@@ -56,13 +50,6 @@
                     connect_timeout: 3m
                     send_timeout: 3m
                     read_timeout: 3m
-                - location: '@'
-                  proxy:
-                    pass: http://127.0.0.1:3000
-                    http_version: '1.1'
-                    set_header:
-                      - field: Host
-                        value: $http_host
                 - location: /static
                   core:
                     alias: /var/www/static

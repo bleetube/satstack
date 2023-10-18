@@ -1,0 +1,13 @@
+[Unit]
+Description=Habla News
+
+[Service]
+User=news
+Group=news
+WorkingDirectory=/var/www/habla/news
+ExecStart=pnpm start
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

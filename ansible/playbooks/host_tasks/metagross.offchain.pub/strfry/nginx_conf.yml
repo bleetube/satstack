@@ -191,3 +191,38 @@
 #                     rewrite:
 #                       return:
 #                         code: 404
+
+      - template_file: http/default.conf.j2
+        deployment_location: "/etc/nginx/conf.d/satellite.offchain.pub.conf"
+        backup: false
+        config:
+          servers:
+            - core:
+                listen:
+                  - address: "{{ default_interface_ipv4_address|default(ansible_default_ipv4.address) }}:443 ssl"
+                include:
+                  - "/etc/nginx/acme_satellite.offchain.pub.conf"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://127.0.0.1:5173
+                    http_version: '1.1'
+                    set_header:
+                      - field: Host
+                        value: $http_host
+            - core:
+                server_name: satellite.offchain.pub
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:80"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  rewrite:
+                    return:
+                      url: https://$server_name$request_uri
+                      code: 301

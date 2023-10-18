@@ -22,6 +22,7 @@
 - import_playbook: host_tasks/garchomp.bitcoiner.social/strfry.yml
 - import_playbook: host_tasks/garchomp.bitcoiner.social/hablanews.yml
 - import_playbook: host_tasks/squirtle.satstack.net/lnd.yml
+- import_playbook: host_tasks/squirtle.satstack.net/lego.yml
 - import_playbook: host_tasks/wartortle.satstack.net/nextcloud/main.yml # needs monitoring
 - import_playbook: host_tasks/wartortle.satstack.net/wikijs/main.yml
 - import_playbook: host_tasks/wartortle.satstack.net/dojo.yml

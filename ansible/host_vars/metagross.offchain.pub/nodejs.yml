@@ -1,0 +1,4 @@
+--- # variables bleetube.nodejs role
+
+npm_packages:
+  - corepack

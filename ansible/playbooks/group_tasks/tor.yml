@@ -1,0 +1,7 @@
+---
+- hosts: tor
+  roles:
+    - role: bleetube.tor
+      tags: onion
+  # - role: systemli.onion
+  #   tags: onion

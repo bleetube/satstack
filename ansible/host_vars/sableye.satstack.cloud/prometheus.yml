@@ -23,6 +23,11 @@ prometheus_targets:
         group: racknerd
 
     - targets: 
+        - gabite.bitcoiner.social:4430
+      labels:
+        group: hosteons
+
+    - targets: 
         - metagross.offchain.pub:4430
       labels:
         group: relays

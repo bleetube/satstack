@@ -112,7 +112,7 @@
                 include:
                   - "/etc/nginx/acme_{{ nginx_snort_domain|default(inventory_hostname)  }}.conf"
                 index: index.html
-                root: "{{ snort_root_path|default('/var/www/snort') }}"
+               #root: "{{ snort_install_path|default('/var/www/snort') }}"
               log:
                 access:
                   - off
@@ -122,5 +122,25 @@
                 - location: /
                   core:
                     try_files:
-                      files: $uri $uri/ /index.html
-                      code: =404
+                      files: "{{ snort_install_path|default('/var/www/snort') }}/packages/app/public/ {{ snort_install_path|default('/var/www/snort') }}/packages/app/build/ @proxy"
+                     #files: $uri $uri/ /index.html
+                - location: '@proxy'
+                  proxy:
+                    pass: http://localhost:8080 # 127.0.0.1 does not work.
+                    http_version: '1.1'
+                   #set_header:
+                   #  - field: Host
+                   #    value: $http_host
+            - core:
+                server_name: "{{ nginx_snort_domain|default(inventory_hostname)  }}"
+                listen:
+                  - address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}:80"
+              log:
+                access:
+                  - off
+              locations:
+                - location: /
+                  rewrite:
+                    return:
+                      url: https://$server_name$request_uri
+                      code: 301

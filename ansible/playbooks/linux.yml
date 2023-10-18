@@ -4,5 +4,5 @@
   roles:
     - role: bleetube.linux
       tags: linux
-   #- role: bleetube.dotfiles
-   #  tags: dotfiles
+    - role: bleetube.dotfiles
+      tags: dotfiles

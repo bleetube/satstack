@@ -58,3 +58,6 @@ castopod_version: "1.4.7"
 
 # https://github.com/hoytech/strfry/tags
 strfry_version: master
+
+# https://git.v0l.io/Kieran/snort/releases
+#snort_version: v0.1.20 # We must merge our branch for updates, the role follows a branch

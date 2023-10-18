@@ -1,0 +1,79 @@
+---
+- hosts: garchomp.bitcoiner.social
+
+  handlers:
+    - name: restart hablanews
+      ansible.builtin.service:
+        name: hablanews
+        state: restarted
+      become: yes
+
+  roles:
+    - role: bleetube.nodejs
+      become: yes
+      tags: nodejs
+  tasks:
+   #- name: Create a hablanews group
+   #  ansible.builtin.group:
+   #    name: hablanews
+   #    state: present
+   #  become: yes
+   #  tags: group
+
+    - name: Create a news user
+      ansible.builtin.user:
+        shell: /bin/bash
+        createhome: no
+        home: /var/www/habla
+        name: news
+        group: news
+        append: yes
+      become: yes
+      tags: user
+
+    - name: Create directory owned by news
+      ansible.builtin.file:
+        path: /var/www/habla/news
+        state: directory
+        owner: news
+        group: news
+        mode: '0755'
+      become: yes
+      tags: directory
+      tags: git
+
+    - name: Clone git repository
+      ansible.builtin.git:
+        repo: https://github.com/bleetube/habla.news
+        dest: /var/www/habla/news
+        version: bitcoiner.social
+        force: true
+      become: yes
+      become_user: news
+      register: git_repository
+      tags: git
+
+    - name: Build habla.news
+      ansible.builtin.command:
+        cmd: "{{ item }}"
+        chdir: /var/www/habla/news
+      become: yes
+      become_user: news
+      tags: build
+      notify: restart hablanews
+      loop:
+        - pnpm install
+        - pnpm build
+
+    - name: Install service unit
+      ansible.builtin.copy:
+        src: hablanews.service
+        dest: /etc/systemd/system/hablanews.service
+      become: yes
+      tags: systemd
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: yes
+      tags: systemd

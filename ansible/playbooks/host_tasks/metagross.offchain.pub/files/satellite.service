@@ -1,0 +1,13 @@
+[Unit]
+Description=Satellite Web
+
+[Service]
+User=satellite
+Group=satellite
+WorkingDirectory=/var/www/satellite/web
+ExecStart=npm run dev
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

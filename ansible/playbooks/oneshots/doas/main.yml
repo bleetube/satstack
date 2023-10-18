@@ -27,10 +27,12 @@
         src: doas.conf.j2
         dest: /etc/doas.conf
 
-#   - name: Try to remove sudo.
+#   - name: Try removing sudo.
 #     ansible.builtin.package:
 #       name: sudo
 #       state: absent
 #     tags: test
 #     environment:
 #       SUDO_FORCE_REMOVE: yes
+
+- import_playbook: ../../ssh.yml

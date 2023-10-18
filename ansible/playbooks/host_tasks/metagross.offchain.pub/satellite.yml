@@ -1,0 +1,78 @@
+---
+- hosts: metagross.offchain.pub
+
+  handlers:
+    - name: restart satellite
+      ansible.builtin.service:
+        name: satellite
+        state: restarted
+      become: yes
+
+  roles:
+    - role: bleetube.nodejs
+      become: yes
+      tags: nodejs
+  tasks:
+    - name: Create a satellite group
+      ansible.builtin.group:
+        name: satellite
+        state: present
+      become: yes
+      tags: group
+
+    - name: Create a satellite user
+      ansible.builtin.user:
+        shell: /bin/bash
+        createhome: no
+        home: /var/www/satellite
+        name: satellite
+        group: satellite
+        append: yes
+      become: yes
+      tags: user
+
+    - name: Create directory owned by satellite
+      ansible.builtin.file:
+        path: /var/www/satellite
+        state: directory
+        owner: satellite
+        group: satellite
+        mode: '0755'
+      become: yes
+      tags: directory
+      tags: git
+
+    - name: Clone git repository
+      ansible.builtin.git:
+        repo: https://github.com/bleetube/satellite-web
+        dest: /var/www/satellite/web
+        version: offchain.pub
+        force: true
+      become: yes
+      become_user: satellite
+      register: git_repository
+      tags: git
+
+    - name: Build satellite-web
+      ansible.builtin.command:
+        cmd: "{{ item }}"
+        chdir: /var/www/satellite/web
+      become: yes
+      become_user: satellite
+      notify: restart satellite
+      tags: build
+      loop:
+        - npm install --legacy-peer-deps
+
+    - name: Install service unit
+      ansible.builtin.copy:
+        src: satellite.service
+        dest: /etc/systemd/system/satellite.service
+      become: yes
+      tags: systemd
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: yes
+      tags: systemd
