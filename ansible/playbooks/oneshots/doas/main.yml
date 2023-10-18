@@ -27,6 +27,7 @@
         src: doas.conf.j2
         dest: /etc/doas.conf
 
+# Ubuntu requires setting a root password before `sudo` can be removed.
 #   - name: Try removing sudo.
 #     ansible.builtin.package:
 #       name: sudo
@@ -36,3 +37,4 @@
 #       SUDO_FORCE_REMOVE: yes
 
 - import_playbook: ../../ssh.yml
+- import_playbook: ../../linux.yml

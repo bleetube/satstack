@@ -1,0 +1,141 @@
+---
+prometheus_external_labels:
+  region: us-california-1
+  monitor: satstack-cloud
+  replica: 1
+
+# prometheus_targets is just a map used to create multiple files located in "{{ prometheus_config_dir }}/file_sd" directory.
+# Where file names are composed from top-level keys in that map with .yml suffix. Those files store file_sd scrape targets 
+# data and they need to be read in prometheus_scrape_configs.
+prometheus_targets:
+  node:
+    - targets: 
+        - sableye.satstack.cloud:4430
+        - farfetchd.satstack.cloud:4430
+        - pancham.brenise.com:4430
+      labels:
+        group: virmach
+
+    - targets: 
+        - garchomp.bitcoiner.social:4430
+        - rhyperior.bitcoiner.social:4430
+        - metagross.offchain.pub:4430
+        - porygon.satstack.cloud:4430
+        - lanturn.satstack.cloud:4430
+      labels:
+        group: racknerd
+
+    - targets: 
+        - gabite.bitcoiner.social:4430
+      labels:
+        group: hosteons
+
+# another important note about file_sd targets (above) is that they are periodically refreshed by prometheus, but the rest of the config (below) is not.
+prometheus_scrape_configs:
+  - job_name: node
+    scheme: https
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/node.yml"
+
+  - job_name: postfix
+    scheme: https
+    scrape_interval: 5m
+    static_configs:
+      - targets:
+          - mail.bitcoiner.social:25
+          - mail.blee.tube:25
+          - mail.satstack.cloud:25
+    metrics_path: /probe
+    params:
+      module: [smtp_starttls]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ inventory_hostname }}:4431"
+
+  - job_name: health-checks
+    scheme: https
+    scrape_interval: 2m
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://bitcoiner.social/
+          - https://nostr.bitcoiner.social/
+          - https://offchain.pub/
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ inventory_hostname }}:4431"
+
+prometheus_alert_rules:
+  - alert: Prometheus
+    expr: up{job="prometheus"} == 0
+    for: 2h
+    annotations:
+      summary: Prometheus has not responded for at least a couple hours.
+      description: Check metrics exported directly from the main prometheus daemon.
+
+  - alert: High compute utilization alert
+    expr: avg by (instance) (irate(node_cpu_seconds_total{job="nodes",mode="idle"}[5m])) < 0.6
+    for: 5m
+    annotations:
+      summary: Elevated compute utilization.
+
+  - alert: High disk storage utilization alert
+    expr: 100 - ((node_filesystem_avail_bytes{job="nodes",mountpoint="/",fstype!="rootfs"} * 100) / node_filesystem_size_bytes{job="nodes",mountpoint="/",fstype!="rootfs"}) > 80
+    for: 1h
+    annotations:
+      summary: Server is running low on available disk space.
+
+  - alert: Health checks
+    expr: probe_success{job="health-checks"} == 0
+    for: 15m
+    annotations:
+      summary: A health-check has failed.
+
+  - alert: Postfix Health Check
+    expr: probe_success{job="postfix"} == 0
+    for: 30m
+    annotations:
+      summary: SMTP StartTLS failed
+
+  - alert: Outbound Network Flooding (Level 1)
+    expr: irate(node_network_transmit_bytes_total{job=~"node",group!="relays"}[5m]) > 1000000
+    for: 1h
+    labels:
+      severity: info
+    annotations:
+      summary: Node egress throughput is elevated
+
+  - alert: Outbound Network Flooding (Level 2)
+    expr: irate(node_network_transmit_bytes_total{job=~"node",group!="relays"}[5m]) > 2000000
+    for: 30m
+    labels:
+      severity: info
+    annotations:
+      summary: Node egress throughput is elevated
+
+  - alert: Outbound Network Flooding (Level 3)
+    expr: irate(node_network_transmit_bytes_total{job=~"node"}[5m]) > 4000000
+    for: 15m
+    labels:
+      severity: info
+    annotations:
+      summary: Node egress throughput is elevated
+
+# - alert: Relay outage
+#   expr: up{job="relays"} == 0
+#   for: 15m
+#   labels:
+#     severity: critical
+#   annotations:
+#     summary: Relay is not responding.

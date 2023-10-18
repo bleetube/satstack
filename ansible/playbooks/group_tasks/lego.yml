@@ -1,5 +1,5 @@
 ---
-- hosts: lego
+- hosts: all, !proxmox
 
   pre_tasks:
     - name: Gather facts about the localhost

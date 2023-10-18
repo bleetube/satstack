@@ -1,0 +1,6 @@
+---
+grafana_security:
+  admin_user: admin
+  admin_password: "{{ lookup('ansible.builtin.env', 'lanturn_GRAFANA_ADMIN_PASSWORD') }}"
+  disable_gravatar: true
+grafana_port: 8043 # moved because of habla.news

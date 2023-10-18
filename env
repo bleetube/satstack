@@ -20,6 +20,7 @@ export wartortle_SAMOURAI_BITCOIND_RPC_PASSWORD=$(pass satstack.net/wartortle/SA
 source ~/.secrets/homelab/env
 
 # satstack_cloud
+export lanturn_GRAFANA_ADMIN_PASSWORD=$(pass satstack.cloud/lanturn/GRAFANA_ADMIN)
 export sableye_GRAFANA_ADMIN_PASSWORD=$(pass satstack.cloud/sableye/GRAFANA_ADMIN)
 export sableye_WIREGUARD_PRIVATE_KEY=$(pass satstack.cloud/sableye/WIREGUARD_PRIVATE_KEY)
 export sableye_SYNAPSE_POSTGRES_PASSWORD=$(pass satstack.cloud/sableye/SYNAPSE_POSTGRES)

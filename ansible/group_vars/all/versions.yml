@@ -12,6 +12,7 @@ blackbox_exporter_version: '0.24.0'
 alertmanager_version: latest
 
 # https://github.com/grafana/grafana/releases
+#grafana_version: 9.5.13
 grafana_version: latest
 
 # https://git.xenrox.net/~xenrox/ntfy-alertmanager

@@ -41,9 +41,11 @@ D('satstack.net', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
 D('satstack.cloud', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
     A('@', '141.11.94.21'), // sableye
     A('mail', '141.11.94.21'), // sableye
+    A('farfetchd', '141.11.95.49'),
     A('sableye', '141.11.94.21'),
     A('rhyperior', '107.173.15.183'),
-    A('farfetchd', '141.11.95.49'),
+    A('porygon', '23.95.61.214'),
+    A('lanturn', '23.95.61.215'),
     CNAME('matrix', 'sableye.satstack.cloud.'),
     CNAME('ntfy', 'sableye.satstack.cloud.'),
     MX('@', 10, 'mail.satstack.cloud.'),

@@ -29,14 +29,17 @@ reboot
 
 ```
 
-Bootstrap doas/ssh:
+Bootstrap doas and ssh access:
 
 ```shell
 ansible-playbook playbooks/oneshots/doas/main.yml -e 'ansible_user=root'  --limit example.satstack.cloud
 ```
 
-Remember to update DNS if necessary and then run the main playbook.
+Remember to update DNS if necessary and then run the main playbook *from squirtle*.
 
 ```shell
+ssh squirtle
+cd ops/satstack/ansible
+source ../env
 ansible-playbook playbooks/main.yml --limit example.satstack.cloud
 ```

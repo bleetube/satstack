@@ -1,12 +1,12 @@
 --- # Run playbooks in a specific order
 - import_playbook: linux.yml
 - import_playbook: nginx/main.yml
-- import_playbook: node_exporter.yml
 ##- import_playbook: group_tasks/certbot/main.yml # migrated to lego
 - import_playbook: group_tasks/lego.yml
+- import_playbook: node_exporter.yml
 #- import_playbook: group_tasks/mail.yml # gather_facts getent passwd is broken when importing from here
 - import_playbook: group_tasks/wireguard.yml
-- import_playbook: group_tasks/observability/main.yml
+#- import_playbook: group_tasks/observability/main.yml # Pending: https://stackoverflow.com/q/77318959/9290
 ##- import_playbook: group_tasks/proxmox/main.yml # needs testing
 - import_playbook: group_tasks/mariadb.yml
 - import_playbook: group_tasks/postgresql.yml

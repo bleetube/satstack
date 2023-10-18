@@ -1,0 +1,4 @@
+---
+acme_email: acme@satstack.cloud
+acme_domains:
+  - { domain: "{{ inventory_hostname }}", provider: namecheap }
