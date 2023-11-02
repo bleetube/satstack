@@ -1,2 +1,4 @@
 --- # bleetube.acme variables
 acme_email: acme@brenise.com
+acme_domains:
+  - { domain: "{{ inventory_hostname }}", provider: namecheap }

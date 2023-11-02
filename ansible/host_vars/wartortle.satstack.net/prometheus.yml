@@ -95,7 +95,7 @@ prometheus_scrape_configs:
     static_configs:
       - targets:
         - https://matrix.brenise.com/health
-        - https://blee.tube/api/v1/videos
+#       - https://blee.tube/api/v1/videos
 #       - https://wartortle.satstack.net:4434/api/mempool
 #       - https://squirtle.satstack.net:4439/api/mempool
     relabel_configs:

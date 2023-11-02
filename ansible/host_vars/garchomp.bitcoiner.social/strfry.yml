@@ -38,7 +38,7 @@ strfry_relay:
     reqMonitor: 3
     negentropy: 2
   negentropy:
-    enabled: yes
+    enabled: no
     maxSyncEvents: 1000000
 strfry_events:
   maxEventSize: 32768

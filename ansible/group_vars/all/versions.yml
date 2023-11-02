@@ -35,13 +35,13 @@ mariadb_use_official_repo_version: "10.11"
 rtl_version: "0.14.0"
 
 # https://github.com/dgtlmoon/changedetection.io/releases
-changedetection_version: "0.43.2"
+changedetection_version: "0.45.5"
 
 # https://hub.docker.com/_/nextcloud
 nextcloud_version: 27-fpm-alpine
 
 # https://code.samourai.io/dojo/samourai-dojo/-/releases
-samourai_dojo_version: "1.20.0"
+samourai_dojo_version: "1.21.0"
 
 # https://github.com/Requarks/wiki/pkgs/container/wiki
 wikijs_version: latest

@@ -21,4 +21,9 @@ rsync -tv root@${TARGET}:/etc/nginx/conf.d/nwc.conf $HOME/archive/${TARGET}/
 rsync -tv root@${TARGET}:/etc/systemd/system/ln-ws-proxy.service $HOME/archive/${TARGET}/
 rsync -tv root@${TARGET}:/etc/nginx/conf.d/ln-ws-proxy.conf $HOME/archive/${TARGET}/
 
+# systemd
+mkdir -p $HOME/archive/${TARGET}/systemd/system
+rsync -tv root@${TARGET}:/etc/systemd/system/backups.{service,timer} $HOME/archive/${TARGET}/systemd/system
+rsync -tv root@${TARGET}:/etc/systemd/system/ansible-lego.{service,timer} $HOME/archive/${TARGET}/systemd/system
+
 du -sh $HOME/archive/${TARGET}/

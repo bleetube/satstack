@@ -5,7 +5,7 @@ HOSTS=(
     chespin.satstack.net
     garchomp.bitcoiner.social
     metagross.offchain.pub
-    rhyperior.bitcoiner.social
+#   rhyperior.bitcoiner.social
     pancham.brenise.com
     sableye.satstack.cloud
     shinx.charlgiwnbro.com
@@ -20,5 +20,4 @@ for hostname in ${HOSTS[@]}; do
     echo "Finished running script for $hostname"
 done
 
-rsync -taP $HOME/archive blee@squirtle.satstack.net:
 du -sh $HOME/archive

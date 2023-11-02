@@ -18,7 +18,7 @@ prometheus_targets:
 
     - targets: 
         - garchomp.bitcoiner.social:4430
-        - rhyperior.bitcoiner.social:4430
+    #   - rhyperior.bitcoiner.social:4430
         - metagross.offchain.pub:4430
         - porygon.satstack.cloud:4430
         - lanturn.satstack.cloud:4430

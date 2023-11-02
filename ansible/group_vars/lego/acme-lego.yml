@@ -1,3 +1,0 @@
---- # bleetube.lego role variables
-acme_domains:
-  - { domain: "{{ inventory_hostname }}", provider: namecheap }

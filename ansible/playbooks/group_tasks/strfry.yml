@@ -1,17 +1,19 @@
 ---
 - hosts: strfry
   roles:
-    - role: bleetube.strfry
-      tags: strfry
-    - role: bleetube.nodejs
-      become: yes
-      tags: nodejs
-    - role: bleetube.snort
-      tags: snort
-    - role: nginx_core.nginx
-      become: yes
-      tags: install_nginx
-      when: ansible_os_family != 'Archlinux'
+  # e: "Unable to change directory before execution: [Errno 20] Not a directory: b'/usr/local/bin/strfry'"
+  # - role: bleetube.strfry
+  #   tags: strfry
+  # e: 'yarn_repo' is undefined.
+  # - role: bleetube.nodejs
+  #   become: yes
+  #   tags: nodejs
+  # - role: bleetube.snort
+  #   tags: snort
+  # - role: nginx_core.nginx
+  #   become: yes
+  #   tags: install_nginx
+  #   when: ansible_os_family != 'Archlinux'
   tasks:
     - import_tasks: ../nginx/strfry/nginx_conf.yml
       become: yes

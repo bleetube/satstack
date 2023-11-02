@@ -6,14 +6,14 @@ var DSP_NAMECHEAP = NewDnsProvider("namecheap");
 var modestTTL = TTL('1h');
 
 D('bitcoiner.social', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
-    A('@', '216.127.184.44'),
-    A('nostr', '216.127.184.44'),
+    A('@', '74.48.94.75'), // garchomp
+    A('nostr', '74.48.94.75'), // garchomp
     A('rhyperior', '107.173.15.183'),
     A('metagross', '173.82.197.238'),
-    A('garchomp', '216.127.184.44'),
+    A('garchomp', '74.48.94.75'),
     A('gabite', '205.234.146.111'),
     AAAA('gabite', '2402:d0c0:18:e258::1'),
-    A('mail', '216.127.184.44'),
+    A('mail', '74.48.94.75'), // garchomp
     CNAME('www', 'bitcoiner.social.'),
     CNAME('cast', 'garchomp.bitcoiner.social.'),
     CNAME('snort', 'garchomp.bitcoiner.social.'),
@@ -55,9 +55,9 @@ D('satstack.cloud', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
 );
 
 D('offchain.pub', REG_NAMECHEAP, DnsProvider(DSP_NAMECHEAP),
-    A('@', '173.82.197.238'),
-    A('metagross', '173.82.197.238'),
-    A('mail', '173.82.197.238'),
+    A('@', '142.171.216.28'),
+    A('metagross', '142.171.216.28'),
+    A('mail', '142.171.216.28'),
     CNAME('www', 'offchain.pub.'),
     CNAME('snort', 'offchain.pub.'),
     CNAME('satellite', 'offchain.pub.'),
