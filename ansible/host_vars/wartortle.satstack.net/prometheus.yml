@@ -9,10 +9,10 @@ prometheus_external_labels:
 # data and they need to be read in prometheus_scrape_configs.
 prometheus_targets:
   node:
-    - targets:
-        - shinx.charlgiwnbro.com:4430
-      labels:
-        group: charlgiwnbro
+  # - targets:
+  #     - shinx.charlgiwnbro.com:4430
+  #   labels:
+  #     group: charlgiwnbro
 
     - targets:
 #       - charmander.brenise.com:4430
@@ -40,25 +40,53 @@ prometheus_scrape_configs:
           - "{{ lookup('ansible.builtin.env', 'testnet_prometheus') }}"
 #         - "{{ lookup('ansible.builtin.env', 'work_prometheus') }}" # TODO: fix routing
 
+  - job_name: snmp
+    static_configs:
+      - targets:
+        - 192.168.0.1
+    metrics_path: /snmp
+    params:
+      auth: [public_v2]
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.0.43:9116  # The SNMP exporter's real hostname:port.
+
   - job_name: node
     scheme: https
     file_sd_configs:
       - files:
           - "{{ prometheus_config_dir }}/file_sd/node.yml"
 
-# - job_name: bitcoind
+  - job_name: nodehttp
+    static_configs:
+      - targets:
+        - shinx.brenise.com:9100
+        - rotom.satstack.net:9100
+
+# - job_name: lnd
 #   scheme: https
 #   static_configs:
 #     - targets:
 #       - squirtle.satstack.net:9101
 
 # broken https://github.com/lightningd/plugins/pull/451
-  - job_name: lightningd
+  - job_name: lightning
     scheme: https
     scrape_interval: 2m
     static_configs:
       - targets:
         - squirtle.satstack.net:9105
+        labels:
+          group: lightningd
+      - targets:
+        - squirtle.satstack.net:9109
+        labels:
+          group: lnd
 
   - job_name: electrum
     scheme: https
@@ -144,11 +172,11 @@ prometheus_alert_rules:
     annotations:
       summary: electrs is not responding
 
-  - alert: lightningd offline
-    expr: up{job="lightningd"} == 0
-    for: 15m
+  - alert: Lightning daemon offline (lnd or lightningd)
+    expr: up{job="lightning"} == 0
+    for: 5m
     annotations:
-      summary: lightningd is not running.
+      summary: Lightning daemon is not running.
 
 # - alert: LND Monitor
 #   expr: lnd_channels_inactive_total{job="lndmon"} / lnd_channels_active_total{job="lndmon"} > 0.5

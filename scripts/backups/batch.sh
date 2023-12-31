@@ -5,10 +5,8 @@ HOSTS=(
     chespin.satstack.net
     garchomp.bitcoiner.social
     metagross.offchain.pub
-#   rhyperior.bitcoiner.social
     pancham.brenise.com
     sableye.satstack.cloud
-    shinx.charlgiwnbro.com
     squirtle.satstack.net
     wartortle.satstack.net
 )

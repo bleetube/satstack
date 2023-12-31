@@ -14,7 +14,7 @@
 - import_playbook: group_tasks/podman.yml
 ##- import_playbook: group_tasks/docker.yml # migrated to podman
 - import_playbook: group_tasks/synapse.yml
-- import_playbook: group_tasks/strfry.yml
+#- import_playbook: group_tasks/strfry.yml # role always builds, even when we don't need it to. Haven't made a workaround yet.
 - import_playbook: group_tasks/jellyfin.yml
 - import_playbook: host_tasks/sableye.satstack.cloud/redirect-homepage.yml
 - import_playbook: host_tasks/pancham.brenise.com/peertube.yml
@@ -24,7 +24,7 @@
 - import_playbook: host_tasks/garchomp.bitcoiner.social/hablanews.yml
 - import_playbook: host_tasks/squirtle.satstack.net/lnd.yml
 - import_playbook: host_tasks/squirtle.satstack.net/lego.yml
-- import_playbook: host_tasks/wartortle.satstack.net/nextcloud/main.yml # needs monitoring
+- import_playbook: host_tasks/wartortle.satstack.net/nextcloud/main.yml # needs monitoring, although it's easy to know when it's not working since davx5 throws an error
 - import_playbook: host_tasks/wartortle.satstack.net/wikijs/main.yml
 - import_playbook: host_tasks/wartortle.satstack.net/dojo.yml
 #- import_playbook: host_tasks/wartortle.satstack.net/rtl/main.yml # this should be a role

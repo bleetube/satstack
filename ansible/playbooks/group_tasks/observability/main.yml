@@ -8,6 +8,9 @@
     - role: prometheus.prometheus.blackbox_exporter
       become: true
       tags: blackbox_exporter
+    - role: prometheus.prometheus.snmp_exporter
+      become: true
+      tags: snmp_exporter
     - role: prometheus.prometheus.prometheus
       become: true
       tags: prometheus

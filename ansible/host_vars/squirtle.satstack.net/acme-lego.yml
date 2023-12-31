@@ -5,3 +5,4 @@ acme_domains:
   - { domain: omastar.satstack.net, provider: namecheap }
   - { domain: chespin.satstack.net, provider: namecheap }
   - { domain: charmander.satstack.net, provider: namecheap }
+  - { domain: weavile.satstack.net, provider: namecheap }

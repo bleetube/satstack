@@ -38,5 +38,5 @@ systemctl --user status container-RTL.service
 ## upgrades
 
 ```
-ansible-playbook playbooks/host_tasks/wartortle.satstack.net/rtl.yml --tags podman
+ansible-playbook playbooks/host_tasks/wartortle.satstack.net/rtl/main.yml --tags podman
 ```
