@@ -8,8 +8,9 @@ rtl_config:
   RTL_CONFIG_PATH: /data
   LN_IMPLEMENTATION: CLN
   LN_SERVER_URL: https://squirtle.satstack.net:4445
-  MACAROON_PATH: /certs
+ #MACAROON_PATH: /certs
   RTL_SSO: 0
+  RUNE_PATH: /certs/.rune
 
 # https://www.peerswap.dev/
 # ENABLE_PEERSWAP: false

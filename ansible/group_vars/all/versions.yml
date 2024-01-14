@@ -32,8 +32,8 @@ mariadb_use_official_repo_version: "10.11"
 #mempool_version: v2.5.0 # TODO: move to nix
 
 # https://github.com/Ride-The-Lightning/RTL/releases
-rtl_version: "0.14.1"
-#rtl_version: "0.15.0"
+#rtl_version: "0.14.1"
+rtl_version: "0.15.0"
 
 # https://github.com/dgtlmoon/changedetection.io/releases
 changedetection_version: "0.45.5"

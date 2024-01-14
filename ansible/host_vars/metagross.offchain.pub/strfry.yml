@@ -18,7 +18,7 @@ strfry_relay:
   maxFilterLimit: 500
   maxSubsPerConnection: 20
   writePolicy:
-    plugin: /var/lib/strfry/entrypoint.ts
+    plugin: /var/lib/strfry/copmlex-entrypoint.ts
     lookbackSeconds: 0
   compression:
     enabled: yes
@@ -38,7 +38,7 @@ strfry_relay:
     enabled: yes
     maxSyncEvents: 1000000
 strfry_events:
-  maxEventSize: 16384
+  maxEventSize: 65536
   rejectEventsNewerThanSeconds: 900
   rejectEventsOlderThanSeconds: 94608000
   rejectEphemeralEventsOlderThanSeconds: 60

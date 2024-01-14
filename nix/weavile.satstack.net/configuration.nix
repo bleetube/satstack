@@ -7,7 +7,7 @@
     # "slack"
       "parsec-bin"
       "vscode"
-    # "zoom-us"
+      "zoom"
     # "steam"
     # "steam-original"
     # "steam-run"
@@ -117,7 +117,7 @@
         # slack # sso auth broken
           synergy
           vscode
-        # zoom-us
+          zoom-us
 
           curl
           dnsutils
@@ -164,6 +164,7 @@
       # gnome
       #gnomeExtensions.appindicator
       wireguard-tools
+      syncthing
     ];
 
     shellInit = ''

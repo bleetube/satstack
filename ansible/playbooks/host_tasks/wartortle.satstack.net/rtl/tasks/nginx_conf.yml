@@ -1,5 +1,5 @@
 ---
-- name: RLT - Configure nginx
+- name: RTL - Configure nginx
   ansible.builtin.import_role:
     name: nginx_core.nginx_config
   tags: nginx
