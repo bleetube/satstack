@@ -40,21 +40,21 @@ prometheus_scrape_configs:
           - "{{ lookup('ansible.builtin.env', 'testnet_prometheus') }}"
 #         - "{{ lookup('ansible.builtin.env', 'work_prometheus') }}" # TODO: fix routing
 
-  - job_name: snmp
-    static_configs:
-      - targets:
-        - 192.168.0.1
-    metrics_path: /snmp
-    params:
-      auth: [public_v2]
-      module: [if_mib]
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 192.168.0.43:9116  # The SNMP exporter's real hostname:port.
+# - job_name: snmp
+#   static_configs:
+#     - targets:
+#       - 192.168.0.1
+#   metrics_path: /snmp
+#   params:
+#     auth: [public_v2]
+#     module: [if_mib]
+#   relabel_configs:
+#     - source_labels: [__address__]
+#       target_label: __param_target
+#     - source_labels: [__param_target]
+#       target_label: instance
+#     - target_label: __address__
+#       replacement: 192.168.0.43:9116  # The SNMP exporter's real hostname:port.
 
   - job_name: node
     scheme: https
@@ -66,7 +66,7 @@ prometheus_scrape_configs:
     static_configs:
       - targets:
         - shinx.brenise.com:9100
-        - rotom.satstack.net:9100
+#       - rotom.satstack.net:9100
 
 # - job_name: lnd
 #   scheme: https

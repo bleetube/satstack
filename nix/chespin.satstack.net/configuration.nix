@@ -151,6 +151,13 @@
             listen = [{ addr = "0.0.0.0"; port = 4435; ssl = true; }];
             locations."/" = { proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}"; };
           });
+          "mempool_tls" =  (tlsConfig // {
+            listen = [{ addr = "0.0.0.0"; port = 4439; ssl = true; }];
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:${toString config.services.mempool.frontend.port}";
+              proxyWebsockets = true;
+            };
+          });
         };
     };
 
@@ -267,6 +274,7 @@
     #
     # Set this to enable the JoinMarket order book watcher.
     # joinmarket-ob-watcher.enable = true;
+    mempool.enable = true;
 
     ### Backups
     # Set this to enable nix-bitcoin's own backup service. By default, it
