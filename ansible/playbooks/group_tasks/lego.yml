@@ -18,3 +18,11 @@
   roles:
     - role: bleetube.lego
       when: ansible_nodename == 'squirtle'
+
+  tasks:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      tags: nginx
+      become: yes

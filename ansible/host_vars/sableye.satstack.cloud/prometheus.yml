@@ -18,19 +18,11 @@ prometheus_targets:
 
     - targets: 
         - garchomp.bitcoiner.social:4430
-        - rhyperior.bitcoiner.social:4430
+        - metagross.offchain.pub:4430
+        - porygon.satstack.cloud:4430
+        - lanturn.satstack.cloud:4430
       labels:
         group: racknerd
-
-    - targets: 
-        - gabite.bitcoiner.social:4430
-      labels:
-        group: hosteons
-
-    - targets: 
-        - metagross.offchain.pub:4430
-      labels:
-        group: relays
 
 # another important note about file_sd targets (above) is that they are periodically refreshed by prometheus, but the rest of the config (below) is not.
 prometheus_scrape_configs:

@@ -124,8 +124,7 @@ prometheus_scrape_configs:
       - targets:
         - https://matrix.brenise.com/health
 #       - https://blee.tube/api/v1/videos
-#       - https://wartortle.satstack.net:4434/api/mempool
-#       - https://squirtle.satstack.net:4439/api/mempool
+        - https://chespin.satstack.net:4439/api/mempool
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -175,8 +174,18 @@ prometheus_alert_rules:
   - alert: Lightning daemon offline (lnd or lightningd)
     expr: up{job="lightning"} == 0
     for: 5m
+    labels:
+      severity: critical
     annotations:
       summary: Lightning daemon is not running.
+
+  - alert: Lightning Peer Offline
+    expr: lightning_peer_connected == 0
+    for: 12h
+    labels:
+      severity: warning
+    annotations:
+      summary: "A lightning peer has been offline for more than 12 hours."
 
 # - alert: LND Monitor
 #   expr: lnd_channels_inactive_total{job="lndmon"} / lnd_channels_active_total{job="lndmon"} > 0.5

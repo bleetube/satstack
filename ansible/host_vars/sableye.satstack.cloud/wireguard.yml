@@ -6,3 +6,4 @@ wireguard_listen_port: 61420
 wireguard_peers:
   - { allowed_ips: '10.19.21.42/32', public_key: 'Qx8tKNJoK7uJ6jmpFjtNE5u0g28Z614p+xOwDF9VbHY=' } # squirtle
   - { allowed_ips: '10.19.21.10/32', public_key: 'F3XR83IgyTVANrQzpp81XagLCbC6vDkgT3lx5ETQJVA=' } # magikarp-nixbitcoin
+  - { allowed_ips: '10.19.21.11/32', public_key: '84QroFO4fvNJ5+2L3IcW9zyzl0VYTRRUSb0ZXv6QEHA=' } # timburr
